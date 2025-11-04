@@ -7,6 +7,53 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 
+import numpy as np
+
+def generate_gmm_x_samples(n_samples=1000, seed=None):
+    """
+    Generates 1D data sampled from a Gaussian Mixture Model (GMM)
+    and clipped to the [0, 1] range.
+    """
+    # Initialize a random number generator
+    rng = np.random.default_rng(seed)
+    
+    # --- Tune Your GMM Here ---
+    # These parameters create the "clumps" and "deserts"
+    
+    # (weights): Proportions of data in each clump. Must sum to 1.
+    weights = [0.4, 0.3, 0.3]
+    
+    # (means): The centers of the clumps on the [0, 1] axis.
+    means = [0.2, 0.5, 0.85]
+    
+    # (stds): The spread (standard deviation) of each clump.
+    # Small numbers = dense clumps. Large numbers = sparse clumps.
+    stds = [0.07, 0.1, 0.05]
+    # --------------------------
+    
+    # Determine how many samples to draw from each component
+    n_components = len(weights)
+    component_samples = rng.multinomial(n_samples, weights)
+    
+    # Draw the samples for each component
+    samples_list = []
+    for i in range(n_components):
+        n_i = component_samples[i]
+        mean_i = means[i]
+        std_i = stds[i]
+        # Draw n_i samples from a normal distribution
+        samples_list.append(rng.normal(loc=mean_i, scale=std_i, size=n_i))
+    
+    # 4. Combine, shuffle, and clip
+    x_samples = np.concatenate(samples_list)
+    rng.shuffle(x_samples) # Important to mix the samples together
+    
+    # Clip to [0, 1] to match the original uniform distribution's bounds
+    # This ensures the rest of your code (like m1 = x < 0.5) works
+    x_samples_clipped = np.clip(x_samples, 0, 1)
+    
+    return x_samples_clipped
+
 ### Two regime DGP ###
 def generate_two_regime_data(n_samples=1000, seed=None):
     """
@@ -28,7 +75,7 @@ def generate_two_regime_data(n_samples=1000, seed=None):
         np.random.seed(seed)
     
     ### Generation ###
-    x = np.random.uniform(low=0, high=1, size=n_samples) # Covariates
+    x = generate_gmm_x_samples(n_samples=n_samples, seed=seed) # Covariates (GMM now instead of Uniform)
     y = np.zeros(n_samples)                              # Target 
     noise = np.zeros(n_samples)                          # Noise 
     
@@ -78,7 +125,7 @@ def generate_three_regime_data(n_samples=1500, seed=None):
         np.random.seed(seed)
     
     ### Generate uniformly distributed inputs ###
-    x = np.random.uniform(low=0, high=1, size=n_samples) # Variables 
+    x = generate_gmm_x_samples(n_samples=n_samples, seed=seed) # Variables 
     y = np.zeros(n_samples)                              # Target
     noise = np.zeros(n_samples)                          # Noise
     

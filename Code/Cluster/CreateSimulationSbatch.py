@@ -22,7 +22,7 @@ if __name__ == "__main__":
     memory_input='750MB'
     
     ## Define Simulation Parameters ##
-    N_REPLICATIONS = 100
+    N_REPLICATIONS = 50
     CANDIDATE_PROPORTION = 0.8
     models_to_run = [
         'RidgeRegressionPredictor'
@@ -30,7 +30,8 @@ if __name__ == "__main__":
     
     ## Data sets ##
     pkl_files = [f for f in os.listdir(DATA_DIRECTORY) if f.endswith('.pkl')]
-    datasets_to_run = sorted([os.path.splitext(f)[0] for f in pkl_files])
+    #datasets_to_run = sorted([os.path.splitext(f)[0] for f in pkl_files])
+    datasets_to_run = ["dgp_three_regime"]
     
     print("--- Starting sbatch file generation ---")
     
