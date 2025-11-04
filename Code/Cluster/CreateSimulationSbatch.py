@@ -17,7 +17,7 @@ if __name__ == "__main__":
     DATA_DIRECTORY = os.path.join(PROJECT_ROOT, 'Data', 'processed')
 
     ## Cluster Parameters ##
-    partition_name_input = "short"
+    partition_name_input = "stf"
     time_limit_input='11:59:59'
     memory_input='750MB'
     
@@ -32,7 +32,7 @@ if __name__ == "__main__":
     pkl_files = [f for f in os.listdir(DATA_DIRECTORY) if f.endswith('.pkl')]
     #datasets_to_run = sorted([os.path.splitext(f)[0] for f in pkl_files])
     datasets_to_run = ["dgp_three_regime"]
-    
+
     print("--- Starting sbatch file generation ---")
     
     ## Loop through datasets ##
