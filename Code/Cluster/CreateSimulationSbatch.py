@@ -23,7 +23,7 @@ if __name__ == "__main__":
     
     ## Define Simulation Parameters ##
     N_REPLICATIONS = 50
-    CANDIDATE_PROPORTION = 0.8
+    CANDIDATE_PROPORTION = 0.99
     models_to_run = [
         'RidgeRegressionPredictor'
     ]
