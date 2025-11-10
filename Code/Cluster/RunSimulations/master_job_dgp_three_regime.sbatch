@@ -14,4 +14,4 @@ python RunSimulation.py \
     --Data "dgp_three_regime" \
     --TaskID "$SLURM_ARRAY_TASK_ID" \
     --NReplications 50 \
-    --CandidateProportion 0.8
+    --CandidateProportion 0.99
