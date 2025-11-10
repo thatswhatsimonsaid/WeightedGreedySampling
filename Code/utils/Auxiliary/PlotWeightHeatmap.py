@@ -107,7 +107,7 @@ def plot_weight_heatmap(dgp_name, selector, seed, output_dir):
 
     # 1. Plot all UNSELECTED points
     ax.scatter(df_unselected['X1'], df_unselected['Y'], 
-               color='gray', alpha=0.1, s=15, label='Unselected')
+               color='gray', alpha=0.1, s=15, label='None')
 
     # 2. Plot the INITIAL points
     ax.scatter(df_initial_plot['X1'], df_initial_plot['Y'], 
@@ -119,7 +119,7 @@ def plot_weight_heatmap(dgp_name, selector, seed, output_dir):
                     c=df_selected_plot['weight'], 
                     cmap='coolwarm', # Blue (low) to Red (high)
                     s=25, 
-                    label='Selected Points', 
+                    label='None', 
                     vmin=0, vmax=1, 
                     zorder=2)
 
