@@ -16,19 +16,13 @@ echo "======================================================"
 DGP_NAME="dgp_three_regime"
 OUTPUT_DIR="Results/visualizations"
 PYTHON_SCRIPT="Code/utils/Auxiliary/PlotWeightHeatmap.py"
-SELECTOR_LIST_PATH="Results/simulation_results/aggregated/${DGP_NAME}/selection_history"
 
-# --- 2. Find all Selectors ---
-echo "Finding selectors in: $SELECTOR_LIST_PATH"
-SELECTORS=() 
-for f in "${SELECTOR_LIST_PATH}"/*_SelectionHistory.csv; do
-    filename=$(basename "$f")
-    selector_name="${filename%_SelectionHistory.csv}"
-    SELECTORS+=("${selector_name}")
-done
-echo "Found ${#SELECTORS[@]} selectors."
+# --- 2. Define Selector to Run ---
+# Hard-code the list to ONLY run WiGS (SAC)
+SELECTORS=("WiGS (SAC)")
+echo "Targeting selector: ${SELECTORS[0]}"
 
-# --- 3. Loop Through Selectors AND Seeds 0-49 ---
+# --- 3. Loop Through Selector AND Seeds 0-49 ---
 for selector in "${SELECTORS[@]}"; do
     echo "------------------------------------------------------"
     echo "Processing Selector: ${selector}"
@@ -40,6 +34,10 @@ for selector in "${SELECTORS[@]}"; do
             --selector "${selector}" \
             --seed ${seed} \
             --output_dir "${OUTPUT_DIR}"
+            
+        if [ $? -ne 0 ]; then
+            echo "ERROR: Python script failed for ${selector}, Seed ${seed}"
+        fi
     done
     
     echo "--- Finished ${selector} ---"

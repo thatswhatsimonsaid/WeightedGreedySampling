@@ -17,19 +17,13 @@ DGP_NAME="dgp_three_regime"
 N_SEEDS=50 # Tell the script to use 50 seeds
 OUTPUT_DIR="Results/visualizations"
 PYTHON_SCRIPT="Code/utils/Auxiliary/PlotAverageWeightHeatmap.py"
-SELECTOR_LIST_PATH="Results/simulation_results/aggregated/${DGP_NAME}/selection_history"
 
-# --- 2. Find all Selectors ---
-echo "Finding selectors in: $SELECTOR_LIST_PATH"
-SELECTORS=() 
-for f in "${SELECTOR_LIST_PATH}"/*_SelectionHistory.csv; do
-    filename=$(basename "$f")
-    selector_name="${filename%_SelectionHistory.csv}"
-    SELECTORS+=("${selector_name}")
-done
-echo "Found ${#SELECTORS[@]} selectors."
+# --- 2. Define Selector to Run ---
+# Hard-code the list to ONLY run WiGS (SAC)
+SELECTORS=("WiGS (SAC)")
+echo "Targeting selector: ${SELECTORS[0]}"
 
-# --- 3. Loop Through Selectors and Run Script ---
+# --- 3. Loop Through Selector and Run Script ---
 for selector in "${SELECTORS[@]}"; do
     echo "------------------------------------------------------"
     echo "Processing AVG for Selector: ${selector}"
