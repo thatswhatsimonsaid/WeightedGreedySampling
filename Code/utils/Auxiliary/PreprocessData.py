@@ -54,6 +54,35 @@ def generate_gmm_x_samples(n_samples=1000, seed=None):
     
     return x_samples_clipped
 
+import numpy as np
+
+def generate_normal_x_samples(n_samples=1000, seed=None):
+    """
+    Generates 1D data sampled from a single Normal (Gaussian) distribution
+    and clipped to the [0, 1] range.
+    """
+    # Initialize a random number generator
+    rng = np.random.default_rng(seed)
+    
+    # --- Tune Your Normal Distribution Here ---
+    # mean: The center of the distribution. 0.5 is the middle.
+    mean = 0.5
+    
+    # std: The spread (standard deviation).
+    # A std of 0.25 will place ~95% of the data 
+    # between 0.0 and 1.0 (before clipping)
+    std = 0.25
+    # ------------------------------------------
+    
+    # Draw n_samples from the normal distribution
+    x_samples = rng.normal(loc=mean, scale=std, size=n_samples)
+    
+    # Clip to [0, 1] to match the original uniform distribution's bounds
+    # This is essential for the rest of your code to work
+    x_samples_clipped = np.clip(x_samples, 0, 1)
+    
+    return x_samples_clipped
+
 ### Two regime DGP ###
 def generate_two_regime_data(n_samples=1000, seed=None):
     """
@@ -74,8 +103,8 @@ def generate_two_regime_data(n_samples=1000, seed=None):
     if seed is not None:
         np.random.seed(seed)
     
-    ### Generation ###
-    x = generate_gmm_x_samples(n_samples=n_samples, seed=seed) # Covariates (GMM now instead of Uniform)
+    ### Generate Normal-distributed inputs ###
+    x = generate_normal_x_samples(n_samples=n_samples, seed=seed) # Variables
     y = np.zeros(n_samples)                              # Target 
     noise = np.zeros(n_samples)                          # Noise 
     
@@ -124,8 +153,8 @@ def generate_three_regime_data(n_samples=1500, seed=None):
     if seed is not None:
         np.random.seed(seed)
     
-    ### Generate uniformly distributed inputs ###
-    x = generate_gmm_x_samples(n_samples=n_samples, seed=seed) # Variables 
+    ### Generate Normal-distributed inputs ###
+    x = generate_normal_x_samples(n_samples=n_samples, seed=seed) # Variables
     y = np.zeros(n_samples)                              # Target
     noise = np.zeros(n_samples)                          # Noise
     
