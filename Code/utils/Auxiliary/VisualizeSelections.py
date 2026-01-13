@@ -46,7 +46,7 @@ def create_visualization(dgp_name, selector, seed, video_length, output_dir, cle
     weight_path = os.path.join(base_results_path, "weight_history", f"{selector}_WeightHistory.csv")
 
     # Define output directories relative to specified *absolute* output_dir passed in
-    safe_selector_name = selector.replace(' ', '_').replace('(', '').replace(')', '').replace(',', '').replace('=', '').replace(':', '')
+    safe_selector_name = selector.replace(' ', '_').replace('(', '').replace(')', '').replace(',', '').replace('=', '').replace(':', '').replace('.', '')
     base_output_dir = os.path.join(output_dir, dgp_name, safe_selector_name, f"seed_{seed}") 
 
     # Create separate folders for SVG and PNG frames
@@ -291,7 +291,7 @@ def create_visualization(dgp_name, selector, seed, video_length, output_dir, cle
 
         try:
             fig.savefig(svg_path, format='svg', bbox_inches='tight') # Added bbox_inches
-            fig.savefig(png_path, dpi=100, bbox_inches='tight') # Added bbox_inches
+            fig.savefig(png_path, dpi=100) 
 
             svg_files.append(svg_path)
             png_files.append(png_path)
