@@ -16,10 +16,11 @@ if __name__ == "__main__":
     PROJECT_ROOT = os.path.dirname(CODE_DIR)
     DATA_DIRECTORY = os.path.join(PROJECT_ROOT, 'Data', 'processed')
 
+   
     ## Cluster Parameters ##
-    partition_name_input = "short"
+    partition_name_input = "cpu-g2"
     time_limit_input='11:59:59'
-    memory_input='3000MB'
+    memory_input='750MB'
     
     ## Define Simulation Parameters ##
     N_REPLICATIONS = 100
