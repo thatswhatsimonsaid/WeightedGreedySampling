@@ -51,7 +51,7 @@ def compare(baseline_data, challenger_data):
     except ValueError: 
         p_val = 1.0 
         
-    # 2. % Improvement
+    # 2. 
     diff_pct = ((np.mean(base_means) - np.mean(chal_means)) / np.mean(base_means)) * 100
     
     # 3. Categorize
