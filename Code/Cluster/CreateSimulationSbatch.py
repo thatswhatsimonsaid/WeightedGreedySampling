@@ -31,7 +31,10 @@ if __name__ == "__main__":
     
     ## Data sets ##
     pkl_files = [f for f in os.listdir(DATA_DIRECTORY) if f.endswith('.pkl')]
-    datasets_to_run = sorted([os.path.splitext(f)[0] for f in pkl_files])
+    #datasets_to_run = sorted([os.path.splitext(f)[0] for f in pkl_files])
+    datasets_to_run = ["dgp_two_regime", "dgp_three_regime"]
+
+
     
     print("--- Starting sbatch file generation ---")
     
