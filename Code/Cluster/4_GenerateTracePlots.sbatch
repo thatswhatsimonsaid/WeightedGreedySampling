@@ -12,7 +12,7 @@
 echo "--- Starting PLOT and TREND generation for Task ${SLURM_ARRAY_TASK_ID} ---"
 
 ### 1. Get Project Root and CD ###
-cd "$SLURM_SUBMIT_DIR/../.."
+cd /mmfs1/gscratch/stf/trusso96/WeightedGreedySampling
 echo "Current Directory: $(pwd)"
 PROJECT_ROOT=$(pwd)
 CODE_DIR="${PROJECT_ROOT}/Code"
