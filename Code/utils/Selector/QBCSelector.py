@@ -21,14 +21,12 @@ class QBCSelector:
             Seed (int): Random seed for reproducibility.
             **kwargs: Ignored arguments.
         """
-        # 1. Capture 'Seed' (Capital S) to match LearningProcedure config
+        # 1. Capture Seed
         self.seed = Seed
         self.rng = np.random.default_rng(Seed)
         self.n_members = n_members
         
         # 2. Define Base Model (Ridge)
-        # We use Ridge because a linear model on non-linear data (like dgp_three_regime)
-        # is "misspecified", which helps it lose to WiGS as intended.
         self.base_model = Ridge(alpha=1.0, random_state=Seed)
 
     def select(self, df_Candidate: pd.DataFrame, df_Train: pd.DataFrame, Model=None, **kwargs) -> dict:
@@ -52,11 +50,9 @@ class QBCSelector:
         predictions = [] # Shape: (n_members, n_candidates)
         
         for i in range(self.n_members):
-            # Create a clean instance of Ridge
             member_model = clone(self.base_model)
             
-            # Create Bootstrap Sample (Sample with replacement)
-            # We vary the seed by 'i' so every member sees different data
+            # Create Bootstrap Sample
             X_boot, y_boot = resample(
                 X_train_full, 
                 y_train_full, 
@@ -72,7 +68,6 @@ class QBCSelector:
         # 3. Calculate Variance across Committee
         committee_preds = np.vstack(predictions)
         
-        # Variance across the different bootstrap models (axis=0 is variance across models)
         prediction_variance = np.var(committee_preds, axis=0)
         
         # 4. Select Max Variance
