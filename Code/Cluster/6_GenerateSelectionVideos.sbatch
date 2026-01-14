@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=VidSelect
-#SBATCH --partition=short
+#SBATCH --partition=cpu-g2
 #SBATCH --output=RunSimulations/ClusterMessages/out/vidselect_%A_%a.out
 #SBATCH --error=RunSimulations/ClusterMessages/error/vidselect_%A_%a.err
 #SBATCH --time=7:59:00        
