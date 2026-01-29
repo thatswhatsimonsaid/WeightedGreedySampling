@@ -1,0 +1,35 @@
+\begin{table*}[htbp]
+    \centering
+    \scriptsize
+    \setlength{\tabcolsep}{2pt}
+    \begin{tabular}{l rrrrrrrrrrrrrr}
+        \toprule
+         & \multicolumn{4}{c}{\textbf{Baselines}} & \multicolumn{4}{c}{\textbf{Advanced Baselines}} & \multicolumn{4}{c}{\textbf{WiGS (Static/Decay)}} & \multicolumn{2}{c}{\textbf{WiGS (Adaptive)}} \\
+         \cmidrule(lr){2-5} \cmidrule(lr){6-9} \cmidrule(lr){10-13} \cmidrule(lr){14-15}
+        \textbf{Dataset} & Rand. & GSx & GSy & iGS & QBC & Uncert. & EMCM & InfoDen & 0.25 & 0.75 & Lin. & Exp. & MAB(2) & SAC \\ \midrule
+        Beer & 9.7 & 11.1 & 10.2 & 10.4 & 15.0 & 9.9 & - & - & 10.4 & 10.5 & 10.4 & 10.5 & 10.6 & 259.7 \\
+        Bodyfat & 6.7 & 6.9 & 7.1 & 7.2 & 10.3 & 6.8 & - & - & 7.2 & 7.3 & 7.3 & 7.2 & 7.2 & 432.7 \\
+        Burb. Correct & 25.3 & 27.4 & 28.6 & 31.7 & 39.0 & 26.1 & - & - & 36.6 & 36.8 & 36.7 & 36.8 & 35.8 & 486.0 \\
+        Burb. Low Noise & 25.5 & 27.4 & 28.4 & 31.5 & 38.5 & 25.8 & - & - & 36.3 & 36.4 & 36.4 & 36.2 & 35.6 & 378.3 \\
+        Burb. Misspecified & 25.2 & 27.0 & 28.1 & 31.1 & 39.1 & 26.3 & - & - & 36.0 & 36.1 & 36.1 & 36.0 & 35.8 & 468.0 \\
+        Conc. 4 & 30.7 & 34.0 & 34.4 & 39.0 & 48.4 & 31.9 & - & - & 45.0 & 44.8 & 44.7 & 44.8 & 44.4 & 247.1 \\
+        Conc. Cs & 2.6 & 2.7 & 2.8 & 2.8 & 4.0 & 2.6 & - & - & 2.8 & 2.8 & 2.8 & 2.8 & 2.7 & 267.4 \\
+        Conc. Flow & 2.6 & 2.7 & 2.8 & 2.8 & 4.0 & 2.6 & - & - & 2.8 & 2.8 & 2.8 & 2.8 & 2.8 & 451.5 \\
+        Conc. Slump & 2.6 & 2.7 & 2.8 & 2.8 & 4.0 & 2.7 & - & - & 2.8 & 2.8 & 2.8 & 2.8 & 2.7 & 426.8 \\
+        Cps Wage & 14.6 & 15.6 & 15.9 & 16.5 & 23.0 & 15.3 & - & - & 16.7 & 16.8 & 16.8 & 16.8 & 16.5 & 448.5 \\
+        Dgp Three Regime & 38.0 & 42.9 & 44.8 & 55.9 & 58.7 & 39.5 & - & - & 68.3 & 70.1 & 70.7 & 69.7 & 66.4 & 329.6 \\
+        Dgp Two Regime & 25.3 & 27.1 & 28.4 & 31.5 & 38.9 & 25.8 & - & - & 36.7 & 36.5 & 36.7 & 36.5 & 35.8 & 437.4 \\
+        Housing & 13.7 & 14.3 & 14.6 & 15.1 & 21.2 & 14.1 & - & - & 15.3 & 15.3 & 15.3 & 15.3 & 15.2 & 252.7 \\
+        Mpg & 10.3 & 10.7 & 10.9 & 11.1 & 15.7 & 10.4 & - & - & 11.2 & 11.3 & 11.2 & 11.2 & 11.0 & 405.3 \\
+        No2 & 13.4 & 14.0 & 14.3 & 14.6 & 20.8 & 13.8 & - & - & 14.9 & 14.9 & 14.9 & 14.9 & 14.8 & 307.0 \\
+        Pm10 & 13.4 & 13.9 & 14.4 & 14.7 & 20.8 & 13.7 & - & - & 15.0 & 15.0 & 15.0 & 14.9 & 14.7 & 366.7 \\
+        Qsar & 15.0 & 15.9 & 16.3 & 16.9 & 23.2 & 15.5 & - & - & 17.1 & 17.1 & 17.0 & 17.1 & 16.8 & 342.3 \\
+        Wine Red & 46.2 & 57.4 & 54.1 & 69.8 & 75.5 & 51.0 & - & - & 85.3 & 85.6 & 85.4 & 84.7 & 86.5 & 292.7 \\
+        Wine White & 152.8 & 394.4 & 277.4 & 651.6 & 271.6 & 179.4 & - & - & 1225.1 & 1214.5 & 1200.2 & 1189.9 & 1167.5 & 1337.4 \\
+        Yacht & 8.0 & 8.3 & 8.5 & 8.6 & 12.3 & 8.1 & - & - & 8.6 & 8.6 & 8.6 & 8.6 & 8.5 & 375.2 \\
+        \textbf{MEDIAN} & \textbf{14.1} & \textbf{14.9} & \textbf{15.3} & \textbf{15.8} & \textbf{22.1} & \textbf{14.7} & - & - & \textbf{16.0} & \textbf{16.1} & \textbf{16.1} & \textbf{16.0} & \textbf{15.8} & \textbf{376.7} \\
+        \bottomrule
+    \end{tabular}
+    \caption{Median runtime (seconds) across simulation seeds. `Uncert.' denotes Uncertainty Sampling, `InfoDen' denotes Information Density.}
+    \label{tab:RuntimeComparison}
+\end{table*}
