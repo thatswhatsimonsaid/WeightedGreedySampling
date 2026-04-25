@@ -71,7 +71,8 @@ def LearningProcedure(SimulationConfigInputUpdated):
         else:
             current_cv_rmse = np.nan 
         if np.isnan(current_cv_rmse):
-            current_cv_rmse = FullPoolErrorOuputs["RMSE"]
+            train_predictions = predictor_model.predict(X_train_df)
+            current_cv_rmse = np.sqrt(mean_squared_error(y_train_series, train_predictions))
 
         ### 5. Break Condition ###
         if len(SimulationConfigInputUpdated["df_Candidate"]) == 0:
