@@ -17,13 +17,13 @@ if __name__ == "__main__":
     DATA_DIRECTORY = os.path.join(PROJECT_ROOT, 'Data', 'processed')
 
     ## Cluster Parameters ##
-    partition_name_input = "short"
+    partition_name_input = "cpu-g2"
     time_limit_input='11:59:59'
     memory_input='3000MB'
     
     ## Define Simulation Parameters ##
-    N_REPLICATIONS = 25
-    CANDIDATE_PROPORTION = 0.95
+    N_REPLICATIONS = 100
+    CANDIDATE_PROPORTION = 0.99
 
     ## Models to run - MUST BE IN SYNC WITH RuunSimulation.py ##
     models_to_run = [
