@@ -7,7 +7,16 @@ import sys
 
 ### CONFIGURATION ###
 METRIC = 'RMSE'  # Options: 'RMSE', 'MAE', 'R2', 'CC'
-TARGET_BASELINES = ['Passive Learning', 'iGS', 'QBC', 'WiGS (SAC)', None]
+TARGET_BASELINES = [
+    'Passive Learning', 
+    'iGS', 
+    'QBC', 
+    'Uncertainty Sampling', 
+    'EGAL', 
+    'EMCM', 
+    'WiGS (SAC)', 
+    None
+]
 
 OUTPUT_FILENAME_BASE = 'AUC_Performance_Heatmap'
 
