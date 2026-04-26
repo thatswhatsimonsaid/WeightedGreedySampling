@@ -97,7 +97,8 @@ def AggregateResults(raw_results_dir, aggregated_results_dir):
                     print(f"  > Saved {metric}.pkl to {eval_type.lower()}_metrics/")
 
         time_data = {strategy: data['ElapsedTime'] for strategy, data in aggregated_data.items()}
-        time_df = pd.DataFrame(time_data)
+        # This forces Pandas to accept uneven lists by padding the empty spots with NaN
+        time_df = pd.DataFrame.from_dict(time_data, orient='index').transpose() 
         time_df.to_csv(os.path.join(dataset_output_dir, 'ElapsedTime.csv'), index_label='Simulation')
         print(f"  > Saved ElapsedTime.csv")
         
