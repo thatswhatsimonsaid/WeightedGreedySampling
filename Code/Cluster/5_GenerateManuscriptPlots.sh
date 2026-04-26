@@ -11,7 +11,7 @@ cd "$PROJECT_ROOT"
 echo "Changed working directory to ${PROJECT_ROOT}"
 
 ## Define input and output directories ##
-AGG_RESULTS_DIR="Results/simulation_results/aggregated"
+AGG_RESULTS_DIR="Results/test_split_run/simulation_results/aggregated"
 TABLES_DIR="Results/tables"
 IMG_MANUSCRIPT_DIR="Results/images/manuscript"
 
