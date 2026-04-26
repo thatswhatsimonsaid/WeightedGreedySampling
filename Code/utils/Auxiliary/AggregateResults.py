@@ -29,11 +29,27 @@ def AggregateResults(raw_results_dir, aggregated_results_dir):
         result_files_for_dataset = glob.glob(search_pattern_dataset)
 
         ## Load one file to inspect the structure ##
-        with open(result_files_for_dataset[0], 'rb') as f:
-            first_result = pickle.load(f)
-        
-        ## Discover metrics and eval types from DataFrame structure ##
-        strategies = list(first_result.keys())
+        ## Dynamically discover ALL strategies across ALL files ##
+        strategies_set = set()
+        eval_types = None
+        metrics = None
+
+        for file_path in result_files_for_dataset:
+            with open(file_path, 'rb') as f:
+                try:
+                    single_result = pickle.load(f)
+                    strategies_set.update(single_result.keys())
+                    
+                    # Grab the structure from the first valid file
+                    if eval_types is None and single_result:
+                        first_strat = list(single_result.keys())[0]
+                        error_df_template = single_result[first_strat]['ErrorVecs']
+                        eval_types = list(error_df_template.columns)  
+                        metrics = list(error_df_template.index)
+                except Exception:
+                    pass # Skip any corrupted files quietly
+
+        strategies = list(strategies_set)
         error_df_template = first_result[strategies[0]]['ErrorVecs']
         eval_types = list(error_df_template.columns)  
         metrics = list(error_df_template.index)      
