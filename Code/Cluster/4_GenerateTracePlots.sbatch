@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #SBATCH --job-name=GenPlotsTrends
-#SBATCH --partition=short
+#SBATCH --partition=cpu-g2
 #SBATCH --array=1-21  
 #SBATCH --output=RunSimulations/ClusterMessages/out/genplots_%A_%a.out
 #SBATCH --error=RunSimulations/ClusterMessages/error/genplots_%A_%a.err
