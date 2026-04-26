@@ -18,8 +18,8 @@ if __name__ == "__main__":
 
     ## Cluster Parameters ##
     partition_name_input = "cpu-g2"
-    time_limit_input='11:59:59'
-    memory_input='3000MB'
+    time_limit_input='23:59:59'
+    memory_input='30000MB'
     
     ## Define Simulation Parameters ##
     N_REPLICATIONS = 100
