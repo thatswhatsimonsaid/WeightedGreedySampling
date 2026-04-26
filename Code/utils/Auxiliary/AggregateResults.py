@@ -28,7 +28,6 @@ def AggregateResults(raw_results_dir, aggregated_results_dir):
         search_pattern_dataset = os.path.join(raw_results_dir, data_name, f"{data_name}_*_seed_*.pkl")
         result_files_for_dataset = glob.glob(search_pattern_dataset)
 
-        ## Load one file to inspect the structure ##
         ## Dynamically discover ALL strategies across ALL files ##
         strategies_set = set()
         eval_types = None
@@ -50,9 +49,11 @@ def AggregateResults(raw_results_dir, aggregated_results_dir):
                     pass # Skip any corrupted files quietly
 
         strategies = list(strategies_set)
-        error_df_template = first_result[strategies[0]]['ErrorVecs']
-        eval_types = list(error_df_template.columns)  
-        metrics = list(error_df_template.index)      
+
+        # Safety check in case the folder was totally empty/corrupted
+        if not strategies:
+            print(f"  > Skipping {data_name}: Could not read any strategies.")
+            continue
                 
         aggregated_data = {
             s: {
@@ -68,7 +69,13 @@ def AggregateResults(raw_results_dir, aggregated_results_dir):
         all_initial_indices_list = []
         for i, file_path in enumerate(result_files_for_dataset):
             with open(file_path, 'rb') as f:
-                single_run_result = pickle.load(f)
+                try:
+                    single_run_result = pickle.load(f)
+                except Exception:
+                    continue # Skip silently if a specific .pkl is corrupted
+
+            if not single_run_result:
+                continue
 
             # Grab initial indices from the first strategy (they are identical for this seed)
             first_strategy_key = list(single_run_result.keys())[0]
@@ -113,7 +120,7 @@ def AggregateResults(raw_results_dir, aggregated_results_dir):
                     print(f"  > Saved {metric}.pkl to {eval_type.lower()}_metrics/")
 
         time_data = {strategy: data['ElapsedTime'] for strategy, data in aggregated_data.items()}
-        # This forces Pandas to accept uneven lists by padding the empty spots with NaN
+        # PANDAS FIX: Safely handles uneven arrays from crashed/timed-out simulations
         time_df = pd.DataFrame.from_dict(time_data, orient='index').transpose() 
         time_df.to_csv(os.path.join(dataset_output_dir, 'ElapsedTime.csv'), index_label='Simulation')
         print(f"  > Saved ElapsedTime.csv")
@@ -123,9 +130,10 @@ def AggregateResults(raw_results_dir, aggregated_results_dir):
         os.makedirs(history_save_dir, exist_ok=True)
         for strategy in strategies:
             history_data = aggregated_data[strategy]['SelectionHistory']
-            history_df = pd.DataFrame(history_data).transpose()
-            history_df.columns = [f"Sim_{i}" for i in range(len(history_data))]
-            history_df.to_csv(os.path.join(history_save_dir, f'{strategy}_SelectionHistory.csv'), index_label='Iteration')
+            if history_data:
+                history_df = pd.DataFrame(history_data).transpose()
+                history_df.columns = [f"Sim_{i}" for i in range(len(history_data))]
+                history_df.to_csv(os.path.join(history_save_dir, f'{strategy}_SelectionHistory.csv'), index_label='Iteration')
         print(f"  > Saved SelectionHistory CSVs.")
 
         ### Save Weight History ###
@@ -163,6 +171,9 @@ def AggregateResults(raw_results_dir, aggregated_results_dir):
 if __name__ == "__main__":
     SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
     PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(SCRIPT_DIR)))
-    RAW_RESULTS_DIR = os.path.join(PROJECT_ROOT, 'Results', 'simulation_results', 'raw')
-    AGGREGATED_RESULTS_DIR = os.path.join(PROJECT_ROOT, 'Results', 'simulation_results', 'aggregated')
+    
+    # EXACT PATH TO ORIGINAL RUN DATA
+    RAW_RESULTS_DIR = os.path.join(PROJECT_ROOT, 'Results', 'original_run', 'simulation_results', 'raw')
+    AGGREGATED_RESULTS_DIR = os.path.join(PROJECT_ROOT, 'Results', 'original_run', 'simulation_results', 'aggregated')
+    
     AggregateResults(raw_results_dir=RAW_RESULTS_DIR, aggregated_results_dir=AGGREGATED_RESULTS_DIR)
