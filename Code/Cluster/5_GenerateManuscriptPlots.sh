@@ -10,6 +10,10 @@ PROJECT_ROOT=$(realpath "$CODE_DIR/..")
 cd "$PROJECT_ROOT"
 echo "Changed working directory to ${PROJECT_ROOT}"
 
+# ---> FIX: Safely activate the virtual environment <---
+echo "Activating virtual environment..."
+source "${PROJECT_ROOT}/.WiGS_Env/bin/activate"
+
 ## Define input and output directories ##
 AGG_RESULTS_DIR="Results/test_split_run/simulation_results/aggregated"
 TABLES_DIR="Results/test_split_run/tables"
@@ -64,7 +68,6 @@ echo ""
 echo "--- 3. Generating Weight Heatmap plots for ${SELECTOR_FOR_HEATMAP}... ---"
 for dgp in "${SYNTHETIC_DGPS[@]}"; do
 
-    # ---> FIX 1: Using the AGG_RESULTS_DIR variable so it correctly uses test_split_run <---
     exact_weight_file="${AGG_RESULTS_DIR}/${dgp}/weight_history/${SELECTOR_FOR_HEATMAP}_WeightHistory.csv"
     
     if [ -f "$exact_weight_file" ]; then
