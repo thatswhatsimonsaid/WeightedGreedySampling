@@ -18,6 +18,9 @@ class RidgeRegressionPredictor:
         self.model = Ridge(alpha=self.regularization)
         self.model.fit(X_train_df, y_train_series)
         
+        # ---> FIX 1: Cache the training data <---
+        self.X_train_cached = X_train_df.values
+        
 
     ### Predict Model ###
     def predict(self, X_data_df: pd.DataFrame) -> np.ndarray:
@@ -30,6 +33,14 @@ class RidgeRegressionPredictor:
         Std[x] = sqrt( x^T * (X_train^T * X_train + alpha * I)^-1 * x )
         """
         X_cand = X_data_df.values
+        
+        # ---> FIX 2: Cold Start Safety Net <---
+        if getattr(self, "X_train_cached", None) is None or len(self.X_train_cached) == 0:
+            # If no training data exists, return prior uncertainty
+            mean = np.zeros(len(X_cand))
+            std = np.sqrt(np.linalg.norm(X_cand, axis=1)) 
+            return mean, std
+
         n_features = self.X_train_cached.shape[1]
         
         # 1. Compute Inverse Covariance (Precision Matrix)
