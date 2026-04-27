@@ -50,7 +50,7 @@ echo "--- Starting Weight Trend Generation for: ${DATASET_TO_PROCESS} ---"
 
 ### Define Parameters ###
 SELECTOR_FOR_TRENDS="WiGS (SAC)"
-SEED_TO_PLOT_INDIV=("0" "1" "2")
+declare -a SEED_TO_PLOT_INDIV=("0" "1" "2") # ---> FIX: Made explicit array declaration
 
 IMG_AVG_TRENDS_DIR="Results/original_run/images/manuscript/average_weight_trends"
 APP_INDIV_TRENDS_DIR="Results/original_run/images/appendices/individual_weight_trends"
@@ -72,7 +72,8 @@ if [ -f "$exact_weight_file" ]; then
         --output_dir "${IMG_AVG_TRENDS_DIR}"
 
     ## B. Generate INDIVIDUAL Seed Trends ##
-    for seed in ${SEED_TO_PLOT_INDIV}; do
+    # ---> FIX: Added [@] so the loop processes 0, 1, and 2 <---
+    for seed in "${SEED_TO_PLOT_INDIV[@]}"; do
          echo "  Processing Trend (Seed ${seed}) for: ${DATASET_TO_PROCESS}"
          python3 "${CODE_DIR}/utils/Auxiliary/AnalyzeWeightTrends.py" \
             --dgp_name "${DATASET_TO_PROCESS}" \
