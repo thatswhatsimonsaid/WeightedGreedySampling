@@ -131,6 +131,7 @@ def MeanVariancePlot(Subtitle=None,
             ax_var.set_xlim(xlim)
     
     return (fig_mean, fig_var)
+
 ### Main Wrapper Function ###
 def generate_all_plots(aggregated_results_dir, image_dir, show_legend=True, single_dataset=None):
     """
@@ -152,7 +153,10 @@ def generate_all_plots(aggregated_results_dir, image_dir, show_legend=True, sing
         'WiGS (MAB-UCB1, c=2.0)': 'darkviolet', 
         'WiGS (MAB-UCB1, c=5.0)': 'indigo',
         'WiGS (SAC)': 'darkcyan',
-        'QBC': 'goldenrod'   
+        'QBC': 'goldenrod',
+        'Uncertainty Sampling': 'purple', # Added Reviewer Baseline
+        'EGAL': 'teal',                   # Added Reviewer Baseline
+        'EMCM': 'navy'                    # Added Reviewer Baseline
     }
     master_linestyles = {
         'Passive Learning': ':', 
@@ -167,7 +171,10 @@ def generate_all_plots(aggregated_results_dir, image_dir, show_legend=True, sing
         'WiGS (MAB-UCB1, c=2.0)': '-.', 
         'WiGS (MAB-UCB1, c=5.0)': '-.',
         'WiGS (SAC)': '-',
-        'QBC': '-.' 
+        'QBC': '-.',
+        'Uncertainty Sampling': '--',
+        'EGAL': '--',
+        'EMCM': '--'
     }
     master_legend = {
         'Passive Learning': 'Random', 
@@ -183,6 +190,9 @@ def generate_all_plots(aggregated_results_dir, image_dir, show_legend=True, sing
         'WiGS (MAB-UCB1, c=5.0)': 'MAB-UCB1, c=5.0',
         'WiGS (SAC)': 'WiGS (SAC)',
         'QBC': 'QBC',
+        'Uncertainty Sampling': 'Uncertainty',
+        'EGAL': 'EGAL',
+        'EMCM': 'EMCM'
     }
     
     ### Set up ###
@@ -346,11 +356,13 @@ if __name__ == "__main__":
     except NameError:
         PROJECT_ROOT = os.path.abspath(os.path.join(os.getcwd(), '..', '..'))
 
-    AGGREGATED_RESULTS_DIR = os.path.join(PROJECT_ROOT, 'Results', 'simulation_results', 'aggregated')
-    IMAGE_DIR = os.path.join(PROJECT_ROOT, 'Results', 'images')
+    # ---> FIX 1: Explicitly routing to original_run <---
+    AGGREGATED_RESULTS_DIR = os.path.join(PROJECT_ROOT, 'Results', 'original_run', 'simulation_results', 'aggregated')
+    IMAGE_DIR = os.path.join(PROJECT_ROOT, 'Results', 'original_run', 'images', 'appendices')
     
     
     if args.legend_only:
+        # ---> FIX 2: Added the Reviewer Baselines to the standalone legend configuration <---
         master_colors = {
             'Passive Learning': 'gray', 
             'GSx': 'cornflowerblue', 
@@ -365,7 +377,10 @@ if __name__ == "__main__":
             'WiGS (MAB-UCB1, c=2.0)': 'darkviolet', 
             'WiGS (MAB-UCB1, c=5.0)': 'indigo',
             'WiGS (SAC)': 'darkcyan',
-            'QBC': 'goldenrod'
+            'QBC': 'goldenrod',
+            'Uncertainty Sampling': 'purple',
+            'EGAL': 'teal',
+            'EMCM': 'navy'
         }
 
         master_linestyles = {
@@ -382,7 +397,10 @@ if __name__ == "__main__":
             'WiGS (MAB-UCB1, c=2.0)': '-.', 
             'WiGS (MAB-UCB1, c=5.0)': '-.',
             'WiGS (SAC)': '-',
-            'QBC': '-.' 
+            'QBC': '-.',
+            'Uncertainty Sampling': '--',
+            'EGAL': '--',
+            'EMCM': '--'
         }
 
         master_legend = {
@@ -400,12 +418,14 @@ if __name__ == "__main__":
             'WiGS (MAB-UCB1, c=5.0)': 'WiGS (MAB, c=5.0)',
             'WiGS (SAC)': 'WiGS (SAC)',
             'QBC': 'QBC',
+            'Uncertainty Sampling': 'Uncertainty',
+            'EGAL': 'EGAL',
+            'EMCM': 'EMCM'
         }
         
         # Define strategies to *exclude* from the legend #
         strategies_to_exclude = {
             "WiGS (Static w_x=0.5)",
-            # 'WiGS (MAB-UCB1, c=0.5)',
             'WiGS (MAB-UCB1, c=2.0)',
         }
         
@@ -415,8 +435,10 @@ if __name__ == "__main__":
             if long not in strategies_to_exclude
         }
 
-        # Define the output path #
-        legend_output_path = os.path.join(IMAGE_DIR, "benchmark_legend.png")
+        # ---> FIX 3: Route the legend to the exact folder the bash script expects to find it <---
+        LEGEND_DIR = os.path.join(PROJECT_ROOT, 'Results', 'original_run', 'images')
+        os.makedirs(LEGEND_DIR, exist_ok=True)
+        legend_output_path = os.path.join(LEGEND_DIR, "benchmark_legend.png")
         
         # Generate the legend #
         generate_legend(

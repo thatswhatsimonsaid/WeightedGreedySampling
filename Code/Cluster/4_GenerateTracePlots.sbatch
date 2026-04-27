@@ -16,6 +16,7 @@ cd "$SLURM_SUBMIT_DIR/../.."
 echo "Current Directory: $(pwd)"
 PROJECT_ROOT=$(pwd)
 CODE_DIR="${PROJECT_ROOT}/Code"
+source "${PROJECT_ROOT}/.WiGS_Env/bin/activate"
 
 ### 2. Get This Job's Dataset ###
 AGG_DIR="Results/original_run/simulation_results/aggregated"
