@@ -211,7 +211,8 @@ def generate_all_plots(aggregated_results_dir, image_dir, show_legend=True, sing
         print(f"--- Starting Plot Generation for single dataset: {single_dataset} ---")
     else:
         print("--- Starting Plot Generation from Aggregated Results ---")
-        dataset_folders = [d for d in os.listdir(aggregated_results_dir) if os.path.isdir(os.path.join(aggregated_results_dir, d))]
+        # ---> FIX: Explicitly exclude 'dgp_new' from the folder list <---
+        dataset_folders = [d for d in os.listdir(aggregated_results_dir) if os.path.isdir(os.path.join(aggregated_results_dir, d)) and d != 'dgp_new']
 
     total_datasets = len(dataset_folders)
     
@@ -356,13 +357,13 @@ if __name__ == "__main__":
     except NameError:
         PROJECT_ROOT = os.path.abspath(os.path.join(os.getcwd(), '..', '..'))
 
-    # ---> FIX 1: Explicitly routing to original_run <---
+    # ---> PATH FIX: Routing completely to original_run <---
     AGGREGATED_RESULTS_DIR = os.path.join(PROJECT_ROOT, 'Results', 'original_run', 'simulation_results', 'aggregated')
     IMAGE_DIR = os.path.join(PROJECT_ROOT, 'Results', 'original_run', 'images', 'appendices')
     
     
     if args.legend_only:
-        # ---> FIX 2: Added the Reviewer Baselines to the standalone legend configuration <---
+        # ---> FIX: Reviewer Baselines added <---
         master_colors = {
             'Passive Learning': 'gray', 
             'GSx': 'cornflowerblue', 
@@ -435,7 +436,6 @@ if __name__ == "__main__":
             if long not in strategies_to_exclude
         }
 
-        # ---> FIX 3: Route the legend to the exact folder the bash script expects to find it <---
         LEGEND_DIR = os.path.join(PROJECT_ROOT, 'Results', 'original_run', 'images')
         os.makedirs(LEGEND_DIR, exist_ok=True)
         legend_output_path = os.path.join(LEGEND_DIR, "benchmark_legend.png")

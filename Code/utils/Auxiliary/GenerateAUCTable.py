@@ -41,6 +41,11 @@ def load_and_calculate_auc_from_dirs(data_dir):
     print(f"Found {len(dataset_folders)} dataset folders. Processing...")
 
     for dataset_name in dataset_folders:
+        # ---> FIX: Explicitly exclude dgp_new <---
+        if dataset_name == 'dgp_new':
+            print(f"  [Excluded] Skipping {dataset_name} per user configuration.")
+            continue
+            
         metric_path = os.path.join(data_dir, dataset_name, 'full_pool_metrics', f'{METRIC}.pkl')
         
         if not os.path.exists(metric_path):
