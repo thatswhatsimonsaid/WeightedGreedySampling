@@ -21,11 +21,17 @@ def TrainCandidateSplit(df, CandidateProportion, TestProportion=0.10):
     # Slices off 10% (by default) for the true held-out test set
     df_LearningPool, df_Test = train_test_split(df, test_size=TestProportion)
 
-    # 2. Train/Candidate Split on the REMAINING data #
+    # 2. Calculate Safe Train Size  #
+    n_learning_samples = len(df_LearningPool)
+    # Forces the initial training set to have AT LEAST 2 samples to prevent model crash
+    n_train_samples = max(2, int(n_learning_samples * (1.0 - CandidateProportion)))
+
+    # 3. Train/Candidate Split on the REMAINING data #
     X_Train, X_Candidate, y_Train, y_Candidate = train_test_split(
         df_LearningPool.loc[:, df_LearningPool.columns != "Y"], 
         df_LearningPool["Y"], 
-        test_size=CandidateProportion)
+        train_size=n_train_samples # Use the calculated integer here instead of test_size proportion
+    )
     
     # Column names #
     df_Train = X_Train.copy()
