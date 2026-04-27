@@ -4,8 +4,8 @@
 #SBATCH --array=1-100
 #SBATCH --output=/mmfs1/gscratch/stf/trusso96/WeightedGreedySampling/Code/Cluster/RunSimulations/ClusterMessages/out/wine_red_%A_%a.out
 #SBATCH --error=/mmfs1/gscratch/stf/trusso96/WeightedGreedySampling/Code/Cluster/RunSimulations/ClusterMessages/error/wine_red_%A_%a.err
-#SBATCH --time=11:59:59
-#SBATCH --mem-per-cpu=3000MB
+#SBATCH --time=23:59:59
+#SBATCH --mem-per-cpu=30000MB
 #SBATCH --cpus-per-task=1
 
 cd /mmfs1/gscratch/stf/trusso96/WeightedGreedySampling/Code
