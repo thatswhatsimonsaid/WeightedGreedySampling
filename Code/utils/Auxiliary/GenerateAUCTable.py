@@ -60,6 +60,10 @@ def load_and_calculate_auc_from_dirs(data_dir):
             
             for selector, val in data.items():
                 if isinstance(val, pd.DataFrame):
+                    
+                    # ---> THE FIX: Force cast the dataframe to numeric to prevent the string error <---
+                    val = val.apply(pd.to_numeric, errors='coerce')
+                    
                     if 'mean' in val.columns:
                         selector_means[selector] = val['mean']
                     elif 'Mean' in val.columns:
@@ -68,7 +72,7 @@ def load_and_calculate_auc_from_dirs(data_dir):
                         selector_means[selector] = val.mean(axis=1)
                         
                 elif isinstance(val, pd.Series):
-                    selector_means[selector] = val
+                    selector_means[selector] = pd.to_numeric(val, errors='coerce')
             
             if not selector_means:
                 print(f"  [Warning] {dataset_name}: Could not extract any data.")
@@ -87,7 +91,7 @@ def load_and_calculate_auc_from_dirs(data_dir):
                 
                 # Handle NaNs (Interpolate)
                 if np.isnan(y).any():
-                    y = pd.Series(y).interpolate().fillna(method='bfill').values
+                    y = pd.Series(y).interpolate().bfill().values
                 
                 # Integration (Trapezoidal rule)
                 if hasattr(np, 'trapezoid'):
@@ -179,11 +183,7 @@ def generate_heatmap(auc_df, output_dir, baseline_method):
         safe_baseline = baseline_method.replace(" ", "_").replace("(", "").replace(")", "")
         filename = f"{OUTPUT_FILENAME_BASE}_vs_{safe_baseline}.png"
 
-    # Common Plot Settings
-    # plt.xlabel('Dataset', fontsize=14)
-    # plt.ylabel('Selection Strategy', fontsize=14)
     plt.xticks(rotation=45, ha='right')
-    # plt.title(title_str, fontsize=16)
     plt.tight_layout()
     
     # Save
@@ -199,8 +199,8 @@ def main():
     except NameError:
         PROJECT_ROOT = os.path.abspath(os.path.join(os.getcwd(), '..', '..'))
         
-    DATA_DIR = os.path.join(PROJECT_ROOT, 'Results', 'simulation_results', 'aggregated')
-    OUTPUT_DIR = os.path.join(PROJECT_ROOT, 'Results', 'images', 'manuscript', 'AUC_Tables')
+    DATA_DIR = os.path.join(PROJECT_ROOT, 'Results', 'original_run', 'simulation_results', 'aggregated')
+    OUTPUT_DIR = os.path.join(PROJECT_ROOT, 'Results', 'original_run', 'images', 'manuscript', 'AUC_Tables')
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     
     print(f"Scanning {DATA_DIR}...")
