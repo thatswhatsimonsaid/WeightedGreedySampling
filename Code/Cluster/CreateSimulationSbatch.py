@@ -34,7 +34,10 @@ if __name__ == "__main__":
     ]
     
     ## ---> FIX: Hardcode to ONLY run the failed small datasets <---
-    datasets_to_run = ['concrete_slump', 'yacht']
+    datasets_to_run = [
+        'concrete_cs', 
+        'concrete_flow'
+    ]
     
     print("--- Starting sbatch file generation ---")
     
