@@ -34,10 +34,7 @@ if __name__ == "__main__":
     ]
     
     ## ---> FIX: Hardcode to ONLY run the failed small datasets <---
-    datasets_to_run = [
-        'concrete_cs', 
-        'concrete_flow'
-    ]
+    datasets_to_run = sorted([os.path.splitext(f)[0] for f in pkl_files])
     
     print("--- Starting sbatch file generation ---")
     
