@@ -33,7 +33,8 @@ if __name__ == "__main__":
         # 'RandomForestRegressorPredictor'
     ]
     
-    ## ---> FIX: Hardcode to ONLY run the failed small datasets <---
+    
+    pkl_files = [f for f in os.listdir(DATA_DIRECTORY) if f.endswith('.pkl')]
     datasets_to_run = sorted([os.path.splitext(f)[0] for f in pkl_files])
     
     print("--- Starting sbatch file generation ---")
