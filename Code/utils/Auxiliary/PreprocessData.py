@@ -271,7 +271,7 @@ def _preprocess_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     X_encoded = pd.get_dummies(X, drop_first=True)
     
     ### Standardize all features ###
-     scaler = StandardScaler()
+    scaler = StandardScaler()
     #scaler = RobustScaler()   
     # scaler = PowerTransformer(method='yeo-johnson')
     X_scaled_array = scaler.fit_transform(X_encoded)
