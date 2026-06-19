@@ -15,7 +15,7 @@ TARGET_BASELINES = [
     'Uncertainty Sampling', 
     'EGAL', 
     'EMCM', 
-    'WiGS (SAC)', 
+    #'WiGS (SAC)', 
     None
 ]
 
@@ -165,7 +165,11 @@ def main():
     
     print(f"Scanning {DATA_DIR}...")
     
-    auc_df = load_and_calculate_auc_from_dirs(DATA_DIR)    
+    auc_df = load_and_calculate_auc_from_dirs(DATA_DIR)   
+
+    # This filters out any row where the 'Selector' name contains 'SAC'
+    auc_df = auc_df[~auc_df['Selector'].str.contains('SAC', na=False)]
+     
     for baseline in TARGET_BASELINES:
         generate_heatmap(auc_df, OUTPUT_DIR, baseline)
     

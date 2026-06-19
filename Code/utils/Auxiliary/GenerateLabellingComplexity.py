@@ -26,7 +26,7 @@ NAME_MAPPING = {
     'WiGS (Time-Decay, Linear)': 'WiGS (Linear)',
     'WiGS (Time-Decay, Exponential)': 'WiGS (Exp)',
     'WiGS (MAB-UCB1, c=2.0)': 'WiGS (MAB, c=2.0)',
-    'WiGS (SAC)': 'WiGS (SAC)'
+    # 'WiGS (SAC)': 'WiGS (SAC)'
 }
 
 ### Calculate relative N ###

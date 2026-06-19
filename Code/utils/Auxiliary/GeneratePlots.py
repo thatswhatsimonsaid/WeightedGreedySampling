@@ -126,7 +126,8 @@ def MeanVariancePlot(Subtitle=None,
         
         ax_var.set_xlabel("Percent of Learning Pool Labeled")
         ax_var.set_ylabel("Variance of " + (Y_Label if Y_Label else "Error"))
-        ax_var.legend(loc='upper right')
+        if show_legend:
+            ax_var.legend(loc='upper right')
         if isinstance(xlim, list):
             ax_var.set_xlim(xlim)
     
@@ -195,13 +196,16 @@ def generate_all_plots(aggregated_results_dir, image_dir, show_legend=True, sing
         'EMCM': 'EMCM'
     }
     
-    ### Set up ###
+   ### Set up ###
     metrics_to_plot = ['RMSE', 'MAE', 'R2', 'CC']
     plot_types = {'trace': None, 'trace_relative_iGS': 'iGS'}
     eval_types = ['full_pool']    
+    
+    # Exclude SAC and other baselines so the plots match your new legend
     strategies_to_exclude = {
         "WiGS (Static w_x=0.5)",
-        'WiGS (MAB-UCB1, c=0.5)'
+        #'WiGS (MAB-UCB1, c=0.5)'
+        'WiGS (SAC)'
     }
 
 
@@ -423,8 +427,15 @@ if __name__ == "__main__":
         
         # Define strategies to *exclude* from the legend #
         strategies_to_exclude = {
-            "WiGS (Static w_x=0.5)",
-            'WiGS (MAB-UCB1, c=2.0)',
+            'iGS', 
+            'WiGS (Static w_x=0.5)',
+            'WiGS (MAB-UCB1, c=0.5)',
+            'WiGS (MAB-UCB1, c=5.0)',
+            'WiGS (SAC)', # Explicitly removing SAC here
+            'QBC',
+            'Uncertainty Sampling',
+            'EGAL',
+            'EMCM'
         }
         
         # Filter the master legend #
@@ -435,7 +446,7 @@ if __name__ == "__main__":
 
         LEGEND_DIR = os.path.join(PROJECT_ROOT, 'Results', 'test_split_run', 'images')
         os.makedirs(LEGEND_DIR, exist_ok=True)
-        legend_output_path = os.path.join(LEGEND_DIR, "benchmark_legend.png")
+        legend_output_path = os.path.join(LEGEND_DIR, "benchmark_legend_short.png")
         
         # Generate the legend #
         generate_legend(
@@ -443,7 +454,7 @@ if __name__ == "__main__":
             colors=master_colors,
             linestyles=master_linestyles,
             output_path=legend_output_path,
-            ncol=6
+            ncol=6 
         )
 
     else:
