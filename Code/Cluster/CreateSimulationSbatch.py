@@ -17,8 +17,9 @@ if __name__ == "__main__":
     DATA_DIRECTORY = os.path.join(PROJECT_ROOT, 'Data', 'processed')
 
     ## Cluster Parameters ##
+    account_input = "stf"
     partition_name_input = "cpu-g2"
-    time_limit_input='259:59:59'
+    time_limit_input='09-23:00:00'
     memory_input='30000MB'
     
     ## Define Simulation Parameters ##
