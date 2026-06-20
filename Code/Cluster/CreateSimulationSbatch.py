@@ -28,9 +28,9 @@ if __name__ == "__main__":
 
     ## Models to run - MUST BE IN SYNC WITH RuunSimulation.py ##
     models_to_run = [
-        'RidgeRegressionPredictor'
+        #'RidgeRegressionPredictor'
         # 'GaussianProcessRegressorPredictor'
-        # 'RandomForestRegressorPredictor'
+        'RandomForestRegressorPredictor'
     ]
     
     
