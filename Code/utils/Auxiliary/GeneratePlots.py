@@ -199,7 +199,7 @@ def generate_all_plots(aggregated_results_dir, image_dir, show_legend=True, sing
    ### Set up ###
     metrics_to_plot = ['RMSE', 'MAE', 'R2', 'CC']
     plot_types = {'trace': None, 'trace_relative_iGS': 'iGS'}
-    eval_types = ['full_pool']    
+    eval_types = ['test']    
     
     # Exclude SAC and other baselines so the plots match your new legend
     strategies_to_exclude = {
@@ -281,7 +281,7 @@ def generate_all_plots(aggregated_results_dir, image_dir, show_legend=True, sing
                                                                         initial_train_size=initial_train_size,
                                                                         show_legend=show_legend,
                                                                         **filtered_results)                    
-                    output_eval_name = 'trace_plots' if eval_type == 'full_pool' else eval_type
+                    output_eval_name = 'trace_plots' if eval_type == 'test' else eval_type
                     base_plot_path = os.path.join(image_dir, output_eval_name, metric, folder_name)
                     os.makedirs(os.path.join(base_plot_path, 'trace'), exist_ok=True)
                     os.makedirs(os.path.join(base_plot_path, 'variance'), exist_ok=True)
@@ -360,8 +360,8 @@ if __name__ == "__main__":
     except NameError:
         PROJECT_ROOT = os.path.abspath(os.path.join(os.getcwd(), '..', '..'))
 
-    AGGREGATED_RESULTS_DIR = os.path.join(PROJECT_ROOT, 'Results', 'test_split_run', 'simulation_results', 'aggregated')
-    IMAGE_DIR = os.path.join(PROJECT_ROOT, 'Results', 'test_split_run', 'images', 'appendices')
+    AGGREGATED_RESULTS_DIR = os.path.join(PROJECT_ROOT, 'Results', 'simulation_results', 'aggregated')
+    IMAGE_DIR = os.path.join(PROJECT_ROOT, 'Results', 'images', 'appendices')
     
     
     if args.legend_only:
@@ -444,7 +444,7 @@ if __name__ == "__main__":
             if long not in strategies_to_exclude
         }
 
-        LEGEND_DIR = os.path.join(PROJECT_ROOT, 'Results', 'test_split_run', 'images')
+        LEGEND_DIR = os.path.join(PROJECT_ROOT, 'Results', 'images')
         os.makedirs(LEGEND_DIR, exist_ok=True)
         legend_output_path = os.path.join(LEGEND_DIR, "benchmark_legend_short.png")
         

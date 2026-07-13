@@ -6,7 +6,7 @@ echo "--- Preparing to delete RAW simulation results ---"
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 CODE_DIR=$(realpath "$SCRIPT_DIR/..")
 PROJECT_ROOT=$(realpath "$CODE_DIR/..")
-RAW_RESULTS_DIR="$PROJECT_ROOT/Results/test_split_run/simulation_results/raw"
+RAW_RESULTS_DIR="$PROJECT_ROOT/Results/simulation_results/raw"
 
 ### Delete Raw Simulation Results ###
 echo "Searching for raw result files in $RAW_RESULTS_DIR..."

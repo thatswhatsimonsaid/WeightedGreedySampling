@@ -14,7 +14,7 @@ def check_endpoints(dataset, aggregated_dir):
     """
     
     metrics_to_check = ['RMSE', 'MAE', 'R2', 'CC']
-    base_path = os.path.join(aggregated_dir, dataset, "full_pool_metrics")
+    base_path = os.path.join(aggregated_dir, dataset, "test_metrics")
     
     if not os.path.exists(base_path):
         print(f"Error: Directory not found: {base_path}", file=sys.stderr)

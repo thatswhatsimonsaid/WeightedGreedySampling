@@ -147,6 +147,6 @@ def AggregateResults(raw_results_dir, aggregated_results_dir):
 if __name__ == "__main__":
     SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
     PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(SCRIPT_DIR)))
-    RAW_RESULTS_DIR = os.path.join(PROJECT_ROOT, 'Results', 'test_split_run', 'simulation_results', 'raw')
-    AGGREGATED_RESULTS_DIR = os.path.join(PROJECT_ROOT, 'Results', 'test_split_run', 'simulation_results', 'aggregated')
+    RAW_RESULTS_DIR = os.path.join(PROJECT_ROOT, 'Results', 'simulation_results', 'raw')
+    AGGREGATED_RESULTS_DIR = os.path.join(PROJECT_ROOT, 'Results', 'simulation_results', 'aggregated')
     AggregateResults(raw_results_dir=RAW_RESULTS_DIR, aggregated_results_dir=AGGREGATED_RESULTS_DIR)

@@ -40,7 +40,7 @@ def load_and_calculate_auc_from_dirs(data_dir):
             print(f"  [Excluded] Skipping {dataset_name} per user configuration.")
             continue
             
-        metric_path = os.path.join(data_dir, dataset_name, 'full_pool_metrics', f'{METRIC}.pkl')
+        metric_path = os.path.join(data_dir, dataset_name, 'test_metrics', f'{METRIC}.pkl')
         
         if not os.path.exists(metric_path):
             print(f"  [Skipping] {dataset_name}: {METRIC}.pkl not found.")
@@ -159,8 +159,8 @@ def main():
     except NameError:
         PROJECT_ROOT = os.path.abspath(os.path.join(os.getcwd(), '..', '..'))
         
-    DATA_DIR = os.path.join(PROJECT_ROOT, 'Results', 'test_split_run', 'simulation_results', 'aggregated')
-    OUTPUT_DIR = os.path.join(PROJECT_ROOT, 'Results', 'test_split_run', 'images', 'manuscript', 'AUC_Tables')
+    DATA_DIR = os.path.join(PROJECT_ROOT, 'Results', 'simulation_results', 'aggregated')
+    OUTPUT_DIR = os.path.join(PROJECT_ROOT, 'Results', 'images', 'manuscript', 'AUC_Tables')
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     
     print(f"Scanning {DATA_DIR}...")

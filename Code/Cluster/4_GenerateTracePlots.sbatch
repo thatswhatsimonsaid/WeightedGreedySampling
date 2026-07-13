@@ -21,7 +21,7 @@ echo "Activating virtual environment..."
 source "${PROJECT_ROOT}/.WiGS_Env/bin/activate"
 
 ### 2. Get This Job's Dataset ###
-AGG_DIR="Results/test_split_run/simulation_results/aggregated"
+AGG_DIR="Results/simulation_results/aggregated"
 # Explicitly filter out dgp_new from the run list
 ALL_DATASETS=($(find "$AGG_DIR" -mindepth 1 -maxdepth 1 -type d -printf "%f\n" | grep -v "dgp_new" | sort))
 NUM_DATASETS=${#ALL_DATASETS[@]}
@@ -56,15 +56,15 @@ echo "--- Starting Weight Trend Generation for: ${DATASET_TO_PROCESS} ---"
 SELECTOR_FOR_TRENDS="WiGS (SAC)"
 declare -a SEED_TO_PLOT_INDIV=("0" "1" "2")
 
-IMG_AVG_TRENDS_DIR="Results/test_split_run/images/manuscript/average_weight_trends"
-APP_INDIV_TRENDS_DIR="Results/test_split_run/images/appendices/individual_weight_trends"
+IMG_AVG_TRENDS_DIR="Results/images/manuscript/average_weight_trends"
+APP_INDIV_TRENDS_DIR="Results/images/appendices/individual_weight_trends"
 
 # Create directories 
 mkdir -p "${IMG_AVG_TRENDS_DIR}"
 mkdir -p "${APP_INDIV_TRENDS_DIR}"
 
 ### Run the generation script ###
-exact_weight_file="Results/test_split_run/simulation_results/aggregated/${DATASET_TO_PROCESS}/weight_history/${SELECTOR_FOR_TRENDS}_WeightHistory.csv"
+exact_weight_file="Results/simulation_results/aggregated/${DATASET_TO_PROCESS}/weight_history/${SELECTOR_FOR_TRENDS}_WeightHistory.csv"
 
 if [ -f "$exact_weight_file" ]; then
     ## A. Generate AVERAGE Trend ##
@@ -95,7 +95,7 @@ echo "--- Finished Weight Trend Generation for: ${DATASET_TO_PROCESS} ---"
 # ======================================================
 echo "--- Starting Wilcoxon Test for: ${DATASET_TO_PROCESS} ---"
 
-TABLES_DIR="Results/test_split_run/tables"
+TABLES_DIR="Results/tables"
 mkdir -p "${TABLES_DIR}"
 
 python3 "${CODE_DIR}/utils/Auxiliary/WilcoxonRankSignedTest.py" \

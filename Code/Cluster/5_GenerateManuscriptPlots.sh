@@ -15,13 +15,13 @@ echo "Activating virtual environment..."
 source "${PROJECT_ROOT}/.WiGS_Env/bin/activate"
 
 ## Define input and output directories ##
-AGG_RESULTS_DIR="Results/test_split_run/simulation_results/aggregated"
-TABLES_DIR="Results/test_split_run/tables"
-IMG_MANUSCRIPT_DIR="Results/test_split_run/images/manuscript"
+AGG_RESULTS_DIR="Results/simulation_results/aggregated"
+TABLES_DIR="Results/tables"
+IMG_MANUSCRIPT_DIR="Results/images/manuscript"
 
 ## Define sub-directories ##
 IMG_AVG_TRENDS_DIR="${IMG_MANUSCRIPT_DIR}/average_weight_trends"
-APP_BASE_DIR="Results/test_split_run/images/appendices"
+APP_BASE_DIR="Results/images/appendices"
 APP_INDIV_HEATMAPS_DIR="${APP_BASE_DIR}/individual_weight_heatmaps"
 APP_INDIV_TRENDS_DIR="${APP_BASE_DIR}/individual_weight_trends"
 
@@ -100,7 +100,7 @@ echo ""
 echo "--- 4. Generating Standalone Legend... ---"
 python3 "${CODE_DIR}/utils/Auxiliary/GeneratePlots.py" --legend_only
 
-mv "Results/test_split_run/images/benchmark_legend.png" "${IMG_MANUSCRIPT_DIR}/benchmark_legend.png"
+mv "Results/images/benchmark_legend.png" "${IMG_MANUSCRIPT_DIR}/benchmark_legend.png"
 echo "Legend saved to ${IMG_MANUSCRIPT_DIR}/"
 
 ## Plot 7: AUC Heatmap ##

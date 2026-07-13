@@ -41,7 +41,7 @@ def calculate_n_rel(results_dir):
     crossing_data = []
 
     for dataset in datasets:
-        file_path = os.path.join(results_dir, dataset, "full_pool_metrics", "RMSE.pkl")
+        file_path = os.path.join(results_dir, dataset, "test_metrics", "RMSE.pkl")
         
         if not os.path.exists(file_path):
             continue

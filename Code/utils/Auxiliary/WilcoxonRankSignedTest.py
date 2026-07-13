@@ -63,8 +63,8 @@ if __name__ == "__main__":
                         help='Name of the dataset folder to analyze (e.g., "dgp_three_regime")')
     parser.add_argument('--metric', type=str, default='RMSE',
                         help="Metric to test (e.g., 'RMSE', 'MAE'). Default is 'RMSE'.")
-    parser.add_argument('--eval_type', type=str, default='full_pool',
-                        help="Evaluation type (e.g., 'full_pool'). Default is 'full_pool'.")
+    parser.add_argument('--eval_type', type=str, default='test',
+                        help="Evaluation type (e.g., 'test'). Default is 'test'.")
 
     args = parser.parse_args()
 

@@ -14,7 +14,7 @@ MODEL_LIST = [
 ### Get Directory Paths ###
 CWD = os.getcwd() 
 PROJECT_ROOT = os.path.dirname(CWD) 
-BASE_SAVE_DIRECTORY = os.path.join(PROJECT_ROOT, "Results", "test_split_run", "simulation_results", "raw")
+BASE_SAVE_DIRECTORY = os.path.join(PROJECT_ROOT, "Results", "simulation_results", "raw")
 
 ### Set up argument parser ###
 parser = argparse.ArgumentParser(description="Parse command line arguments for a single job task.")

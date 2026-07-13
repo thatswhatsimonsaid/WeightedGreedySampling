@@ -18,14 +18,14 @@ def LearningProcedure(SimulationConfigInputUpdated):
 
     Returns:
         dict: A dictionary containing the results of the learning procedure with the following keys:
-            - ErrorVec (dict): A dictionary (with key 'Full_Pool') where values are dictionaries
+            - ErrorVec (dict): A dictionary (with key 'Test') where values are dictionaries
               of metric names ('RMSE', 'MAE', 'R2', 'CC') and lists of the metric's value at each iteration.
             - SelectedObservationHistory (list): A list of the indices of observations selected from the candidate pool
               in the order they were chosen."""
 
     ### Set Up ###
     i = 0
-    ErrorVecs = {'Full_Pool':    {'RMSE': [], 'MAE': [], 'R2': [], 'CC': []}}
+    ErrorVecs = {'Test':    {'RMSE': [], 'MAE': [], 'R2': [], 'CC': []}}
     WeightHistory = []
     SelectedObservationHistory = []
     InitialTrainIndices = list(SimulationConfigInputUpdated["df_Train"].index)
@@ -57,12 +57,14 @@ def LearningProcedure(SimulationConfigInputUpdated):
         ## 2. Prediction Model ##
         predictor_model.fit(X_train_df=X_train_df, y_train_series=y_train_series)
         
-        ## 3. Calculate Full Pool Error ##
-        FullPoolErrorOuputs = FullPoolErrorFunction(InputModel=predictor_model,
-                                                df_Train=SimulationConfigInputUpdated["df_Train"],
-                                                df_Candidate=SimulationConfigInputUpdated["df_Candidate"])
-        for metric_name, value in FullPoolErrorOuputs.items():
-            ErrorVecs['Full_Pool'][metric_name].append(value)
+        ## 3. Calculate Test Set Error ##
+        # Evaluate the freshly fit model on the held-out test set (never seen in
+        # training or candidate selection). Stored under the 'Test' key, which the
+        # aggregation step turns into the 'test_metrics/' output folder downstream.
+        TestSetErrorOutputs = TestSetErrorFunction(InputModel=predictor_model,
+                                                   df_Test=SimulationConfigInputUpdated["df_Test"])
+        for metric_name, value in TestSetErrorOutputs.items():
+            ErrorVecs['Test'][metric_name].append(value)
 
         ## 4. Calculate CV Error ##
         sklearn_model = predictor_model.model 
@@ -71,7 +73,7 @@ def LearningProcedure(SimulationConfigInputUpdated):
         else:
             current_cv_rmse = np.nan 
         if np.isnan(current_cv_rmse):
-            current_cv_rmse = FullPoolErrorOuputs["RMSE"]
+            current_cv_rmse = TestSetErrorOutputs["RMSE"]
 
         ### 5. Break Condition ###
         if len(SimulationConfigInputUpdated["df_Candidate"]) == 0:
