@@ -22,7 +22,8 @@ def OneIterationFunction(SimulationConfigInput):
             - ErrorVecs (pd.DataFrame): The history of performance metrics over the course of the learning procedure.
             - SelectionHistory (list): The history of observations selected from the candidate pool.
             - SimulationParameters (dict): The key input parameters used for this simulation run.
-            - ElapsedTime (float): The total execution time in seconds for this iteration."""
+            - ElapsedTime (float): The total execution time in seconds for this iteration.
+    """
     
     ### Set Up ###
     StartTime = time.time()
@@ -33,13 +34,16 @@ def OneIterationFunction(SimulationConfigInput):
     df = LoadData(SimulationConfigInput["DataFileInput"])
 
     ### Train Candidate Split ###
-    df_Train, df_Candidate = TrainCandidateSplit(df, SimulationConfigInput["CandidateProportion"])
+    # Unpacks the new 3-way split
+    df_Train, df_Candidate, df_Test = TrainCandidateSplit(df, SimulationConfigInput["CandidateProportion"])
 
     ### Update SimulationConfig Arguments ###
     SimulationConfigInput['df_Train'] = df_Train
     SimulationConfigInput["df_Candidate"] = df_Candidate
+    SimulationConfigInput["df_Test"] = df_Test # Passes Test Set to the learning loop
     
     ### Learning Process ###
+    # Runs the loop ONCE
     LearningProcedureOutput = LearningProcedure(SimulationConfigInputUpdated = SimulationConfigInput)
     
     ### Return Simulation Parameters ###

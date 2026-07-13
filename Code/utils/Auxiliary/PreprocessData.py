@@ -52,6 +52,64 @@ def generate_normal_x_samples(n_samples=1000, seed=None):
     x_samples_clipped = np.clip(x_samples, 0, 1)
     
     return x_samples_clipped
+import numpy as np
+import pandas as pd
+
+def generate_dgp_new(n_samples=1500, seed=None):
+    """
+    Generates a deceptive synthetic dataset designed to penalize static exploration
+    and exploit the 'density veto' failure mode of multiplicative selectors.
+    """
+    if seed is not None:
+        np.random.seed(seed)
+        
+    # 1. Generate inputs with extreme density disparity
+    # 10% of data in [0.0, 0.3) -> very sparse
+    # 30% of data in [0.3, 0.7) -> moderate uniform density
+    # 60% of data around 0.85 -> very dense Gaussian clump
+    n_sparse = int(0.1 * n_samples)
+    n_mod = int(0.3 * n_samples)
+    n_dense = n_samples - n_sparse - n_mod
+    
+    x_sparse = np.random.uniform(0.0, 0.3, n_sparse)
+    x_mod = np.random.uniform(0.3, 0.7, n_mod)
+    x_dense = np.random.normal(0.85, 0.04, n_dense)
+    
+    x = np.concatenate([x_sparse, x_mod, x_dense])
+    np.random.shuffle(x)
+    x = np.clip(x, 0, 1)
+    
+    y = np.zeros(n_samples)
+    noise = np.zeros(n_samples)
+    
+    # 2. Define targets and deceptive regimes
+    
+    # Regime 1: Sparse but trivial target
+    mask_sparse = x < 0.3
+    y[mask_sparse] = 0.0  # Flat line, zero complexity
+    noise[mask_sparse] = np.random.normal(0, 0.01, size=np.sum(mask_sparse))
+    
+    # Regime 2: Moderate complexity
+    mask_mod = (x >= 0.3) & (x < 0.7)
+    y[mask_mod] = 2 * x[mask_mod] - 0.6
+    noise[mask_mod] = np.random.normal(0, 0.05, size=np.sum(mask_mod))
+    
+    # Regime 3: Dense but highly complex with a severe noise trap
+    mask_dense = x >= 0.7
+    # High frequency oscillation requires intense investigation to learn
+    y[mask_dense] = np.sin(x[mask_dense] * 16 * np.pi) 
+    
+    # Baseline noise for the dense regime
+    noise[mask_dense] = np.random.normal(0, 0.1, size=np.sum(mask_dense))
+    
+    # Extreme noise trap perfectly aligned with the peak density (0.8 to 0.9)
+    noise_trap_mask = (x > 0.8) & (x < 0.9)
+    noise[noise_trap_mask] = np.random.normal(0, 1.5, size=np.sum(noise_trap_mask))
+    
+    final_y = y + noise
+    
+    df = pd.DataFrame({'X1': x, 'Y': final_y})
+    return df
 
 ### Two regime DGP ###
 def generate_two_regime_data(n_samples=1000, seed=None):
@@ -213,8 +271,8 @@ def _preprocess_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     X_encoded = pd.get_dummies(X, drop_first=True)
     
     ### Standardize all features ###
-    # scaler = StandardScaler()
-    scaler = RobustScaler()   
+    scaler = StandardScaler()
+    #scaler = RobustScaler()   
     # scaler = PowerTransformer(method='yeo-johnson')
     X_scaled_array = scaler.fit_transform(X_encoded)
     
@@ -403,6 +461,12 @@ def preprocess_and_save_all():
     df_dgp_three_regime = generate_three_regime_data(seed=42)
     datasets_to_save['dgp_three_regime'] = _preprocess_dataframe(df_dgp_three_regime)
     print("  > Processed: dgp_three_regime")
+    
+    # 21. New DGP (dgp_new)
+    df_dgp_new = generate_dgp_new(seed=42)
+    datasets_to_save['dgp_new'] = _preprocess_dataframe(df_dgp_new)
+    print("  > Processed: dgp_new")
+
 
     # --- Save all successfully processed datasets ---
     print("\nSaving all processed datasets...")

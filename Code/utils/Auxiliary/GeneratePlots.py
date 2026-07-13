@@ -126,11 +126,13 @@ def MeanVariancePlot(Subtitle=None,
         
         ax_var.set_xlabel("Percent of Learning Pool Labeled")
         ax_var.set_ylabel("Variance of " + (Y_Label if Y_Label else "Error"))
-        ax_var.legend(loc='upper right')
+        if show_legend:
+            ax_var.legend(loc='upper right')
         if isinstance(xlim, list):
             ax_var.set_xlim(xlim)
     
     return (fig_mean, fig_var)
+
 ### Main Wrapper Function ###
 def generate_all_plots(aggregated_results_dir, image_dir, show_legend=True, single_dataset=None):
     """
@@ -152,7 +154,10 @@ def generate_all_plots(aggregated_results_dir, image_dir, show_legend=True, sing
         'WiGS (MAB-UCB1, c=2.0)': 'darkviolet', 
         'WiGS (MAB-UCB1, c=5.0)': 'indigo',
         'WiGS (SAC)': 'darkcyan',
-        'QBC': 'goldenrod'   
+        'QBC': 'goldenrod',
+        'Uncertainty Sampling': 'purple',
+        'EGAL': 'teal',                   
+        'EMCM': 'navy'                    
     }
     master_linestyles = {
         'Passive Learning': ':', 
@@ -167,7 +172,10 @@ def generate_all_plots(aggregated_results_dir, image_dir, show_legend=True, sing
         'WiGS (MAB-UCB1, c=2.0)': '-.', 
         'WiGS (MAB-UCB1, c=5.0)': '-.',
         'WiGS (SAC)': '-',
-        'QBC': '-.' 
+        'QBC': '-.',
+        'Uncertainty Sampling': '--',
+        'EGAL': '--',
+        'EMCM': '--'
     }
     master_legend = {
         'Passive Learning': 'Random', 
@@ -183,15 +191,21 @@ def generate_all_plots(aggregated_results_dir, image_dir, show_legend=True, sing
         'WiGS (MAB-UCB1, c=5.0)': 'MAB-UCB1, c=5.0',
         'WiGS (SAC)': 'WiGS (SAC)',
         'QBC': 'QBC',
+        'Uncertainty Sampling': 'Uncertainty',
+        'EGAL': 'EGAL',
+        'EMCM': 'EMCM'
     }
     
-    ### Set up ###
+   ### Set up ###
     metrics_to_plot = ['RMSE', 'MAE', 'R2', 'CC']
     plot_types = {'trace': None, 'trace_relative_iGS': 'iGS'}
-    eval_types = ['full_pool']    
+    eval_types = ['test']    
+    
+    # Exclude SAC and other baselines so the plots match your new legend
     strategies_to_exclude = {
         "WiGS (Static w_x=0.5)",
-        'WiGS (MAB-UCB1, c=0.5)'
+        #'WiGS (MAB-UCB1, c=0.5)'
+        'WiGS (SAC)'
     }
 
 
@@ -267,7 +281,7 @@ def generate_all_plots(aggregated_results_dir, image_dir, show_legend=True, sing
                                                                         initial_train_size=initial_train_size,
                                                                         show_legend=show_legend,
                                                                         **filtered_results)                    
-                    output_eval_name = 'trace_plots' if eval_type == 'full_pool' else eval_type
+                    output_eval_name = 'trace_plots' if eval_type == 'test' else eval_type
                     base_plot_path = os.path.join(image_dir, output_eval_name, metric, folder_name)
                     os.makedirs(os.path.join(base_plot_path, 'trace'), exist_ok=True)
                     os.makedirs(os.path.join(base_plot_path, 'variance'), exist_ok=True)
@@ -347,7 +361,7 @@ if __name__ == "__main__":
         PROJECT_ROOT = os.path.abspath(os.path.join(os.getcwd(), '..', '..'))
 
     AGGREGATED_RESULTS_DIR = os.path.join(PROJECT_ROOT, 'Results', 'simulation_results', 'aggregated')
-    IMAGE_DIR = os.path.join(PROJECT_ROOT, 'Results', 'images')
+    IMAGE_DIR = os.path.join(PROJECT_ROOT, 'Results', 'images', 'appendices')
     
     
     if args.legend_only:
@@ -365,7 +379,10 @@ if __name__ == "__main__":
             'WiGS (MAB-UCB1, c=2.0)': 'darkviolet', 
             'WiGS (MAB-UCB1, c=5.0)': 'indigo',
             'WiGS (SAC)': 'darkcyan',
-            'QBC': 'goldenrod'
+            'QBC': 'goldenrod',
+            'Uncertainty Sampling': 'purple',
+            'EGAL': 'teal',
+            'EMCM': 'navy'
         }
 
         master_linestyles = {
@@ -382,7 +399,10 @@ if __name__ == "__main__":
             'WiGS (MAB-UCB1, c=2.0)': '-.', 
             'WiGS (MAB-UCB1, c=5.0)': '-.',
             'WiGS (SAC)': '-',
-            'QBC': '-.' 
+            'QBC': '-.',
+            'Uncertainty Sampling': '--',
+            'EGAL': '--',
+            'EMCM': '--'
         }
 
         master_legend = {
@@ -400,13 +420,22 @@ if __name__ == "__main__":
             'WiGS (MAB-UCB1, c=5.0)': 'WiGS (MAB, c=5.0)',
             'WiGS (SAC)': 'WiGS (SAC)',
             'QBC': 'QBC',
+            'Uncertainty Sampling': 'Uncertainty',
+            'EGAL': 'EGAL',
+            'EMCM': 'EMCM'
         }
         
         # Define strategies to *exclude* from the legend #
         strategies_to_exclude = {
-            "WiGS (Static w_x=0.5)",
-            # 'WiGS (MAB-UCB1, c=0.5)',
-            'WiGS (MAB-UCB1, c=2.0)',
+            'iGS', 
+            'WiGS (Static w_x=0.5)',
+            'WiGS (MAB-UCB1, c=0.5)',
+            'WiGS (MAB-UCB1, c=5.0)',
+            'WiGS (SAC)', # Explicitly removing SAC here
+            'QBC',
+            'Uncertainty Sampling',
+            'EGAL',
+            'EMCM'
         }
         
         # Filter the master legend #
@@ -415,8 +444,9 @@ if __name__ == "__main__":
             if long not in strategies_to_exclude
         }
 
-        # Define the output path #
-        legend_output_path = os.path.join(IMAGE_DIR, "benchmark_legend.png")
+        LEGEND_DIR = os.path.join(PROJECT_ROOT, 'Results', 'images')
+        os.makedirs(LEGEND_DIR, exist_ok=True)
+        legend_output_path = os.path.join(LEGEND_DIR, "benchmark_legend_short.png")
         
         # Generate the legend #
         generate_legend(
@@ -424,7 +454,7 @@ if __name__ == "__main__":
             colors=master_colors,
             linestyles=master_linestyles,
             output_path=legend_output_path,
-            ncol=6
+            ncol=6 
         )
 
     else:

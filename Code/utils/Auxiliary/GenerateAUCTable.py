@@ -4,23 +4,26 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import os
 import sys
+import traceback
 
 ### CONFIGURATION ###
 METRIC = 'RMSE'  # Options: 'RMSE', 'MAE', 'R2', 'CC'
-TARGET_BASELINES = ['Passive Learning', 'iGS', 'QBC', 'WiGS (SAC)', None]
+TARGET_BASELINES = [
+    'Passive Learning', 
+    'iGS', 
+    'QBC', 
+    'Uncertainty Sampling', 
+    'EGAL', 
+    'EMCM', 
+    #'WiGS (SAC)', 
+    None
+]
 
 OUTPUT_FILENAME_BASE = 'AUC_Performance_Heatmap'
 
 def load_and_calculate_auc_from_dirs(data_dir):
-    """
-    Traverses the directory structure:
-      Results/aggregated/{DatasetName}/full_pool_metrics/{METRIC}.pkl
-    
-    Loads the metric DataFrame and calculates AUC for each selector.
-    """
     auc_records = []
     
-    # Get all dataset folders
     try:
         dataset_folders = sorted([
             f for f in os.listdir(data_dir) 
@@ -33,54 +36,55 @@ def load_and_calculate_auc_from_dirs(data_dir):
     print(f"Found {len(dataset_folders)} dataset folders. Processing...")
 
     for dataset_name in dataset_folders:
-        metric_path = os.path.join(data_dir, dataset_name, 'full_pool_metrics', f'{METRIC}.pkl')
+        if dataset_name == 'dgp_new':
+            print(f"  [Excluded] Skipping {dataset_name} per user configuration.")
+            continue
+            
+        metric_path = os.path.join(data_dir, dataset_name, 'test_metrics', f'{METRIC}.pkl')
         
         if not os.path.exists(metric_path):
             print(f"  [Skipping] {dataset_name}: {METRIC}.pkl not found.")
             continue
             
         try:
-            # Load Data
             data = pd.read_pickle(metric_path)
             if not isinstance(data, dict):
-                 print(f"  [Warning] {dataset_name}: Expected dictionary, got {type(data)}. Skipping.")
                  continue
 
-            # Extract the mean curve for every selector
             selector_means = {}
-            
             for selector, val in data.items():
                 if isinstance(val, pd.DataFrame):
-                    if 'mean' in val.columns:
-                        selector_means[selector] = val['mean']
-                    elif 'Mean' in val.columns:
-                        selector_means[selector] = val['Mean']
+                    safe_df = pd.DataFrame()
+                    for col in val.columns:
+                        safe_df[col] = pd.to_numeric(val[col], errors='coerce')
+                        
+                    if any(isinstance(idx, str) and 'Sim_' in idx for idx in val.index):
+                        safe_df = safe_df.T
+                        
+                    safe_df = safe_df.dropna(axis=1, how='all').dropna(axis=0, how='all')
+
+                    if 'mean' in safe_df.columns:
+                        selector_means[selector] = safe_df['mean'].values
+                    elif 'Mean' in safe_df.columns:
+                        selector_means[selector] = safe_df['Mean'].values
                     else:
-                        selector_means[selector] = val.mean(axis=1)
+                        selector_means[selector] = safe_df.mean(axis=1, skipna=True).values
                         
                 elif isinstance(val, pd.Series):
-                    selector_means[selector] = val
+                    selector_means[selector] = pd.to_numeric(val, errors='coerce').values
             
             if not selector_means:
-                print(f"  [Warning] {dataset_name}: Could not extract any data.")
                 continue
                 
             df = pd.DataFrame(selector_means)
-
-            # AUC CALCULATION 
-            if not np.issubdtype(df.index.dtype, np.number):
-                 df.index = np.arange(len(df))
-                 
+            df.index = np.arange(len(df))
             x = df.index.values
             
             for selector in df.columns:
                 y = df[selector].values
-                
-                # Handle NaNs (Interpolate)
                 if np.isnan(y).any():
-                    y = pd.Series(y).interpolate().fillna(method='bfill').values
+                    y = pd.Series(y).interpolate().bfill().ffill().values
                 
-                # Integration (Trapezoidal rule)
                 if hasattr(np, 'trapezoid'):
                      auc = np.trapezoid(y, x)
                 else:
@@ -93,24 +97,17 @@ def load_and_calculate_auc_from_dirs(data_dir):
                 })
                 
         except Exception as e:
-            print(f"  [Error] {dataset_name}: {e}")
+            print(f"  [Error] {dataset_name}: Failed to calculate AUC.")
+            traceback.print_exc()
 
     return pd.DataFrame(auc_records)
 
 def generate_heatmap(auc_df, output_dir, baseline_method):
-    """
-    Generates the performance heatmap. 
-    If baseline_method is None, plots Absolute values.
-    If baseline_method is a string, plots Relative ratio.
-    """
     if auc_df.empty:
         print("Error: No AUC data calculated.")
         return
 
-    # 1. Pivot to get Matrix: Index=Dataset, Columns=Selector
     pivot_df = auc_df.pivot(index='Dataset', columns='Selector', values='AUC')
-    
-    # Setup for Plotting
     plt.figure(figsize=(24, 12))     
     
     if baseline_method is None:
@@ -119,33 +116,19 @@ def generate_heatmap(auc_df, output_dir, baseline_method):
         plot_data = plot_data.sort_index(axis=1) 
         cmap = "viridis_r" 
         
-        # Plot
-        sns.heatmap(plot_data, 
-                         annot=True, 
-                         fmt=".1f", 
-                         cmap=cmap, 
-                         linewidths=.5,
-                         cbar_kws={'label': f'Absolute Total AUC ({METRIC})', 'pad': 0.01, 'shrink': 0.8}
-                         )
-                         
+        sns.heatmap(plot_data, annot=True, fmt=".1f", cmap=cmap, linewidths=.5,
+                    cbar_kws={'label': f'Absolute Total AUC ({METRIC})', 'pad': 0.01, 'shrink': 0.8})
         
-        title_str = f'Active Learning Performance: Absolute Total {METRIC} AUC (Lower is Better)'
         filename = f"{OUTPUT_FILENAME_BASE}_Absolute.png"
-
     else:
-        # --- RELATIVE BASELINE MODE ---
         print(f"\n--- Generating Heatmap vs {baseline_method} ---")
-        
         if baseline_method not in pivot_df.columns:
-            print(f"  [Warning] Baseline method '{baseline_method}' not found in data.")
             return
 
-        # Calculate Ratio
         ratio_df = pivot_df.div(pivot_df[baseline_method], axis=0)        
         plot_data = ratio_df.T
         plot_data = plot_data.sort_index(axis=1)
         
-        # Reorder to put baseline on top
         selectors = plot_data.index.tolist()
         if baseline_method in selectors:
             selectors.remove(baseline_method)
@@ -153,31 +136,17 @@ def generate_heatmap(auc_df, output_dir, baseline_method):
             new_order = [baseline_method] + selectors
             plot_data = plot_data.reindex(new_order)
 
-        # Use Diverging colormap
         cmap = sns.diverging_palette(240, 10, as_cmap=True, center='light')
-        
-        # Plot
-        sns.heatmap(plot_data, 
-                         annot=True, 
-                         fmt=".3f", 
-                         cmap=cmap, 
-                         center=1.0, 
-                         vmin=0.90, vmax=1.10, 
-                         linewidths=.5,
-                         cbar_kws={'label': f'Relative AUC of {METRIC} vs {baseline_method}'})
+        sns.heatmap(plot_data, annot=True, fmt=".3f", cmap=cmap, center=1.0, 
+                    vmin=0.90, vmax=1.10, linewidths=.5,
+                    cbar_kws={'label': f'Relative AUC of {METRIC} vs {baseline_method}'})
 
-        title_str = f'Active Learning Performance: Relative {METRIC} AUC vs {baseline_method} (Lower is Better)'
         safe_baseline = baseline_method.replace(" ", "_").replace("(", "").replace(")", "")
         filename = f"{OUTPUT_FILENAME_BASE}_vs_{safe_baseline}.png"
 
-    # Common Plot Settings
-    # plt.xlabel('Dataset', fontsize=14)
-    # plt.ylabel('Selection Strategy', fontsize=14)
     plt.xticks(rotation=45, ha='right')
-    # plt.title(title_str, fontsize=16)
     plt.tight_layout()
     
-    # Save
     save_path_png = os.path.join(output_dir, filename)
     plt.savefig(save_path_png, dpi=300, bbox_inches='tight')
     plt.close()
@@ -196,7 +165,11 @@ def main():
     
     print(f"Scanning {DATA_DIR}...")
     
-    auc_df = load_and_calculate_auc_from_dirs(DATA_DIR)    
+    auc_df = load_and_calculate_auc_from_dirs(DATA_DIR)   
+
+    # This filters out any row where the 'Selector' name contains 'SAC'
+    auc_df = auc_df[~auc_df['Selector'].str.contains('SAC', na=False)]
+     
     for baseline in TARGET_BASELINES:
         generate_heatmap(auc_df, OUTPUT_DIR, baseline)
     

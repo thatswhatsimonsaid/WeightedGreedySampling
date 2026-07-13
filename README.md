@@ -4,7 +4,7 @@
 
 Active learning for regression aims to reduce labeling costs by intelligently selecting the most informative data points. A prominent active learning method, improved Greedy Sampling (iGS) by [Wu, Lin, and Huang (2018)](https://www.sciencedirect.com/science/article/abs/pii/S0020025518307680), determines which points are informative by balancing the feature space and the predicted output space using a static, multiplicative approach. We hypothesize that the optimal balance between these spaces is not fixed but is instead dynamic, depending on the dataset and the stage of the active learning procedure.
 
-This paper introduces **Weighted improved Greedy Sampling (WiGS)**, a novel and flexible framework that recasts the selection criterion as a weighted, additive combination of normalized scores from the feature and predictive output space. We investigate several strategies for determining these weights: static balances, time-decay heuristics, and, most significantly, adaptive policies learned via reinforcement learning (Multi-Armed Bandits and Soft Actor-Critic). To ensure methodological rigor, our adaptive agents are trained on a "clean" reward signal based on K-fold cross-validation RMSE, while the final models are evaluated against the baseline using the standard `FullPool_RMSE` metric for a fair comparison. The SAC agent learns a data-driven policy to balance the exploration-exploitation trade-off at each iteration based on the current state of the learning process.
+This paper introduces **Weighted improved Greedy Sampling (WiGS)**, a novel and flexible framework that recasts the selection criterion as a weighted, additive combination of normalized scores from the feature and predictive output space. We investigate several strategies for determining these weights: static balances, time-decay heuristics, and, most significantly, adaptive policies learned via reinforcement learning (Multi-Armed Bandits and Soft Actor-Critic). To ensure methodological rigor, our adaptive agents are trained on a "clean" reward signal based on K-fold cross-validation RMSE, while the final models are evaluated against the baseline on a held-out test set (`Test_RMSE`) for a fair comparison. The SAC agent learns a data-driven policy to balance the exploration-exploitation trade-off at each iteration based on the current state of the learning process.
 
 This entire framework is implemented as a robust, parallelized pipeline on a SLURM cluster. We evaluate our methods on 20 benchmark and synthetic regression datasets. The results demonstrate that the flexible WiGS approach, particularly the adaptive RL methods, can outperform the original iGS, demonstrating the value of adaptively balancing exploration and exploitation throughout the learning process.
 
@@ -84,7 +84,7 @@ The project is designed as an automated pipeline for a SLURM-based HPC cluster. 
   - `simulation_results/`: Numerical data.
     - `aggregated/`: Cleaned, aggregated data organized by dataset.
       - `[Dataset_Name]/`: (e.g., `dgp_three_regime`, `dgp_two_regime`)
-        - `full_pool_metrics/`: Evolution of accuracy metrics on the full pool.
+        - `test_metrics/`: Evolution of accuracy metrics on the held-out test set.
         - `selection_history/`: Indices of points selected at each step.
         - `weight_history/`: Evolution of adaptive weights (*w<sub>x</sub>*) over time.
   - `tables/`: Final LaTeX tables for the Wilcoxon test results.

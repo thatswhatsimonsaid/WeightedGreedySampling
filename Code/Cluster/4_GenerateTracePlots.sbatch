@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #SBATCH --job-name=GenPlotsTrends
-#SBATCH --partition=short
+#SBATCH --partition=cpu-g2
 #SBATCH --array=1-20  
 #SBATCH --output=RunSimulations/ClusterMessages/out/genplots_%A_%a.out
 #SBATCH --error=RunSimulations/ClusterMessages/error/genplots_%A_%a.err
@@ -11,15 +11,19 @@
 ### Script Execution ###
 echo "--- Starting PLOT and TREND generation for Task ${SLURM_ARRAY_TASK_ID} ---"
 
-### 1. Get Project Root and CD ###
+### 1. Get Project Root, CD, and Activate Environment ###
 cd "$SLURM_SUBMIT_DIR/../.."
 echo "Current Directory: $(pwd)"
 PROJECT_ROOT=$(pwd)
 CODE_DIR="${PROJECT_ROOT}/Code"
 
+echo "Activating virtual environment..."
+source "${PROJECT_ROOT}/.WiGS_Env/bin/activate"
+
 ### 2. Get This Job's Dataset ###
 AGG_DIR="Results/simulation_results/aggregated"
-ALL_DATASETS=($(find "$AGG_DIR" -mindepth 1 -maxdepth 1 -type d -printf "%f\n" | sort))
+# Explicitly filter out dgp_new from the run list
+ALL_DATASETS=($(find "$AGG_DIR" -mindepth 1 -maxdepth 1 -type d -printf "%f\n" | grep -v "dgp_new" | sort))
 NUM_DATASETS=${#ALL_DATASETS[@]}
 
 echo "Found ${NUM_DATASETS} total datasets."
@@ -50,7 +54,7 @@ echo "--- Starting Weight Trend Generation for: ${DATASET_TO_PROCESS} ---"
 
 ### Define Parameters ###
 SELECTOR_FOR_TRENDS="WiGS (SAC)"
-SEED_TO_PLOT_INDIV=("0" "1" "2")
+declare -a SEED_TO_PLOT_INDIV=("0" "1" "2")
 
 IMG_AVG_TRENDS_DIR="Results/images/manuscript/average_weight_trends"
 APP_INDIV_TRENDS_DIR="Results/images/appendices/individual_weight_trends"
@@ -72,7 +76,7 @@ if [ -f "$exact_weight_file" ]; then
         --output_dir "${IMG_AVG_TRENDS_DIR}"
 
     ## B. Generate INDIVIDUAL Seed Trends ##
-    for seed in ${SEED_TO_PLOT_INDIV}; do
+    for seed in "${SEED_TO_PLOT_INDIV[@]}"; do
          echo "  Processing Trend (Seed ${seed}) for: ${DATASET_TO_PROCESS}"
          python3 "${CODE_DIR}/utils/Auxiliary/AnalyzeWeightTrends.py" \
             --dgp_name "${DATASET_TO_PROCESS}" \
