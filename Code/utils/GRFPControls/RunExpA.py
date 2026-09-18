@@ -1,0 +1,135 @@
+"""
+Experiment A -- random-arm control.
+
+Runs, per (dataset, seed): the UCB1 bandit, the RandomArm control, each fixed
+weight in {0, 0.25, 0.5, 0.75, 1}, iGS, and passive learning. Every selector
+sees the identical test set, initial labeled set and candidate pool for a given
+seed, which is what makes the comparison paired.
+
+Note on the fixed-weight endpoints: w=0 and w=1 are run through
+WeightedGreedySamplingSelector, NOT through GSy/GSx. GSx/GSy score on
+*unnormalized* distances, so they are not the endpoints of the weighted sweep;
+using them would vary the normalization across the very axis under study.
+
+Usage (from the Code/ directory):
+    python -m utils.GRFPControls.RunExpA --datasets dgp_two_regime --seeds 100 --workers 7
+"""
+
+from utils.GRFPControls import _bootstrap  # noqa: F401
+
+import argparse
+import os
+import pickle
+import time
+from concurrent.futures import ProcessPoolExecutor, as_completed
+
+import numpy as np
+import pandas as pd
+
+from utils.GRFPControls.ControlLoop import RunControlIteration
+from utils.GRFPControls.ControlProtocol import LearningCurveArea
+
+### The comparison set ###
+SELECTORS = {
+    "RandomArm":        ("RandomArmSelector", {}),
+    "MAB (c=2.0)":      ("WiGS_MAB_Selector", {"mab_c": 2.0}),
+    "Fixed w=0.00":     ("WeightedGreedySamplingSelector", {"weight_strategy": "static", "w_x": 0.0}),
+    "Fixed w=0.25":     ("WeightedGreedySamplingSelector", {"weight_strategy": "static", "w_x": 0.25}),
+    "Fixed w=0.50":     ("WeightedGreedySamplingSelector", {"weight_strategy": "static", "w_x": 0.50}),
+    "Fixed w=0.75":     ("WeightedGreedySamplingSelector", {"weight_strategy": "static", "w_x": 0.75}),
+    "Fixed w=1.00":     ("WeightedGreedySamplingSelector", {"weight_strategy": "static", "w_x": 1.0}),
+    "iGS":              ("GreedySamplingSelector", {"strategy": "iGS"}),
+    "Passive":          ("PassiveLearningSelector", {}),
+}
+
+ARM_LOGGING = {"RandomArm", "MAB (c=2.0)"}
+
+
+def _one(job):
+    """Worker: run a single (dataset, selector, seed) configuration."""
+    dataset, label, seed, max_iter = job
+    sel_type, params = SELECTORS[label]
+    t0 = time.time()
+    out = RunControlIteration(DataFileInput=dataset,
+                              Seed=seed,
+                              SelectorType=sel_type,
+                              selector_params=params,
+                              MaxIterations=max_iter)
+    curve = out["ErrorVecs"]["RMSE"]
+    rec = {
+        "dataset": dataset,
+        "selector": label,
+        "seed": seed,
+        "area": LearningCurveArea(curve),
+        "final_rmse": float(curve[-1]),
+        "n_rounds": len(curve),
+        "elapsed": time.time() - t0,
+    }
+    arms = None
+    if label in ARM_LOGGING:
+        arms = [{"dataset": dataset, "selector": label, "seed": seed,
+                 "round": r["round"], "w_x": r["w_x"],
+                 "arm_index": int(r["arm_index"]) if not pd.isna(r["arm_index"]) else -1,
+                 "reward": r["reward_derived"],
+                 "cv_rmse": r["cv_rmse"], "test_rmse": r["test_rmse"],
+                 "arm_values": None if r["arm_values"] is None else list(r["arm_values"]),
+                 "arm_counts": None if r["arm_counts"] is None else list(r["arm_counts"])}
+                for r in out["ArmLog"]]
+    return rec, curve, arms
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--datasets", nargs="+", required=True)
+    ap.add_argument("--seeds", type=int, default=100)
+    ap.add_argument("--workers", type=int, default=7)
+    ap.add_argument("--max-iter", type=int, default=None)
+    ap.add_argument("--out", type=str, default=None)
+    args = ap.parse_args()
+
+    out_dir = args.out or os.path.join(os.path.dirname(os.getcwd()), "results_grfp_controls")
+    os.makedirs(out_dir, exist_ok=True)
+
+    jobs = [(d, lab, s, args.max_iter)
+            for d in args.datasets
+            for lab in SELECTORS
+            for s in range(args.seeds)]
+    print(f"Experiment A: {len(jobs)} runs "
+          f"({len(args.datasets)} datasets x {len(SELECTORS)} selectors x {args.seeds} seeds), "
+          f"{args.workers} workers")
+
+    records, curves, arm_rows = [], {}, []
+    t_start = time.time()
+    done = 0
+    with ProcessPoolExecutor(max_workers=args.workers) as ex:
+        futs = [ex.submit(_one, j) for j in jobs]
+        for f in as_completed(futs):
+            rec, curve, arms = f.result()
+            records.append(rec)
+            curves[(rec["dataset"], rec["selector"], rec["seed"])] = np.asarray(curve, dtype=float)
+            if arms:
+                arm_rows.extend(arms)
+            done += 1
+            if done % 25 == 0 or done == len(jobs):
+                el = time.time() - t_start
+                rate = done / el
+                print(f"  {done}/{len(jobs)}  elapsed={el/60:.1f}m  eta={(len(jobs)-done)/rate/60:.1f}m",
+                      flush=True)
+
+    ### Persist ###
+    runs_df = pd.DataFrame(records).sort_values(["dataset", "selector", "seed"])
+    runs_path = os.path.join(out_dir, "exp_a_runs.csv")
+    runs_df.to_csv(runs_path, index=False)
+
+    with open(os.path.join(out_dir, "exp_a_curves.pkl"), "wb") as fh:
+        pickle.dump(curves, fh)
+
+    if arm_rows:
+        pd.DataFrame(arm_rows).to_csv(os.path.join(out_dir, "exp_a_arms.csv"), index=False)
+
+    print(f"\nWrote {runs_path} ({len(runs_df)} runs)")
+    print(f"Total wall time: {(time.time()-t_start)/60:.1f} min")
+
+
+if __name__ == "__main__":
+    main()
