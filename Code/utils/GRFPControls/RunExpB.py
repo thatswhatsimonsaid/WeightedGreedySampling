@@ -41,6 +41,8 @@ from utils.Auxiliary.PreprocessData import (
     generate_three_regime_data,
 )
 from utils.Prediction.RidgeRegressionPredictor import RidgeRegressionPredictor
+from utils.Prediction.CrossValidation import get_cv_rmse
+from utils.Selector.WiGS_MAB import WiGS_MAB_Selector
 from utils.GRFPControls.ControlProtocol import ControlTrainCandidateSplit
 
 ### Generator registry: (function, n in the stored pkl) ###
@@ -52,6 +54,14 @@ GENERATORS = {
 ORIGINAL_SEED = 42          # seed used to build the stored .pkl
 ORACLE_TEST_SEED = 987_654  # dedicated, disjoint from the replication seeds
 WEIGHT_GRID = [float(round(w, 2)) for w in np.arange(0.0, 1.01, 0.1)]
+
+### The bandit's own arm set (WiGS_MAB_Selector's default) ###
+# The grid above does not contain 0.25 or 0.75, and the oracle's argmin often
+# sits at endpoints the bandit structurally cannot reach. Comparing the two
+# directly would therefore understate the bandit. These arms are scored as well,
+# so the oracle can also be reported restricted to the arms actually available.
+MAB_ARMS = [0.25, 0.5, 0.75]
+EVAL_WEIGHTS = sorted(set(WEIGHT_GRID) | set(MAB_ARMS))
 
 
 ### Region labels, defined on the RAW (unscaled) x, straight from the generator ###
@@ -106,9 +116,17 @@ def verify_expb_scaling():
 
 
 def run_seed(dataset, seed, n_oracle_test=20000, max_iter=None,
-             CandidateProportion=0.99, regularization=0.01):
+             CandidateProportion=0.99, regularization=0.01, policy="oracle"):
     """
-    One seed of the oracle weight path.
+    One seed of the weight path.
+
+    policy="oracle" (Experiment B proper): commit the argmin weight each round.
+
+    policy="bandit" (the brief's optional add-on): record the same per-w
+    lookahead, but commit the point the UCB1 bandit actually chooses, so the
+    realized arm can be compared against the oracle arm on the same trajectory.
+    The bandit is driven exactly as in the main pipeline -- its reward is the
+    per-step drop in 5-fold CV RMSE, and the selector object is used unmodified.
 
     Returns a list of per-round records.
     """
@@ -122,6 +140,11 @@ def run_seed(dataset, seed, n_oracle_test=20000, max_iter=None,
     df_Train, df_Candidate, _df_Test = ControlTrainCandidateSplit(df, CandidateProportion)
 
     model = RidgeRegressionPredictor(regularization=regularization)
+
+    bandit = None
+    if policy == "bandit":
+        bandit = WiGS_MAB_Selector(mab_c=2.0)
+
     rows = []
     t = 0
     while len(df_Candidate) > 0:
@@ -145,7 +168,7 @@ def run_seed(dataset, seed, n_oracle_test=20000, max_iter=None,
         ## For each w: which point, and what error would follow ##
         picks, errs = {}, {}
         cache = {}  # point index -> post-add error (many w pick the same point)
-        for w in WEIGHT_GRID:
+        for w in EVAL_WEIGHTS:
             scores = ((w * dX) + ((1.0 - w) * dY)).min(axis=1)
             iloc = int(np.argmax(scores))
             idx = df_Candidate.index[iloc]
@@ -165,19 +188,39 @@ def run_seed(dataset, seed, n_oracle_test=20000, max_iter=None,
         oracle_w = WEIGHT_GRID[best_i]
         gap = float(err_arr.max() - err_arr.min())
 
-        chosen_idx = picks[oracle_w]
+        # Same thing restricted to the arms the bandit can actually pull #
+        arm_err = np.array([errs[w] for w in MAB_ARMS])
+        oracle_w_armset = MAB_ARMS[int(np.argmin(arm_err))]
+        gap_armset = float(arm_err.max() - arm_err.min())
+
+        ## Which point gets committed depends on the policy ##
+        bandit_w = np.nan
+        if policy == "bandit":
+            sk = model.model
+            cv = get_cv_rmse(sk, X_train_df, y_train_series, k=5) if sk is not None else np.nan
+            if np.isnan(cv):
+                cv = float(np.sqrt(mean_squared_error(
+                    y_train_series, model.predict(X_train_df))))
+            sel_out = bandit.select(df_Candidate=df_Candidate, df_Train=df_Train,
+                                    Model=model, current_rmse=cv)
+            chosen_idx = sel_out["IndexRecommendation"][0]
+            bandit_w = sel_out.get("w_x", np.nan)
+        else:
+            chosen_idx = picks[oracle_w]
+
         x_raw = float(scaler.inverse_transform(
             df_Candidate.loc[[chosen_idx], ["X1"]].values)[0, 0])
 
-        row = {"dataset": dataset, "seed": seed, "round": t,
-               "oracle_w": oracle_w, "gap": gap,
+        row = {"dataset": dataset, "seed": seed, "round": t, "policy": policy,
+               "oracle_w": oracle_w, "bandit_w": bandit_w,
+               "oracle_w_armset": oracle_w_armset, "gap": gap, "gap_armset": gap_armset,
                "err_min": float(err_arr.min()), "err_max": float(err_arr.max()),
                "err_mean": float(err_arr.mean()), "err_sd": float(err_arr.std(ddof=0)),
                "n_distinct_points": len(cache),
                "region": region_of(dataset, x_raw), "x_raw": x_raw,
                "n_train": len(df_Train)}
-        for w in WEIGHT_GRID:
-            row[f"err_w{w:.1f}"] = errs[w]
+        for w in EVAL_WEIGHTS:
+            row[f"err_w{w:.2f}"] = errs[w]
         rows.append(row)
 
         ## Commit the oracle choice and continue ##
@@ -189,9 +232,10 @@ def run_seed(dataset, seed, n_oracle_test=20000, max_iter=None,
 
 
 def _one(job):
-    dataset, seed, n_oracle_test, max_iter = job
+    dataset, seed, n_oracle_test, max_iter, policy = job
     t0 = time.time()
-    rows = run_seed(dataset, seed, n_oracle_test=n_oracle_test, max_iter=max_iter)
+    rows = run_seed(dataset, seed, n_oracle_test=n_oracle_test, max_iter=max_iter,
+                    policy=policy)
     return rows, time.time() - t0
 
 
@@ -202,7 +246,12 @@ def main():
     ap.add_argument("--workers", type=int, default=7)
     ap.add_argument("--oracle-test-n", type=int, default=20000)
     ap.add_argument("--max-iter", type=int, default=None)
+    ap.add_argument("--policy", choices=["oracle", "bandit"], default="oracle",
+                    help="oracle = Experiment B proper; bandit = the optional "
+                         "add-on that scores the same grid along the bandit's "
+                         "own realized trajectory")
     ap.add_argument("--out", type=str, default=None)
+    ap.add_argument("--filename", type=str, default=None)
     args = ap.parse_args()
 
     checks = verify_expb_scaling()
@@ -213,9 +262,9 @@ def main():
     out_dir = args.out or os.path.join(os.path.dirname(os.getcwd()), "results_grfp_controls")
     os.makedirs(out_dir, exist_ok=True)
 
-    jobs = [(d, s, args.oracle_test_n, args.max_iter)
+    jobs = [(d, s, args.oracle_test_n, args.max_iter, args.policy)
             for d in args.datasets for s in range(args.seeds)]
-    print(f"Experiment B: {len(jobs)} seed-runs, grid={WEIGHT_GRID}, "
+    print(f"Experiment B [{args.policy}]: {len(jobs)} seed-runs, grid={WEIGHT_GRID}, "
           f"oracle test n={args.oracle_test_n}, {args.workers} workers")
 
     all_rows = []
@@ -233,7 +282,9 @@ def main():
                       f"eta={(len(jobs)-done)/(done/tot)/60:.1f}m", flush=True)
 
     df_out = pd.DataFrame(all_rows).sort_values(["dataset", "seed", "round"])
-    path = os.path.join(out_dir, "exp_b_oracle_path.csv")
+    default_name = ("exp_b_oracle_path.csv" if args.policy == "oracle"
+                    else "exp_b_bandit_trajectory.csv")
+    path = os.path.join(out_dir, args.filename or default_name)
     df_out.to_csv(path, index=False)
     print(f"\nWrote {path} ({len(df_out)} rows)")
     print(f"Total wall time: {(time.time()-t_start)/60:.1f} min")
