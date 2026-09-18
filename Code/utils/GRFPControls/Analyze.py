@@ -72,32 +72,78 @@ def paired_bootstrap_ci(diffs, n_boot=10000, seed=0, alpha=0.05):
     return float(d.mean()), float(lo), float(hi)
 
 
+### Early-budget window ###
+# All selectors converge well before the pool is exhausted, so the full-budget
+# area is dominated by a long flat tail that is identical for everyone. Any real
+# early advantage would be diluted there. The same area is therefore also
+# reported over the first EARLY_FRAC of rounds. This is the paper's metric on a
+# shorter budget, not a new metric, and not a tuned one -- the fraction is fixed
+# up front and both windows are always reported.
+EARLY_FRAC = 0.25
+
+
+def _areas_from_curves(curves, dataset):
+    """Per-seed full-budget and early-budget areas, from the saved curves."""
+    from utils.GRFPControls.ControlProtocol import LearningCurveArea
+    rows = []
+    lens = [len(v) for (d, _, _), v in curves.items() if d == dataset]
+    if not lens:
+        return pd.DataFrame()
+    n_early = max(2, int(round(min(lens) * EARLY_FRAC)))
+    for (d, sel, seed), c in curves.items():
+        if d != dataset:
+            continue
+        rows.append({"dataset": d, "selector": sel, "seed": seed,
+                     "area": LearningCurveArea(c),
+                     "area_early": LearningCurveArea(c[:n_early]),
+                     "final_rmse": float(c[-1]),
+                     "n_early": n_early})
+    return pd.DataFrame(rows)
+
+
 ### Summary table ###
-def build_summary(runs, out_dir, n_boot=10000):
+def build_summary(runs, out_dir, curves=None, n_boot=10000):
+    """
+    Per dataset x selector: mean/SE of area (full and early budget) and final
+    error, plus the paired difference against the random-arm control.
+
+    Pairing is on seed: every selector sees the identical split for a given
+    seed, so seed-wise differencing removes the split-to-split variance that
+    otherwise swamps the comparison.
+    """
     rows = []
     for dataset, g in runs.groupby("dataset"):
-        wide_area = g.pivot_table(index="seed", columns="selector", values="area")
-        wide_final = g.pivot_table(index="seed", columns="selector", values="final_rmse")
+        if curves is not None:
+            cg = _areas_from_curves(curves, dataset)
+            if not cg.empty:
+                g = cg
+        wide = {m: g.pivot_table(index="seed", columns="selector", values=m)
+                for m in ("area", "area_early", "final_rmse") if m in g.columns}
         for selector in sorted(g["selector"].unique()):
-            a = wide_area[selector].dropna()
-            f = wide_final[selector].dropna()
-            row = {
-                "dataset": dataset, "selector": selector, "n_seeds": int(len(a)),
-                "area_mean": a.mean(), "area_se": a.std(ddof=1) / np.sqrt(len(a)),
-                "final_mean": f.mean(), "final_se": f.std(ddof=1) / np.sqrt(len(f)),
-            }
+            a = wide["area"][selector].dropna()
+            row = {"dataset": dataset, "selector": selector, "n_seeds": int(len(a)),
+                   "area_mean": a.mean(), "area_se": a.std(ddof=1) / np.sqrt(len(a))}
+            if "area_early" in wide:
+                ae = wide["area_early"][selector].dropna()
+                row["area_early_mean"] = ae.mean()
+                row["area_early_se"] = ae.std(ddof=1) / np.sqrt(len(ae))
+            f = wide["final_rmse"][selector].dropna()
+            row["final_mean"] = f.mean()
+            row["final_se"] = f.std(ddof=1) / np.sqrt(len(f))
+
             # Paired difference against the random-arm control #
-            if RANDOM in wide_area.columns and selector != RANDOM:
-                paired = wide_area[[selector, RANDOM]].dropna()
+            for metric, tag in (("area", ""), ("area_early", "_early")):
+                if metric not in wide or selector == RANDOM or RANDOM not in wide[metric].columns:
+                    continue
+                paired = wide[metric][[selector, RANDOM]].dropna()
                 d = (paired[selector] - paired[RANDOM]).values
                 m, lo, hi = paired_bootstrap_ci(d, n_boot=n_boot, seed=17)
                 row.update({
-                    "diff_vs_randomarm_mean": m,
-                    "diff_ci_lo": lo, "diff_ci_hi": hi,
-                    "diff_excludes_zero": bool(lo > 0 or hi < 0),
+                    f"diff{tag}_mean": m, f"diff{tag}_ci_lo": lo, f"diff{tag}_ci_hi": hi,
+                    f"diff{tag}_excludes_zero": bool(lo > 0 or hi < 0),
                     # area is RMSE-based: lower is better #
-                    "favors": ("selector" if hi < 0 else
-                               "RandomArm" if lo > 0 else "neither"),
+                    f"diff{tag}_favors": ("selector" if hi < 0 else
+                                          "RandomArm" if lo > 0 else "neither"),
                 })
             rows.append(row)
     df = pd.DataFrame(rows)
@@ -170,6 +216,15 @@ def fig_learning_curves(curves, dataset, out_dir):
         ax.plot(x, m, color=col, lw=2.0,
                 label="Bandit (UCB1)" if sel == BANDIT else "Random arm", zorder=4)
 
+    # Focus the y-range on where the curves actually live: the converged tail is
+    # flat and identical for everyone, so autoscaling wastes most of the panel.
+    finite = np.concatenate([c[np.isfinite(c)] for (d, _, _), c in curves.items()
+                             if d == dataset]) if curves else np.array([])
+    if finite.size:
+        lo, hi = np.percentile(finite, [0.5, 98.5])
+        pad = 0.08 * (hi - lo)
+        ax.set_ylim(lo - pad, hi + pad)
+
     ax.set_xlabel("Round"); ax.set_ylabel("Test RMSE (mean over seeds)")
     ax.set_title(f"{dataset} — learning curves, random-arm control added",
                  loc="left", color=C_INK, fontsize=11, pad=10)
@@ -182,38 +237,49 @@ def fig_learning_curves(curves, dataset, out_dir):
 
 ### Figure 2: paired difference ###
 def fig_paired_difference(summary, out_dir):
-    d = summary[(summary["selector"] == BANDIT) &
-                summary["diff_vs_randomarm_mean"].notna()].copy()
+    """
+    The decision figure: bandit minus random arm, paired on seeds, per dataset.
+
+    Two panels, because the full-budget area is diluted by the converged tail:
+    the left panel is the paper's full-budget area, the right the same area over
+    the first 25% of rounds where the selectors still differ.
+    """
+    panels = [("", "Full budget"), ("_early", f"First {int(EARLY_FRAC*100)}% of budget")]
+    panels = [(tag, lab) for tag, lab in panels if f"diff{tag}_mean" in summary.columns]
+    if not panels:
+        return None
+    d = summary[summary["selector"] == BANDIT].copy()
+    d = d[d[f"diff{panels[0][0]}_mean"].notna()].sort_values("dataset")
     if d.empty:
         return None
-    d = d.sort_values("dataset")
-    fig, ax = plt.subplots(figsize=(7.0, 0.9 * len(d) + 2.2))
+
+    fig, axes = plt.subplots(1, len(panels), figsize=(5.6 * len(panels), 0.62 * len(d) + 2.4),
+                             squeeze=False)
     y = np.arange(len(d))
+    for ax, (tag, lab) in zip(axes[0], panels):
+        ax.axvline(0, color=C_INK2, lw=1.2, zorder=1)
+        for yi, (_, r) in zip(y, d.iterrows()):
+            m, lo, hi = r[f"diff{tag}_mean"], r[f"diff{tag}_ci_lo"], r[f"diff{tag}_ci_hi"]
+            excl = bool(r[f"diff{tag}_excludes_zero"])
+            col = C_BANDIT if (excl and m < 0) else (C_RANDOM if excl else C_MUTED)
+            ax.plot([lo, hi], [yi, yi], color=col, lw=2.4, solid_capstyle="round", zorder=2)
+            ax.plot([m], [yi], "o", ms=8, color=col, mec=C_SURFACE, mew=2, zorder=3)
+            ax.annotate(f"{m:+.2f} [{lo:+.2f}, {hi:+.2f}]", (hi, yi), xytext=(8, 0),
+                        textcoords="offset points", va="center", fontsize=7.5, color=C_INK2)
+        ax.set_yticks(y); ax.set_yticklabels(d["dataset"] if ax is axes[0][0] else [])
+        ax.set_ylim(len(d) - 0.4, -0.75)
+        ax.set_xlabel("Paired difference in area (bandit − random arm)")
+        ax.set_title(lab, loc="left", color=C_INK, fontsize=10, pad=18)
+        ax.text(0.0, 1.015, "← bandit better", transform=ax.transAxes, ha="left",
+                fontsize=7.5, color=C_INK2)
+        ax.text(1.0, 1.015, "random arm better →", transform=ax.transAxes, ha="right",
+                fontsize=7.5, color=C_INK2)
+        ax.margins(x=0.30)
+        ax.grid(axis="y", visible=False)
 
-    ax.axvline(0, color=C_INK2, lw=1.2, zorder=1)
-    for yi, (_, r) in zip(y, d.iterrows()):
-        excl = r["diff_excludes_zero"]
-        col = C_BANDIT if (excl and r["diff_vs_randomarm_mean"] < 0) else (
-              C_RANDOM if excl else C_MUTED)
-        ax.plot([r["diff_ci_lo"], r["diff_ci_hi"]], [yi, yi], color=col, lw=2.4,
-                solid_capstyle="round", zorder=2)
-        ax.plot([r["diff_vs_randomarm_mean"]], [yi], "o", ms=9, color=col,
-                mec=C_SURFACE, mew=2, zorder=3)
-        ax.annotate(f"{r['diff_vs_randomarm_mean']:+.2f}  [{r['diff_ci_lo']:+.2f}, {r['diff_ci_hi']:+.2f}]",
-                    (max(r["diff_ci_hi"], 0), yi), xytext=(8, 0),
-                    textcoords="offset points", va="center", fontsize=8, color=C_INK2)
-
-    ax.set_yticks(y); ax.set_yticklabels(d["dataset"])
-    ax.set_xlabel("Paired difference in learning-curve area  (bandit − random arm)")
-    ax.set_title("Bandit minus random arm, paired across seeds (95% bootstrap CI)",
-                 loc="left", color=C_INK, fontsize=11, pad=10)
-    ax.annotate("← bandit better", (0, -0.6), xytext=(-8, 0), textcoords="offset points",
-                ha="right", fontsize=8, color=C_INK2, annotation_clip=False)
-    ax.annotate("random arm better →", (0, -0.6), xytext=(8, 0), textcoords="offset points",
-                ha="left", fontsize=8, color=C_INK2, annotation_clip=False)
-    ax.margins(x=0.28)
-    ax.grid(axis="y", visible=False)
-    fig.tight_layout()
+    fig.suptitle("Bandit minus random arm, paired across seeds (95% bootstrap CI)",
+                 x=0.01, ha="left", color=C_INK, fontsize=11.5)
+    fig.tight_layout(rect=(0, 0, 1, 0.93))
     p = os.path.join(out_dir, "fig_paired_difference.png")
     fig.savefig(p, dpi=200); plt.close(fig)
     return p
@@ -280,12 +346,15 @@ def main():
     runs_p = os.path.join(out_dir, "exp_a_runs.csv")
     if os.path.exists(runs_p):
         runs = pd.read_csv(runs_p)
-        summary, p = build_summary(runs, out_dir, n_boot=args.n_boot); written.append(p)
-
+        curves = None
         curves_p = os.path.join(out_dir, "exp_a_curves.pkl")
         if os.path.exists(curves_p):
             with open(curves_p, "rb") as fh:
                 curves = pickle.load(fh)
+        summary, p = build_summary(runs, out_dir, curves=curves, n_boot=args.n_boot)
+        written.append(p)
+
+        if curves is not None:
             for ds in sorted(runs["dataset"].unique()):
                 written.append(fig_learning_curves(curves, ds, out_dir))
         written.append(fig_paired_difference(summary, out_dir))
