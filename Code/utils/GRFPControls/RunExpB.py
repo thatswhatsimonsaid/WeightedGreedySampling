@@ -51,7 +51,7 @@ GENERATORS = {
 
 ORIGINAL_SEED = 42          # seed used to build the stored .pkl
 ORACLE_TEST_SEED = 987_654  # dedicated, disjoint from the replication seeds
-WEIGHT_GRID = [round(w, 2) for w in np.arange(0.0, 1.01, 0.1)]
+WEIGHT_GRID = [float(round(w, 2)) for w in np.arange(0.0, 1.01, 0.1)]
 
 
 ### Region labels, defined on the RAW (unscaled) x, straight from the generator ###
@@ -86,7 +86,9 @@ def build_oracle_test_set(dataset, n_oracle_test):
     scaler = RobustScaler().fit(raw_orig[["X1"]])
 
     raw_test = gen(n_samples=n_oracle_test, seed=ORACLE_TEST_SEED)
-    X_test = scaler.transform(raw_test[["X1"]])
+    # Keep it a named-column frame: the models are fitted on DataFrames, and
+    # predicting on a bare array otherwise trips a feature-name warning.
+    X_test = pd.DataFrame(scaler.transform(raw_test[["X1"]]), columns=["X1"])
     y_test = raw_test["Y"].values
     return X_test, y_test, scaler
 
