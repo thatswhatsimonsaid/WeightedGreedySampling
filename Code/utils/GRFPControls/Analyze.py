@@ -359,8 +359,10 @@ def main():
                 written.append(fig_learning_curves(curves, ds, out_dir))
         written.append(fig_paired_difference(summary, out_dir))
 
-        arms_p = os.path.join(out_dir, "exp_a_arms.csv")
-        if os.path.exists(arms_p):
+        arms_p = next((q for q in (os.path.join(out_dir, "exp_a_arms.csv.gz"),
+                                   os.path.join(out_dir, "exp_a_arms.csv"))
+                       if os.path.exists(q)), None)
+        if arms_p:
             arms = pd.read_csv(arms_p)
             _, p = build_reward_gap(arms, out_dir); written.append(p)
 

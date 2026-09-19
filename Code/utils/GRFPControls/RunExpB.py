@@ -32,6 +32,7 @@ import numpy as np
 import pandas as pd
 from scipy.spatial.distance import cdist
 from sklearn.preprocessing import RobustScaler
+from sklearn.linear_model import Ridge
 from sklearn.metrics import mean_squared_error
 
 from utils.Auxiliary.LoadDataSet import LoadData
@@ -132,6 +133,7 @@ def run_seed(dataset, seed, n_oracle_test=20000, max_iter=None,
     """
     ### Oracle test set FIRST, so the split's RNG stream is untouched ###
     X_oracle, y_oracle, scaler = build_oracle_test_set(dataset, n_oracle_test)
+    X_oracle_np = X_oracle.values
 
     ### Seed + split, identical order and values to Experiment A ###
     random.seed(seed)
@@ -166,21 +168,37 @@ def run_seed(dataset, seed, n_oracle_test=20000, max_iter=None,
         dY = (d_nmY - d_nmY.min()) / (d_nmY.max() - d_nmY.min() + epsilon)
 
         ## For each w: which point, and what error would follow ##
+        # The lookahead is the hot loop -- 13 weights x T rounds x seeds -- so it
+        # runs on raw arrays. RidgeRegressionPredictor.fit is exactly
+        # `Ridge(alpha=regularization).fit(X, y)`, and sklearn ignores column
+        # names when fitting, so fitting on numpy is the same model without the
+        # per-weight concat/wrapper overhead. `verify_expb_fastpath.py` asserts
+        # the fast path reproduces the original implementation exactly.
+        X_train_np = X_train_df.values
+        y_train_np = y_train_series.values
+        X_cand_np = X_Candidate.values
+        y_cand_np = df_Candidate["Y"].values
+        cand_index = df_Candidate.index
+
+        # w*dX + (1-w)*dY  ==  w*(dX-dY) + dY, so one difference is reused and
+        # each weight costs two passes over a preallocated buffer.
+        D = dX - dY
+        buf = np.empty_like(dX)
+
         picks, errs = {}, {}
-        cache = {}  # point index -> post-add error (many w pick the same point)
+        cache = {}  # candidate iloc -> post-add error (many w pick the same point)
         for w in EVAL_WEIGHTS:
-            scores = ((w * dX) + ((1.0 - w) * dY)).min(axis=1)
-            iloc = int(np.argmax(scores))
-            idx = df_Candidate.index[iloc]
-            picks[w] = idx
-            if idx not in cache:
-                trial = pd.concat([df_Train, df_Candidate.loc[[idx]]])
-                Xt, yt = get_features_and_target(df=trial, target_column_name="Y")
-                trial_model = RidgeRegressionPredictor(regularization=regularization)
-                trial_model.fit(X_train_df=Xt, y_train_series=yt)
-                pred = trial_model.model.predict(X_oracle)
-                cache[idx] = float(np.sqrt(mean_squared_error(y_oracle, pred)))
-            errs[w] = cache[idx]
+            np.multiply(D, w, out=buf)
+            np.add(buf, dY, out=buf)
+            iloc = int(np.argmax(buf.min(axis=1)))
+            picks[w] = iloc
+            if iloc not in cache:
+                Xt = np.vstack([X_train_np, X_cand_np[iloc:iloc + 1]])
+                yt = np.concatenate([y_train_np, y_cand_np[iloc:iloc + 1]])
+                trial = Ridge(alpha=regularization).fit(Xt, yt)
+                resid = y_oracle - trial.predict(X_oracle_np)
+                cache[iloc] = float(np.sqrt(np.mean(resid * resid)))
+            errs[w] = cache[iloc]
 
         ## Oracle arm = argmin; gap = spread across w ##
         err_arr = np.array([errs[w] for w in WEIGHT_GRID])
@@ -206,7 +224,7 @@ def run_seed(dataset, seed, n_oracle_test=20000, max_iter=None,
             chosen_idx = sel_out["IndexRecommendation"][0]
             bandit_w = sel_out.get("w_x", np.nan)
         else:
-            chosen_idx = picks[oracle_w]
+            chosen_idx = cand_index[picks[oracle_w]]
 
         x_raw = float(scaler.inverse_transform(
             df_Candidate.loc[[chosen_idx], ["X1"]].values)[0, 0])

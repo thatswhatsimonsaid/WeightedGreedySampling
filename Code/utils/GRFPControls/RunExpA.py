@@ -67,14 +67,21 @@ def _one(job):
     }
     arms = None
     if label in ARM_LOGGING:
-        arms = [{"dataset": dataset, "selector": label, "seed": seed,
-                 "round": r["round"], "w_x": r["w_x"],
-                 "arm_index": int(r["arm_index"]) if not pd.isna(r["arm_index"]) else -1,
-                 "reward": r["reward_derived"],
-                 "cv_rmse": r["cv_rmse"], "test_rmse": r["test_rmse"],
-                 "arm_values": None if r["arm_values"] is None else list(r["arm_values"]),
-                 "arm_counts": None if r["arm_counts"] is None else list(r["arm_counts"])}
-                for r in out["ArmLog"]]
+        arms = []
+        for r in out["ArmLog"]:
+            row = {"dataset": dataset, "selector": label, "seed": seed,
+                   "round": r["round"], "w_x": r["w_x"],
+                   "arm_index": int(r["arm_index"]) if not pd.isna(r["arm_index"]) else -1,
+                   "reward": r["reward_derived"],
+                   "cv_rmse": r["cv_rmse"], "test_rmse": r["test_rmse"]}
+            # One numeric column per arm. Writing the arrays themselves would
+            # serialise as repr strings ("[np.float64(0.0), ...]"), which is both
+            # unreadable and an order of magnitude larger on disk.
+            for k, v in enumerate(r["arm_values"] if r["arm_values"] is not None else []):
+                row[f"arm_value_{k}"] = float(v)
+            for k, v in enumerate(r["arm_counts"] if r["arm_counts"] is not None else []):
+                row[f"arm_count_{k}"] = float(v)
+            arms.append(row)
     return rec, curve, arms
 
 
@@ -125,7 +132,8 @@ def main():
         pickle.dump(curves, fh)
 
     if arm_rows:
-        pd.DataFrame(arm_rows).to_csv(os.path.join(out_dir, "exp_a_arms.csv"), index=False)
+        pd.DataFrame(arm_rows).to_csv(os.path.join(out_dir, "exp_a_arms.csv.gz"),
+                                      index=False, compression="gzip", float_format="%.6g")
 
     print(f"\nWrote {runs_path} ({len(runs_df)} runs)")
     print(f"Total wall time: {(time.time()-t_start)/60:.1f} min")
