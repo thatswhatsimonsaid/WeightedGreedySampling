@@ -300,10 +300,14 @@ def main():
                       f"eta={(len(jobs)-done)/(done/tot)/60:.1f}m", flush=True)
 
     df_out = pd.DataFrame(all_rows).sort_values(["dataset", "seed", "round"])
-    default_name = ("exp_b_oracle_path.csv" if args.policy == "oracle"
-                    else "exp_b_bandit_trajectory.csv")
+    for c in df_out.columns:
+        if df_out[c].dtype == np.float64:
+            df_out[c] = df_out[c].astype(np.float32)
+    # ~223k rows x 30 columns is 99 MB as plain CSV and 12 MB gzipped #
+    default_name = ("exp_b_oracle_path.csv.gz" if args.policy == "oracle"
+                    else "exp_b_bandit_trajectory.csv.gz")
     path = os.path.join(out_dir, args.filename or default_name)
-    df_out.to_csv(path, index=False)
+    df_out.to_csv(path, index=False, compression="gzip", float_format="%.7g")
     print(f"\nWrote {path} ({len(df_out)} rows)")
     print(f"Total wall time: {(time.time()-t_start)/60:.1f} min")
 

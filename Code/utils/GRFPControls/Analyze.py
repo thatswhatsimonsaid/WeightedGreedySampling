@@ -183,6 +183,50 @@ def build_reward_gap(arms, out_dir):
     return df, path
 
 
+### Paired comparison against an arbitrary reference selector ###
+def build_vs_reference(runs, out_dir, reference, filename, curves=None, n_boot=10000):
+    """
+    Every selector minus `reference`, paired on seed, with a bootstrap 95% CI.
+
+    Used for the random-arm control and, separately, for passive learning. The
+    passive comparison is the one that speaks to whether the active machinery is
+    buying anything at all on these datasets, which is what a branch-(b) outcome
+    puts in question.
+    """
+    rows = []
+    for dataset, g in runs.groupby("dataset"):
+        if curves is not None:
+            cg = _areas_from_curves(curves, dataset)
+            if not cg.empty:
+                g = cg
+        for metric, tag in (("area", "full"), ("area_early", "early")):
+            if metric not in g.columns:
+                continue
+            wide = g.pivot_table(index="seed", columns="selector", values=metric)
+            if reference not in wide.columns:
+                continue
+            for selector in sorted(wide.columns):
+                if selector == reference:
+                    continue
+                paired = wide[[selector, reference]].dropna()
+                d = (paired[selector] - paired[reference]).values
+                m, lo, hi = paired_bootstrap_ci(d, n_boot=n_boot, seed=17)
+                base = paired[reference].mean()
+                rows.append({
+                    "dataset": dataset, "selector": selector, "reference": reference,
+                    "window": tag, "n_seeds": int(len(paired)),
+                    "diff_mean": m, "ci_lo": lo, "ci_hi": hi,
+                    "excludes_zero": bool(lo > 0 or hi < 0),
+                    "pct_of_reference": 100.0 * m / base if base else np.nan,
+                    "favors": ("selector" if hi < 0 else
+                               reference if lo > 0 else "neither"),
+                })
+    df = pd.DataFrame(rows)
+    path = os.path.join(out_dir, filename)
+    df.to_csv(path, index=False)
+    return df, path
+
+
 ### Figure 1: learning curves ###
 def fig_learning_curves(curves, dataset, out_dir):
     def mean_curve(sel):
@@ -287,48 +331,70 @@ def fig_paired_difference(summary, out_dir):
 
 ### Figure 3: oracle path ###
 def fig_oracle_path(oracle, out_dir):
+    """
+    Oracle weight, reward gap and region composition against round.
+
+    The x axis is logarithmic and the gap axis too. Both are forced by the data
+    rather than chosen for looks: the spread across w falls by more than two
+    orders of magnitude over a run, so on linear axes the whole story is a spike
+    against the y axis followed by a flat line.
+    """
+    REGION_COLORS = {"sine_lownoise": C_BANDIT, "linear_lownoise": C_IGS,
+                     "noise_trap": C_RANDOM, "cosine_lownoise": C_MUTED}
     datasets = sorted(oracle["dataset"].unique())
-    fig, axes = plt.subplots(3, len(datasets), figsize=(6.2 * len(datasets), 9.0),
+    fig, axes = plt.subplots(3, len(datasets), figsize=(6.4 * len(datasets), 9.4),
                              squeeze=False)
+
     for j, ds in enumerate(datasets):
         g = oracle[oracle["dataset"] == ds]
+
+        ## Oracle weight ##
         piv = g.pivot_table(index="round", columns="seed", values="oracle_w")
-        m = piv.mean(axis=1); sd = piv.std(axis=1, ddof=1)
-        x = piv.index.values
-
+        m, sd = piv.mean(axis=1), piv.std(axis=1, ddof=1)
+        x = np.maximum(piv.index.values, 1)
         ax = axes[0][j]
-        ax.fill_between(x, m - sd, m + sd, color=C_BANDIT, alpha=0.18, lw=0)
-        ax.plot(x, m, color=C_BANDIT, lw=1.6)
+        ax.fill_between(x, np.clip(m - sd, 0, 1), np.clip(m + sd, 0, 1),
+                        color=C_BANDIT, alpha=0.16, lw=0, label="±1 sd over seeds")
+        ax.plot(x, m, color=C_BANDIT, lw=1.6, label="Mean oracle w")
         ax.axhline(0.5, color=C_MUTED, lw=1.0, ls="--")
-        ax.set_ylim(-0.02, 1.02)
-        ax.set_ylabel("Oracle w"); ax.set_title(f"{ds} — oracle weight vs round",
-                                                loc="left", fontsize=11, color=C_INK)
+        ax.set_xscale("log"); ax.set_ylim(-0.02, 1.02)
+        ax.set_ylabel("Oracle w")
+        ax.set_title(f"{ds} — oracle weight vs round", loc="left", fontsize=11, color=C_INK)
+        ax.legend(fontsize=8, loc="upper right")
 
+        ## Reward gap, full grid and arm set ##
         ax = axes[1][j]
-        gp = g.pivot_table(index="round", columns="seed", values="gap")
-        gm = gp.mean(axis=1)
-        ax.plot(gp.index.values, gm, color=C_RANDOM, lw=1.6)
-        ax.set_ylabel("Reward gap\n(max−min RMSE over w)")
-        ax.set_title("Spread across the weight grid", loc="left", fontsize=11, color=C_INK)
+        for col, colr, lab in (("gap", C_RANDOM, "Full grid (w=0…1)"),
+                               ("gap_armset", C_BANDIT, "Bandit's arms (0.25/0.5/0.75)")):
+            if col not in g.columns:
+                continue
+            gm = g.pivot_table(index="round", columns="seed", values=col).mean(axis=1)
+            ax.plot(np.maximum(gm.index.values, 1), gm.values, color=colr, lw=1.6, label=lab)
+        ax.set_xscale("log"); ax.set_yscale("log")
+        ax.set_ylabel("Reward gap\n(max−min test RMSE over w)")
+        ax.set_title("Spread across weights collapses as labelling proceeds",
+                     loc="left", fontsize=11, color=C_INK)
+        ax.legend(fontsize=8, loc="upper right")
 
+        ## Region composition ##
         ax = axes[2][j]
-        comp = (g.pivot_table(index="round", columns="region", values="seed",
-                              aggfunc="count").fillna(0))
+        comp = g.pivot_table(index="round", columns="region", values="seed",
+                             aggfunc="count").fillna(0)
         comp = comp.div(comp.sum(axis=1), axis=0)
-        # bucket rounds for legibility #
-        bucket = (comp.index // max(1, len(comp) // 60))
-        comp = comp.groupby(bucket).mean()
-        bottom = np.zeros(len(comp))
-        region_colors = {"sine_lownoise": C_BANDIT, "linear_lownoise": C_IGS,
-                         "noise_trap": C_RANDOM, "cosine_lownoise": C_MUTED}
-        for region in comp.columns:
-            ax.bar(comp.index * max(1, len(g["round"].unique()) // 60), comp[region],
-                   bottom=bottom, width=max(1, len(g["round"].unique()) // 60),
-                   color=region_colors.get(region, C_MUTED), label=region, lw=0)
-            bottom += comp[region].values
-        ax.set_ylabel("Region share"); ax.set_xlabel("Round")
+        # Average within log-spaced round bins so early rounds stay visible #
+        edges = np.unique(np.geomspace(1, max(comp.index.max(), 2), 40).astype(int))
+        binned = comp.groupby(np.digitize(comp.index, edges)).mean()
+        xs = edges[np.clip(binned.index.values - 1, 0, len(edges) - 1)]
+        order = [r for r in ["sine_lownoise", "linear_lownoise", "cosine_lownoise",
+                             "noise_trap"] if r in binned.columns]
+        ax.stackplot(np.maximum(xs, 1), *[binned[r].values for r in order],
+                     colors=[REGION_COLORS.get(r, C_MUTED) for r in order],
+                     labels=order, lw=0)
+        ax.set_xscale("log"); ax.set_ylim(0, 1); ax.set_xlim(1, comp.index.max())
+        ax.set_ylabel("Region share"); ax.set_xlabel("Round (log scale)")
         ax.set_title("Region of the committed point", loc="left", fontsize=11, color=C_INK)
-        ax.legend(fontsize=8, ncol=2, loc="upper right")
+        ax.legend(fontsize=8, ncol=2, loc="lower right")
+
     fig.tight_layout()
     p = os.path.join(out_dir, "fig_oracle_path.png")
     fig.savefig(p, dpi=200); plt.close(fig)
@@ -354,6 +420,12 @@ def main():
         summary, p = build_summary(runs, out_dir, curves=curves, n_boot=args.n_boot)
         written.append(p)
 
+        for ref, fn in ((RANDOM, "exp_a_vs_randomarm.csv"),
+                        ("Passive", "exp_a_vs_passive.csv")):
+            _, p = build_vs_reference(runs, out_dir, ref, fn, curves=curves,
+                                      n_boot=args.n_boot)
+            written.append(p)
+
         if curves is not None:
             for ds in sorted(runs["dataset"].unique()):
                 written.append(fig_learning_curves(curves, ds, out_dir))
@@ -366,8 +438,10 @@ def main():
             arms = pd.read_csv(arms_p)
             _, p = build_reward_gap(arms, out_dir); written.append(p)
 
-    oracle_p = os.path.join(out_dir, "exp_b_oracle_path.csv")
-    if os.path.exists(oracle_p):
+    oracle_p = next((q for q in (os.path.join(out_dir, "exp_b_oracle_path.csv.gz"),
+                                 os.path.join(out_dir, "exp_b_oracle_path.csv"))
+                     if os.path.exists(q)), None)
+    if oracle_p:
         oracle = pd.read_csv(oracle_p)
         written.append(fig_oracle_path(oracle, out_dir))
 
