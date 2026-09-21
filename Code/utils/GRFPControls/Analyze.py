@@ -403,20 +403,32 @@ def fig_oracle_path(oracle, out_dir):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--dir", type=str, default=None)
+    ap.add_argument("--dir", type=str, default=None,
+                    help="Output directory; also the default input directory.")
+    ap.add_argument("--also", nargs="*", default=[],
+                    help="Extra result directories to merge in (e.g. benchmarks/). "
+                         "Lets the synthetic and benchmark runs, which are produced "
+                         "separately so neither overwrites the other, be analysed "
+                         "together in one paired-difference figure.")
     ap.add_argument("--n-boot", type=int, default=10000)
     args = ap.parse_args()
     out_dir = args.dir or os.path.join(os.path.dirname(os.getcwd()), "results_grfp_controls")
+    in_dirs = [out_dir] + list(args.also)
 
     written = []
-    runs_p = os.path.join(out_dir, "exp_a_runs.csv")
-    if os.path.exists(runs_p):
-        runs = pd.read_csv(runs_p)
-        curves = None
-        curves_p = os.path.join(out_dir, "exp_a_curves.pkl")
-        if os.path.exists(curves_p):
-            with open(curves_p, "rb") as fh:
-                curves = pickle.load(fh)
+    runs_parts, curves = [], {}
+    for d in in_dirs:
+        rp = os.path.join(d, "exp_a_runs.csv")
+        if os.path.exists(rp):
+            runs_parts.append(pd.read_csv(rp))
+        cp = os.path.join(d, "exp_a_curves.pkl")
+        if os.path.exists(cp):
+            with open(cp, "rb") as fh:
+                curves.update(pickle.load(fh))
+
+    if runs_parts:
+        runs = pd.concat(runs_parts, ignore_index=True)
+        curves = curves or None
         summary, p = build_summary(runs, out_dir, curves=curves, n_boot=args.n_boot)
         written.append(p)
 
@@ -431,12 +443,16 @@ def main():
                 written.append(fig_learning_curves(curves, ds, out_dir))
         written.append(fig_paired_difference(summary, out_dir))
 
-        arms_p = next((q for q in (os.path.join(out_dir, "exp_a_arms.csv.gz"),
-                                   os.path.join(out_dir, "exp_a_arms.csv"))
-                       if os.path.exists(q)), None)
-        if arms_p:
-            arms = pd.read_csv(arms_p)
-            _, p = build_reward_gap(arms, out_dir); written.append(p)
+        arm_parts = []
+        for d in in_dirs:
+            ap_ = next((q for q in (os.path.join(d, "exp_a_arms.csv.gz"),
+                                    os.path.join(d, "exp_a_arms.csv"))
+                        if os.path.exists(q)), None)
+            if ap_:
+                arm_parts.append(pd.read_csv(ap_))
+        if arm_parts:
+            _, p = build_reward_gap(pd.concat(arm_parts, ignore_index=True), out_dir)
+            written.append(p)
 
     oracle_p = next((q for q in (os.path.join(out_dir, "exp_b_oracle_path.csv.gz"),
                                  os.path.join(out_dir, "exp_b_oracle_path.csv"))
