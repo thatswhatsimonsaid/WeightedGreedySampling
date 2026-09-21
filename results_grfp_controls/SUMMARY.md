@@ -133,6 +133,31 @@ matter**, and on 99–100% of rounds the gap across the bandit's own arms is und
 0.1% of the error level. That is the same conclusion Experiment A reaches from
 the reward side, measured independently with free labels.
 
+### Add-on: does the bandit's arm track the oracle arm?
+
+The brief's optional extension, run in full (`exp_b_bandit_trajectory.csv.gz`,
+100 seeds, 222,800 rounds). Along the bandit's *own* realised trajectory, every
+weight is evaluated by lookahead, and the bandit's chosen arm is compared with
+the best arm restricted to its own arm set {0.25, 0.5, 0.75}.
+
+**The bandit picks the best arm at chance.**
+
+| Dataset | Rounds | Agreement with oracle arm | Chance | z | Mean regret vs best arm |
+|---|---|---|---|---|---|
+| dgp_three_regime | 133,700 | 0.3349 | 0.3333 | +1.2 | 0.069% of error |
+| dgp_two_regime | 89,100 | 0.3302 | 0.3333 | −2.0 | 0.082% of error |
+
+Neither is meaningfully above chance, and dgp_two_regime is marginally *below*
+it. With >89,000 rounds per dataset these are precise estimates, not
+underpowered ones. Even over rounds 0–24, where the spread across weights is at
+its largest, agreement only reaches 0.350 and 0.340.
+
+This is the most direct statement of branch (b) available, because it does not
+go through the learning-curve area at all: the bandit's arm choice carries no
+information about which arm is actually better. The consolation is that it costs
+almost nothing — per-round regret against the best arm is under 0.1% of the
+error level, which is just the flat objective seen from the other side.
+
 **Region composition** is roughly stable over the run. The high-noise trap is
 5.4% (dgp_two_regime) and 7.3% (dgp_three_regime) of committed points — it is a
 small region and the oracle neither chases nor avoids it strongly. There is no
@@ -152,7 +177,9 @@ conclusion does not rest on either alone.
   about one tenth of the within-arm reward noise, so UCB1 pulls all three arms
   near-uniformly and is, in effect, the random-arm policy.*
 - **"Never settles on one arm" is not evidence of useful adaptation.** It is what
-  a bandit does when the arms are indistinguishable. Any framing that reads
+  a bandit does when the arms are indistinguishable. The add-on makes this
+  concrete: across 222,800 rounds the bandit's chosen arm agrees with the
+  oracle-best arm at chance (0.330-0.335 against 0.3333). Any framing that reads
   continued exploration as the method responding to a changing optimum is not
   supported by this data.
 - **The more useful question is the one branch (b) opens: when does weighting
@@ -212,6 +239,7 @@ it with caveat 1 attached rather than as a bare headline.
 | `exp_a_arms.csv.gz` | per-round arm, reward, CV and test RMSE, running arm means and counts |
 | `exp_a_curves.pkl` | every per-seed test-RMSE learning curve |
 | `exp_b_oracle_path.csv.gz` | per-round oracle weight, per-weight errors, gap, region |
+| `exp_b_bandit_trajectory.csv.gz` | the add-on: per-w lookahead along the bandit's own trajectory, with its chosen arm vs the best arm |
 | `fig_learning_curves_*.png`, `fig_paired_difference.png`, `fig_oracle_path.png` | figures |
 
 ---
