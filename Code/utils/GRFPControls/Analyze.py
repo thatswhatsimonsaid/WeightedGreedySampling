@@ -23,7 +23,7 @@ Usage (from the Code/ directory):
 from utils.GRFPControls import _bootstrap  # noqa: F401
 
 import argparse
-import ast
+import gzip
 import os
 import pickle
 
@@ -421,9 +421,12 @@ def main():
         rp = os.path.join(d, "exp_a_runs.csv")
         if os.path.exists(rp):
             runs_parts.append(pd.read_csv(rp))
-        cp = os.path.join(d, "exp_a_curves.pkl")
-        if os.path.exists(cp):
-            with open(cp, "rb") as fh:
+        cp = next((q for q in (os.path.join(d, "exp_a_curves.pkl.gz"),
+                               os.path.join(d, "exp_a_curves.pkl"))
+                   if os.path.exists(q)), None)
+        if cp:
+            opener = gzip.open if cp.endswith(".gz") else open
+            with opener(cp, "rb") as fh:
                 curves.update(pickle.load(fh))
 
     if runs_parts:
