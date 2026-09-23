@@ -37,7 +37,9 @@ from utils.Selector.WiGS_MAB import WiGS_MAB_Selector
 from utils.GRFPControls.RandomArmSelector import RandomArmSelector
 from utils.GRFPControls.ControlProtocol import (
     ControlTrainCandidateSplit,
+    PaperTrainCandidateSplit,
     ControlTestSetError,
+    standardize_features,
 )
 
 ### Registry ###
@@ -69,7 +71,10 @@ def RunControlIteration(DataFileInput,
                         regularization=0.01,
                         MaxIterations=None,
                         df=None,
-                        ComputeCV=None):
+                        ComputeCV=None,
+                        Protocol="repo",
+                        TrainProportion=0.05,
+                        Standardize=False):
     """
     Runs one (dataset, seed, selector) control run and returns its logs.
 
@@ -103,8 +108,17 @@ def RunControlIteration(DataFileInput,
     if df is None:
         df = LoadData(DataFileInput)
 
+    ### Feature scaling ###
+    # Deterministic, so it does not disturb the RNG stream the split consumes.
+    if Standardize:
+        df = standardize_features(df)
+
     ### Three-way split ###
-    df_Train, df_Candidate, df_Test = ControlTrainCandidateSplit(df, CandidateProportion)
+    if Protocol == "paper":
+        df_Train, df_Candidate, df_Test = PaperTrainCandidateSplit(
+            df, TrainProportion=TrainProportion)
+    else:
+        df_Train, df_Candidate, df_Test = ControlTrainCandidateSplit(df, CandidateProportion)
     InitialTrainIndices = list(df_Train.index)
 
     ### Initialize Model ###

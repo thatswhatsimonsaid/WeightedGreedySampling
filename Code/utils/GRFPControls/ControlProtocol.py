@@ -63,6 +63,58 @@ def ControlTrainCandidateSplit(df, CandidateProportion, TestProportion=0.10):
     return df_Train, df_Candidate, df_Test
 
 
+### The manuscript's stated split ###
+def PaperTrainCandidateSplit(df, TrainProportion=0.05, TestProportion=0.10):
+    """
+    Split as the manuscript's Experimental Protocol describes it: a held-out test
+    set (10% of the data), an initial training set (5% of the data), and a
+    candidate pool (the remaining 85%).
+
+    This is NOT what `CandidateProportion=0.99` in the repo's cluster config
+    produces. That setting makes the initial training set 1% of the *learning
+    pool* — 9 points for N=1000, against the 50 the manuscript specifies. The
+    equivalent CandidateProportion for the manuscript's split is 0.9444.
+
+    Like the other split functions it passes no `random_state`, drawing from the
+    global NumPy stream the caller seeds, so a given seed yields the identical
+    split for every selector.
+    """
+    df_LearningPool, df_Test = train_test_split(df, test_size=TestProportion)
+    n_train = max(2, int(round(len(df) * TrainProportion)))
+    n_train = min(n_train, len(df_LearningPool) - 1)
+
+    X_Train, X_Candidate, y_Train, y_Candidate = train_test_split(
+        df_LearningPool.loc[:, df_LearningPool.columns != "Y"],
+        df_LearningPool["Y"],
+        train_size=n_train
+    )
+
+    df_Train = X_Train.copy()
+    df_Train.insert(0, 'Y', y_Train)
+    df_Candidate = X_Candidate.copy()
+    df_Candidate.insert(0, 'Y', y_Candidate)
+    return df_Train, df_Candidate, df_Test
+
+
+### The manuscript's stated feature scaling ###
+def standardize_features(df):
+    """
+    Scale features to zero mean and unit variance, as the manuscript's main
+    results specify.
+
+    `Data/processed` was built with RobustScaler (StandardScaler is commented out
+    in PreprocessData.py), so the stored features are not the manuscript's main
+    preprocessing. Re-standardizing recovers it exactly: both scalers are
+    per-feature affine maps, and standardizing removes any prior affine scaling,
+    so StandardScaler(RobustScaler(x)) == StandardScaler(x). Verified to 1e-12.
+    """
+    from sklearn.preprocessing import StandardScaler
+    out = df.copy()
+    feats = [c for c in out.columns if c != "Y"]
+    out[feats] = StandardScaler().fit_transform(out[feats])
+    return out
+
+
 ### Held-out test set scoring ###
 def ControlTestSetError(InputModel, df_Test: pd.DataFrame) -> dict:
     """

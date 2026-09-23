@@ -435,8 +435,11 @@ def main():
         summary, p = build_summary(runs, out_dir, curves=curves, n_boot=args.n_boot)
         written.append(p)
 
+        # iGS is the manuscript's own normaliser (Relative AUC = AUC/AUC_iGS),
+        # so `pct_of_reference` there is (Rel. AUC - 1) x 100.
         for ref, fn in ((RANDOM, "exp_a_vs_randomarm.csv"),
-                        ("Passive", "exp_a_vs_passive.csv")):
+                        ("Passive", "exp_a_vs_passive.csv"),
+                        ("iGS", "exp_a_vs_igs.csv")):
             _, p = build_vs_reference(runs, out_dir, ref, fn, curves=curves,
                                       n_boot=args.n_boot)
             written.append(p)

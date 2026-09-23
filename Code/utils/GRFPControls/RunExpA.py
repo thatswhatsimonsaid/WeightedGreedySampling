@@ -7,9 +7,10 @@ sees the identical test set, initial labeled set and candidate pool for a given
 seed, which is what makes the comparison paired.
 
 Note on the fixed-weight endpoints: w=0 and w=1 are run through
-WeightedGreedySamplingSelector, NOT through GSy/GSx. GSx/GSy score on
-*unnormalized* distances, so they are not the endpoints of the weighted sweep;
-using them would vary the normalization across the very axis under study.
+WeightedGreedySamplingSelector for uniformity across the sweep. They are
+*equivalent* to GSy/GSx: min-max normalization is a single global affine map
+with positive scale, so it commutes with the min over the training set and the
+argmax over the pool (verified 500/500 in verification/check_endpoints.py).
 
 Usage (from the Code/ directory):
     python -m utils.GRFPControls.RunExpA --datasets dgp_two_regime --seeds 100 --workers 7
@@ -47,14 +48,16 @@ ARM_LOGGING = {"RandomArm", "MAB (c=2.0)"}
 
 def _one(job):
     """Worker: run a single (dataset, selector, seed) configuration."""
-    dataset, label, seed, max_iter = job
+    dataset, label, seed, max_iter, protocol, standardize = job
     sel_type, params = SELECTORS[label]
     t0 = time.time()
     out = RunControlIteration(DataFileInput=dataset,
                               Seed=seed,
                               SelectorType=sel_type,
                               selector_params=params,
-                              MaxIterations=max_iter)
+                              MaxIterations=max_iter,
+                              Protocol=protocol,
+                              Standardize=standardize)
     curve = out["ErrorVecs"]["RMSE"]
     rec = {
         "dataset": dataset,
@@ -92,16 +95,25 @@ def main():
     ap.add_argument("--workers", type=int, default=7)
     ap.add_argument("--max-iter", type=int, default=None)
     ap.add_argument("--out", type=str, default=None)
+    ap.add_argument("--protocol", choices=["repo", "paper"], default="repo",
+                    help="'paper' uses the manuscript's stated split: 10%% test, "
+                         "5%% initial train, 85%% candidate. 'repo' uses "
+                         "CandidateProportion=0.99 from the cluster config, which "
+                         "gives a 0.9%% initial train instead.")
+    ap.add_argument("--standardize", action="store_true",
+                    help="Rescale features to zero mean / unit variance, the "
+                         "manuscript's main-text preprocessing. Data/processed was "
+                         "built with RobustScaler.")
     args = ap.parse_args()
 
     out_dir = args.out or os.path.join(os.path.dirname(os.getcwd()), "results_grfp_controls")
     os.makedirs(out_dir, exist_ok=True)
 
-    jobs = [(d, lab, s, args.max_iter)
+    jobs = [(d, lab, s, args.max_iter, args.protocol, args.standardize)
             for d in args.datasets
             for lab in SELECTORS
             for s in range(args.seeds)]
-    print(f"Experiment A: {len(jobs)} runs "
+    print(f"Experiment A [protocol={args.protocol}, standardize={args.standardize}]: {len(jobs)} runs "
           f"({len(args.datasets)} datasets x {len(SELECTORS)} selectors x {args.seeds} seeds), "
           f"{args.workers} workers")
 
