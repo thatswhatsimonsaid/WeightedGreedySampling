@@ -72,9 +72,18 @@ arm set puts you. Paired head-to-head, **`Fixed w=0.75` is significantly better
 than the bandit on 6 of 11 benchmarks and significantly worse on 1** (beer,
 −0.52%); four are ties.
 
-So on these benchmarks, under held-out test error, the claim that WiGS *matches
-the best fixed weight in hindsight* does not hold — it is beaten by a fixed
-w=0.75 on more than half of them.
+**Against the best fixed weight chosen in hindsight per dataset** — the exact
+comparison the manuscript claims WiGS matches — the bandit never wins:
+
+| Budget | Fixed better | MAB better | Statistical match |
+|---|---|---|---|
+| Full | **8 / 13** | 0 / 13 | 5 / 13 |
+| First 25% | **11 / 13** | 0 / 13 | 2 / 13 |
+
+So under held-out test error the claim that WiGS *matches the best fixed weight
+in hindsight* does not hold, and it fails harder at the shorter budget — which
+is the budget at which weighting has any leverage at all. The shortfall is
++0.3% to +3.6% of area at full budget and up to +7.7% early (concrete_slump).
 
 ## What does work: the weighted score function
 
@@ -252,10 +261,16 @@ python -m utils.GRFPControls.Analyze --also results_grfp_controls/benchmarks
    the final model — and final test error — is identical across selectors by
    construction. The brief asks for it; the honest answer is that it carries no
    signal under this budget.
-5. **Fixed-weight endpoints come from `WeightedGreedySamplingSelector`, not
-   GSx/GSy.** GSx and GSy score on *unnormalized* distances, so they are not the
-   `w=1` and `w=0` ends of the weighted sweep; using them would have varied the
-   normalization along the axis under study.
+5. **Fixed-weight endpoints come from `WeightedGreedySamplingSelector` rather
+   than GSx/GSy — but the two are equivalent.** GSx/GSy score on *unnormalized*
+   distances while WiGS min-max normalizes, so I initially treated them as
+   different selectors. They are not: min-max normalization is a single global
+   affine map with positive scale, so it commutes with the `min` over the
+   training set and the `argmax` over the pool. Verified 500/500 identical
+   selections across four datasets (`verification/check_endpoints.py`). Using
+   one selector for the whole sweep is still the tidier choice, but nothing
+   turned on it, and `w=1` / `w=0` really are the pure diversity and pure
+   uncertainty selectors.
 6. **CV is skipped for selectors that never read it.** Only `WiGS_MAB_Selector`
    consumes `current_rmse`; the rest swallow it in `**kwargs`, and `get_cv_rmse`
    uses a fixed `KFold(random_state=42)` that draws nothing from the global RNG.
