@@ -19,6 +19,7 @@ Usage (from the Code/ directory):
 from utils.GRFPControls import _bootstrap  # noqa: F401
 
 import argparse
+import gzip
 import os
 import pickle
 import time
@@ -100,6 +101,8 @@ def main():
                          "5%% initial train, 85%% candidate. 'repo' uses "
                          "CandidateProportion=0.99 from the cluster config, which "
                          "gives a 0.9%% initial train instead.")
+    ap.add_argument("--resume", action="store_true",
+                    help="Skip datasets that already have a shard on disk.")
     ap.add_argument("--standardize", action="store_true",
                     help="Rescale features to zero mean / unit variance, the "
                          "manuscript's main-text preprocessing. Data/processed was "
@@ -117,38 +120,68 @@ def main():
           f"({len(args.datasets)} datasets x {len(SELECTORS)} selectors x {args.seeds} seeds), "
           f"{args.workers} workers")
 
-    records, curves, arm_rows = [], {}, []
+    # Checkpoint per dataset. A full sweep is several hours, and writing only at
+    # the very end means an interruption loses everything -- which is exactly
+    # what happened once. Each dataset's results are written as a shard as soon
+    # as it finishes, and the combined files are rebuilt from the shards, so the
+    # top-level outputs are always complete-as-of-the-last-dataset.
+    shard_dir = os.path.join(out_dir, "shards")
+    os.makedirs(shard_dir, exist_ok=True)
+
     t_start = time.time()
     done = 0
-    with ProcessPoolExecutor(max_workers=args.workers) as ex:
-        futs = [ex.submit(_one, j) for j in jobs]
-        for f in as_completed(futs):
-            rec, curve, arms = f.result()
-            records.append(rec)
-            curves[(rec["dataset"], rec["selector"], rec["seed"])] = np.asarray(curve, dtype=float)
-            if arms:
-                arm_rows.extend(arms)
-            done += 1
-            if done % 25 == 0 or done == len(jobs):
-                el = time.time() - t_start
-                rate = done / el
-                print(f"  {done}/{len(jobs)}  elapsed={el/60:.1f}m  eta={(len(jobs)-done)/rate/60:.1f}m",
-                      flush=True)
+    for dataset in args.datasets:
+        shard = os.path.join(shard_dir, f"{dataset}.pkl")
+        ds_jobs = [j for j in jobs if j[0] == dataset]
+        if args.resume and os.path.exists(shard):
+            done += len(ds_jobs)
+            print(f"  [skip] {dataset} already done ({done}/{len(jobs)})", flush=True)
+            continue
 
-    ### Persist ###
-    runs_df = pd.DataFrame(records).sort_values(["dataset", "selector", "seed"])
-    runs_path = os.path.join(out_dir, "exp_a_runs.csv")
-    runs_df.to_csv(runs_path, index=False)
+        recs, curv, arms_ds = [], {}, []
+        with ProcessPoolExecutor(max_workers=args.workers) as ex:
+            futs = [ex.submit(_one, j) for j in ds_jobs]
+            for f in as_completed(futs):
+                rec, curve, arms = f.result()
+                recs.append(rec)
+                curv[(rec["dataset"], rec["selector"], rec["seed"])] = np.asarray(curve, dtype=float)
+                if arms:
+                    arms_ds.extend(arms)
+                done += 1
+                if done % 50 == 0:
+                    el = time.time() - t_start
+                    print(f"  {done}/{len(jobs)}  elapsed={el/60:.1f}m", flush=True)
 
-    with open(os.path.join(out_dir, "exp_a_curves.pkl"), "wb") as fh:
-        pickle.dump(curves, fh)
+        with open(shard, "wb") as fh:
+            pickle.dump({"records": recs, "curves": curv, "arms": arms_ds}, fh, protocol=4)
+        print(f"  [done] {dataset}: {len(recs)} runs -> {os.path.basename(shard)} "
+              f"({(time.time()-t_start)/60:.1f}m elapsed)", flush=True)
+        _rebuild(out_dir, shard_dir)
 
+    _rebuild(out_dir, shard_dir)
+    print(f"\nTotal wall time: {(time.time()-t_start)/60:.1f} min")
+
+
+def _rebuild(out_dir, shard_dir):
+    """Rebuild the combined outputs from whatever shards exist."""
+    records, curves, arm_rows = [], {}, []
+    for fn in sorted(os.listdir(shard_dir)):
+        if not fn.endswith(".pkl"):
+            continue
+        with open(os.path.join(shard_dir, fn), "rb") as fh:
+            d = pickle.load(fh)
+        records.extend(d["records"])
+        curves.update(d["curves"])
+        arm_rows.extend(d["arms"])
+    if not records:
+        return
+    pd.DataFrame(records).sort_values(["dataset", "selector", "seed"]).to_csv(
+        os.path.join(out_dir, "exp_a_runs.csv"), index=False)
+    with gzip.open(os.path.join(out_dir, "exp_a_curves.pkl.gz"), "wb", compresslevel=6) as fh:
+        pickle.dump(curves, fh, protocol=4)
     if arm_rows:
         pd.DataFrame(arm_rows).to_csv(os.path.join(out_dir, "exp_a_arms.csv.gz"),
                                       index=False, compression="gzip", float_format="%.6g")
-
-    print(f"\nWrote {runs_path} ({len(runs_df)} runs)")
-    print(f"Total wall time: {(time.time()-t_start)/60:.1f} min")
 
 
 if __name__ == "__main__":
