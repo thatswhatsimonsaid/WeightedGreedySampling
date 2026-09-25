@@ -62,6 +62,23 @@ _SELECTORS = {
 _REWARD_CONSUMERS = {"WiGS_MAB_Selector", "RandomArmSelector"}
 
 
+def _load_dataset(name):
+    """
+    Load a dataset, preferring a GRFP-controls-only one if it exists.
+
+    Falls back to the repo's own LoadData, so every dataset the paper uses is
+    read exactly as the paper reads it.
+    """
+    import os
+    import pickle
+    local = os.path.join(os.path.dirname(os.getcwd()),
+                         "results_grfp_controls", "data", f"{name}.pkl")
+    if os.path.exists(local):
+        with open(local, "rb") as fh:
+            return pickle.load(fh).dropna()
+    return LoadData(name)
+
+
 def RunControlIteration(DataFileInput,
                         Seed,
                         SelectorType,
@@ -105,8 +122,11 @@ def RunControlIteration(DataFileInput,
     np.random.seed(Seed)
 
     ### Load Data ###
+    # GRFP-controls-only datasets (e.g. the manuscript's GMM Two-Regime DGP,
+    # which the shipped Data/processed does not contain) live in a separate
+    # directory so that nothing is added to the paper's input data.
     if df is None:
-        df = LoadData(DataFileInput)
+        df = _load_dataset(DataFileInput)
 
     ### Feature scaling ###
     # Deterministic, so it does not disturb the RNG stream the split consumes.
