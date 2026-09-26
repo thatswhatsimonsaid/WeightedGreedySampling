@@ -29,6 +29,7 @@ from utils.Auxiliary.LoadDataSet import LoadData
 from utils.Auxiliary.DataFrameUtils import get_features_and_target
 from utils.Prediction.CrossValidation import get_cv_rmse
 from utils.Prediction.RidgeRegressionPredictor import RidgeRegressionPredictor
+from utils.Prediction.FullPoolError import FullPoolErrorFunction
 from utils.Selector.GreedySamplingSelector import GreedySamplingSelector
 from utils.Selector.PassiveLearningSelector import PassiveLearningSelector
 from utils.Selector.WeightedGreedySamplingSelector import WeightedGreedySamplingSelector
@@ -89,6 +90,7 @@ def RunControlIteration(DataFileInput,
                         MaxIterations=None,
                         df=None,
                         ComputeCV=None,
+                        Metric="test",
                         Protocol="repo",
                         TrainProportion=0.05,
                         Standardize=False):
@@ -177,8 +179,18 @@ def RunControlIteration(DataFileInput,
         ## 2. Fit ##
         predictor_model.fit(X_train_df=X_train_df, y_train_series=y_train_series)
 
-        ## 3. Test-set error (the paper's metric) ##
-        TestOutputs = ControlTestSetError(InputModel=predictor_model, df_Test=df_Test)
+        ## 3. Per-round metric ##
+        # "test"      -- held-out test RMSE, which the manuscript's Evaluation
+        #                Metrics section names as the global evaluation.
+        # "full_pool" -- the repo's own FullPoolErrorFunction, imported
+        #                unmodified. The manuscript's *quoted numbers* match this
+        #                one, so the controls have to be scored on it too.
+        if Metric == "full_pool":
+            TestOutputs = FullPoolErrorFunction(InputModel=predictor_model,
+                                                df_Train=df_Train,
+                                                df_Candidate=df_Candidate)
+        else:
+            TestOutputs = ControlTestSetError(InputModel=predictor_model, df_Test=df_Test)
         for metric_name, value in TestOutputs.items():
             ErrorVecs[metric_name].append(value)
 

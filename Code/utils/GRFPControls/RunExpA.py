@@ -49,7 +49,7 @@ ARM_LOGGING = {"RandomArm", "MAB (c=2.0)"}
 
 def _one(job):
     """Worker: run a single (dataset, selector, seed) configuration."""
-    dataset, label, seed, max_iter, protocol, standardize = job
+    dataset, label, seed, max_iter, protocol, standardize, metric = job
     sel_type, params = SELECTORS[label]
     t0 = time.time()
     out = RunControlIteration(DataFileInput=dataset,
@@ -58,7 +58,8 @@ def _one(job):
                               selector_params=params,
                               MaxIterations=max_iter,
                               Protocol=protocol,
-                              Standardize=standardize)
+                              Standardize=standardize,
+                              Metric=metric)
     curve = out["ErrorVecs"]["RMSE"]
     rec = {
         "dataset": dataset,
@@ -101,6 +102,10 @@ def main():
                          "5%% initial train, 85%% candidate. 'repo' uses "
                          "CandidateProportion=0.99 from the cluster config, which "
                          "gives a 0.9%% initial train instead.")
+    ap.add_argument("--metric", choices=["test", "full_pool"], default="test",
+                    help="Per-round metric. 'full_pool' is the repo's hybrid "
+                         "train+candidate score, which the manuscript's quoted "
+                         "relative-AUC numbers match.")
     ap.add_argument("--resume", action="store_true",
                     help="Skip datasets that already have a shard on disk.")
     ap.add_argument("--standardize", action="store_true",
@@ -112,11 +117,11 @@ def main():
     out_dir = args.out or os.path.join(os.path.dirname(os.getcwd()), "results_grfp_controls")
     os.makedirs(out_dir, exist_ok=True)
 
-    jobs = [(d, lab, s, args.max_iter, args.protocol, args.standardize)
+    jobs = [(d, lab, s, args.max_iter, args.protocol, args.standardize, args.metric)
             for d in args.datasets
             for lab in SELECTORS
             for s in range(args.seeds)]
-    print(f"Experiment A [protocol={args.protocol}, standardize={args.standardize}]: {len(jobs)} runs "
+    print(f"Experiment A [protocol={args.protocol}, standardize={args.standardize}, metric={args.metric}]: {len(jobs)} runs "
           f"({len(args.datasets)} datasets x {len(SELECTORS)} selectors x {args.seeds} seeds), "
           f"{args.workers} workers")
 
