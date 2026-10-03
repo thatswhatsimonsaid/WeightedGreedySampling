@@ -50,6 +50,61 @@ chance, with one marginally below. Its arm choice carries no information about
 which arm is better. This never touches the learning-curve area, so it does not
 depend on the metric at all.
 
+## Replication under the manuscript's own protocol and metric
+
+The controls above use the repo's cluster config and held-out test error. Two
+further sweeps pin down whether that choice produced the result. It did not:
+**the conclusion is identical under every combination tried.**
+
+| Sweep | Split | Metric | Datasets | Bandit beats random arm |
+|---|---|---|---|---|
+| Original | repo (`CandidateProportion=0.99`) | test RMSE | 13 | **0 / 13** |
+| Manuscript protocol | 10/5/85, standardized | test RMSE | 13 | **0 / 13** |
+| Manuscript metric | 10/5/85, standardized | **full-pool** | 14 | **0 / 14** (random arm better on 3) |
+
+Three things were resolved along the way.
+
+**The manuscript's quoted numbers are full-pool, not test error.** Its Evaluation
+Metrics section names held-out Test RMSE as the global evaluation and puts
+Full-Pool RMSE in the supplement, but the figures quoted in its text match
+full-pool:
+
+| | WiGS-MAB | static w=0.25 |
+|---|---|---|
+| Quoted in text | 0.966 | 1.096 |
+| Full-pool, StandardScaler | 0.9611 | 1.0954 |
+| Full-pool, original run | 0.9641 | 1.1047 |
+| Test RMSE | 1.0009 | 1.0016 |
+
+The two metrics differ by two orders of magnitude in how far apart they place
+selectors: 44.4 pp spread across the fixed weights on full-pool against 0.5 pp
+on test error. `FullPoolErrorFunction` builds a hybrid vector that uses the
+*true label* as the prediction for every labelled point, so a point contributes
+exactly zero error once queried and the score falls as the candidate pool
+drains, whether or not the model generalises better. On the two-regime data the
+largest residuals sit in the high-noise trap, so labelling the trap moves this
+metric a great deal and held-out error not at all.
+
+**The Two-Regime DGP in the data is not the one the manuscript describes.** The
+manuscript specifies x ~ 0.4 N(0.2,0.07^2) + 0.3 N(0.5,0.1^2) + 0.3 N(0.85,0.05^2)
+and rests the density-veto demonstration on the third component overlapping the
+noise trap. `PreprocessData.generate_gmm_x_samples` implements exactly that
+mixture and **is never called**; both regime generators use
+`generate_normal_x_samples`, a single N(0.5,0.25) clipped to [0,1]. Trap mass is
+5.4% in the shipped data against 22.0% with the specified mixture. Rebuilding
+the dataset correctly (`dgp_two_regime_gmm`) changes nothing - the bandit still
+ties the random arm - so this is a real wiring/documentation defect but not what
+drives any result.
+
+**What survives, on the manuscript's own metric.** WiGS beats iGS: mean relative
+AUC 0.9715 for the bandit, better than iGS on 10 of 14 datasets. The additive
+criterion earns its keep. What does not survive is the attribution - the random
+arm scores 0.9696, essentially identical, and against the best fixed weight
+chosen in hindsight the bandit is **significantly worse on 11 of 14 datasets and
+better on 1**. On dgp_two_regime the best fixed weight (w=0.75) reaches 0.8945
+against the bandit's 0.9563, a 6.2 pp shortfall; the manuscript describes that
+same static weight as "rivaling the adaptive MAB agent."
+
 ## The sharper result: a fixed weight beats the bandit
 
 The adaptivity is not merely neutral against a random arm — it loses to simply
