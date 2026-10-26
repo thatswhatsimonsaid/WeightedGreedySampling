@@ -143,12 +143,10 @@ def main():
     # local_dir is where the files get written now. Conflating the two writes
     # sbatch files into a path that only exists on the cluster.
     local_dir = os.getcwd()
+    # Retained only for backward compatibility: the generated scripts locate
+    # themselves from $SLURM_SUBMIT_DIR and bake in no path, so --code-dir is
+    # no longer needed and is deliberately not warned about.
     code_dir = (args.code_dir or local_dir).replace("\\", "/").rstrip("/")
-    if len(code_dir) > 1 and code_dir[1] == ":":
-        print(f"WARNING: --code-dir looks like a Windows path ({code_dir}).")
-        print("         The sbatch files cd there, so pass the cluster path, e.g.")
-        print("         --code-dir /gscratch/.../Code")
-        print("         (under Git Bash, prefix the command with MSYS_NO_PATHCONV=1)\n")
     root = os.path.dirname(local_dir)
     data_dir = os.path.join(root, "Data", "processed")
     out_dir = os.path.join(local_dir, "Cluster", "RunControls")
