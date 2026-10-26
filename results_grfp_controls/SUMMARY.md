@@ -107,53 +107,73 @@ same static weight as "rivaling the adaptive MAB agent."
 
 ## The sharper result: a fixed weight beats the bandit
 
-The adaptivity is not merely neutral against a random arm — it loses to simply
-picking one good weight and keeping it. Mean change in area vs passive across
-the 11 benchmarks (more negative is better):
+Everything below is **Relative AUC against iGS**, the manuscript's own
+normaliser: `AUC_method / AUC_iGS`, so **< 1.000 is better than iGS**.
+"better/worse" counts datasets where the paired 95% bootstrap CI on the
+per-seed difference excludes zero.
 
-| Selector | vs passive |
-|---|---|
-| **Fixed w=0.75** | **−3.45%** |
-| Fixed w=0.50 | −3.07% |
-| MAB (c=2.0) | −2.87% |
-| RandomArm | −2.81% |
-| Fixed w=0.25 | −2.74% |
-| iGS | −2.72% |
-| Fixed w=1.00 | −2.49% |
-| Fixed w=0.00 | −1.59% |
+**On the manuscript's own metric (full-pool), paper protocol, 14 datasets:**
 
-The bandit lands between the fixed weights, which is where averaging over its
-arm set puts you. Paired head-to-head, **`Fixed w=0.75` is significantly better
-than the bandit on 6 of 11 benchmarks and significantly worse on 1** (beer,
-−0.52%); four are ties.
-
-**Against the best fixed weight chosen in hindsight per dataset** — the exact
-comparison the manuscript claims WiGS matches — the bandit never wins:
-
-| Budget | Fixed better | MAB better | Statistical match |
+| Selector | Rel. AUC | vs iGS | better / worse |
 |---|---|---|---|
-| Full | **8 / 13** | 0 / 13 | 5 / 13 |
-| First 25% | **11 / 13** | 0 / 13 | 2 / 13 |
+| **Fixed w=0.75** | **0.9588** | **−4.12%** | 10 / 2 |
+| Fixed w=0.50 | 0.9668 | −3.32% | 11 / 3 |
+| RandomArm | 0.9696 | −3.04% | 9 / 3 |
+| MAB (c=2.0) | 0.9715 | −2.85% | 9 / 4 |
+| Fixed w=0.25 | 0.9973 | −0.27% | 6 / 5 |
+| iGS | 1.0000 | — | — |
+| Fixed w=1.00 | 1.0566 | +5.66% | 2 / 9 |
+| Fixed w=0.00 | 1.0885 | +8.85% | 0 / 12 |
+| Passive | 1.1352 | +13.52% | 0 / 14 |
 
-So under held-out test error the claim that WiGS *matches the best fixed weight
-in hindsight* does not hold, and it fails harder at the shorter budget — which
-is the budget at which weighting has any leverage at all. The shortfall is
-+0.3% to +3.6% of area at full budget and up to +7.7% early (concrete_slump).
+**On held-out test RMSE, 13 datasets (repo protocol / paper protocol):**
 
-## What does work: the weighted score function
+| Selector | Rel. AUC (repo) | Rel. AUC (paper) |
+|---|---|---|
+| **Fixed w=0.75** | **0.9935** | **0.9934** |
+| Fixed w=0.50 | 0.9971 | 0.9958 |
+| RandomArm | 0.9988 | 0.9967 |
+| MAB (c=2.0) | 0.9983 | 0.9969 |
+| Fixed w=0.25 | 0.9997 | 0.9996 |
+| iGS | 1.0000 | 1.0000 |
+| Fixed w=1.00 | 1.0014 | 0.9974 |
+| Fixed w=0.00 | 1.0103 | 1.0075 |
+| Passive | 1.0229 | 1.0170 |
 
-This is the correction to the picture the synthetic sets alone suggested. On the
-11 benchmarks, **active selection clearly beats passive**: the bandit improves on
-passive on 8 of 11 (CIs excluding zero) — bodyfat −7.2%, concrete_flow −4.5%,
-concrete_slump −3.8%, beer −3.6%, concrete_cs −3.3%, mpg −2.9%, qsar −2.0%,
-pm10 −1.0% — and is never significantly worse. *Every* weighted variant beats
-passive by 1.6–3.4% on average.
+Three things read straight off these.
 
-The two synthetic datasets were the only ones where passive won, and they are
-the two where the model is degenerate (below). **The earlier reading that
-"passive beats active" was an artefact of those two datasets and does not
-survive contact with the benchmarks.** The paper's case for greedy-sampling
-selection as such is not threatened by anything here.
+**The bandit and the random arm are the same selector, numerically.** 0.9715 vs
+0.9696 on full-pool, 0.9969 vs 0.9967 on test error. The gap between them is
+smaller than the gap between any two adjacent fixed weights.
+
+**A single constant beats the bandit.** `Fixed w=0.75` is 1.3 pp better than the
+bandit on full-pool and 0.35 pp better on test error. The bandit lands between
+the fixed weights, which is where averaging over its arm set puts you. Against
+the best fixed weight chosen in hindsight per dataset — the exact comparison the
+manuscript claims WiGS matches — the bandit is significantly **worse on 11 of 14
+datasets (full-pool) and better on 1**; on test error, worse on 8 of 13 at full
+budget and 11 of 13 over the first 25%.
+
+**The ordering is a weighting effect, not an adaptation effect.** Rel. AUC is
+monotone in `w` over the useful range on full-pool (w=0.00 at 1.0885 through
+w=0.75 at 0.9588), and every selector that sits near w≈0.5–0.75 — fixed, bandit,
+or random arm alike — lands in the same band.
+
+## What does work: the weighted additive criterion
+
+Against iGS, the weighted criterion wins at the right weight and the margin is
+substantial on the manuscript's metric: **−4.12%** for `w=0.75`, with the CI
+excluding zero on 10 of 14 datasets. The manuscript's headline claim — WiGS
+beats iGS — holds.
+
+Passive learning is the floor, **+13.52%** worse than iGS on full-pool
+(0 of 14 datasets better) and **+2.29%** on test error, so greedy-sampling
+selection as a family is clearly doing real work. Nothing here threatens that.
+
+What the numbers do not support is *where the gain comes from*. The gain tracks
+the weight, not the adaptation: a fixed `w=0.75` captures all of it and 1.3 pp
+more, while the bandit's arm selection contributes nothing a coin flip over the
+same arms would not.
 
 ## Model capability — the caveat that the benchmarks resolved
 
