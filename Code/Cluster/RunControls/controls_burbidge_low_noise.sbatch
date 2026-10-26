@@ -1,10 +1,10 @@
 #!/bin/bash
 #SBATCH --job-name=CTRL_burbidge_low_noise
 #SBATCH --partition=cpu-g2
-#SBATCH --array=1-1800
+#SBATCH --array=1-180
 #SBATCH --output=Cluster/RunControls/ClusterMessages/out/burbidge_low_noise_%A_%a.out
 #SBATCH --error=Cluster/RunControls/ClusterMessages/error/burbidge_low_noise_%A_%a.err
-#SBATCH --time=00:20:59
+#SBATCH --time=01:08:59
 #SBATCH --mem-per-cpu=4000MB
 #SBATCH --cpus-per-task=1
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=CTRL_bodyfat
 #SBATCH --partition=cpu-g2
-#SBATCH --array=1-1800
+#SBATCH --array=1-180
 #SBATCH --output=Cluster/RunControls/ClusterMessages/out/bodyfat_%A_%a.out
 #SBATCH --error=Cluster/RunControls/ClusterMessages/error/bodyfat_%A_%a.err
 #SBATCH --time=00:20:59

@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=CTRL_concrete_cs
 #SBATCH --partition=cpu-g2
-#SBATCH --array=1-1800
+#SBATCH --array=1-180
 #SBATCH --output=Cluster/RunControls/ClusterMessages/out/concrete_cs_%A_%a.out
 #SBATCH --error=Cluster/RunControls/ClusterMessages/error/concrete_cs_%A_%a.err
 #SBATCH --time=00:20:59

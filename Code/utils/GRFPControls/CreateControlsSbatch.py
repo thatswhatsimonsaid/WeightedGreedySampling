@@ -66,9 +66,10 @@ def measured_minutes(dataset, protocol, standardize):
 
 
 def sbatch_for(dataset, n_rows, n_feat, base_minutes, n_reps, code_dir, out_dir,
-               protocol="paper", standardize=1):
-    n_tasks = len(STRATEGIES) * n_reps
-    per_run = base_minutes * HEADROOM
+               protocol="paper", standardize=1, seeds_per_task=1):
+    n_chunks = (n_reps + seeds_per_task - 1) // seeds_per_task
+    n_tasks = len(STRATEGIES) * n_chunks
+    per_run = base_minutes * HEADROOM * seeds_per_task
     minutes = max(MIN_MINUTES, int(math.ceil(per_run * 1.3)))
     hours, mins = divmod(min(minutes, 23 * 60 + 59), 60)
     time_limit = f"{hours:02d}:{mins:02d}:59"
@@ -128,6 +129,10 @@ def main():
     ap.add_argument("--seeds", type=int, default=100)
     ap.add_argument("--protocol", choices=["repo", "paper"], default="paper")
     ap.add_argument("--standardize", type=int, default=1)
+    ap.add_argument("--seeds-per-task", type=int, default=10,
+                    help="Seeds per array task. Array elements count individually "
+                         "against QOSMaxSubmitJobPerUser, so the default of 10 "
+                         "turns 1800 tasks per dataset into 180.")
     ap.add_argument("--code-dir", type=str, default=None,
                     help="Path to Code/ ON THE CLUSTER. The sbatch files cd here, "
                          "so a Windows path baked in from a local run will not "
@@ -169,12 +174,13 @@ def main():
         base, _ = measured_minutes(name, args.protocol, args.standardize)
         path, n_tasks, tl, per_run = sbatch_for(
             name, n_rows, n_feat, base, args.seeds, code_dir, out_dir,
-            args.protocol, args.standardize)
+            args.protocol, args.standardize, args.seeds_per_task)
         core_h = n_tasks * per_run / 60.0
         total_core_h += core_h
         print(f"{name:<24}{n_rows:>7}{n_feat:>4}{n_tasks:>8}{tl:>11}"
               f"{per_run:>9.1f}m{core_h:>9.0f}")
-    print(f"\n{'TOTAL':<24}{'':>7}{'':>4}{len(names)*len(STRATEGIES)*args.seeds:>8}"
+    n_chunks_t = (args.seeds + args.seeds_per_task - 1) // args.seeds_per_task
+    print(f"\n{'TOTAL':<24}{'':>7}{'':>4}{len(names)*len(STRATEGIES)*n_chunks_t:>8}"
           f"{'':>11}{'':>10}{total_core_h:>9.0f}")
     print(f"\nWrote {len(names)} sbatch files to {out_dir}")
     print("Submit with:  for f in Cluster/RunControls/controls_*.sbatch; do sbatch $f; done")

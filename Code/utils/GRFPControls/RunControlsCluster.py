@@ -34,30 +34,44 @@ def main():
     ap.add_argument("--NReplications", type=int, required=True)
     ap.add_argument("--Protocol", choices=["repo", "paper"], default="paper")
     ap.add_argument("--Standardize", type=int, default=1)
+    ap.add_argument("--SeedsPerTask", type=int, default=1,
+                    help="Seeds handled by one array task. >1 shrinks the array, "
+                         "which matters under a QOSMaxSubmitJobPerUser cap: array "
+                         "elements count individually, so 18x100 per dataset is "
+                         "1800 submitted jobs.")
     ap.add_argument("--OutRoot", type=str, default=None)
     args = ap.parse_args()
 
     labels = list(STRATEGIES)
+    spt = max(1, args.SeedsPerTask)
+    n_chunks = (args.NReplications + spt - 1) // spt
     idx = args.TaskID - 1
-    sel_index, seed = divmod(idx, args.NReplications)
+    sel_index, chunk = divmod(idx, n_chunks)
     if sel_index >= len(labels):
         raise SystemExit(f"TaskID {args.TaskID} exceeds "
-                         f"{len(labels) * args.NReplications} tasks for this dataset.")
+                         f"{len(labels) * n_chunks} tasks for this dataset.")
     label = labels[sel_index]
+    seeds = list(range(chunk * spt, min((chunk + 1) * spt, args.NReplications)))
+    if not seeds:
+        raise SystemExit(f"TaskID {args.TaskID} maps to an empty seed range.")
 
     out_root = args.OutRoot or os.path.join(os.path.dirname(os.getcwd()),
                                             "results_grfp_controls", "cluster")
     out_dir = os.path.join(out_root, args.Data)
     os.makedirs(out_dir, exist_ok=True)
     safe = label.replace("/", "_").replace(" ", "_")
-    out_path = os.path.join(out_dir, f"{safe}__seed{seed:03d}.pkl")
 
-    if os.path.exists(out_path):
-        print(f"[skip] {out_path} exists")
-        return
-
-    print(f"--- {args.Data} | {label} | seed {seed} "
+    print(f"--- {args.Data} | {label} | seeds {seeds[0]}-{seeds[-1]} "
           f"| protocol={args.Protocol} standardize={bool(args.Standardize)} ---", flush=True)
+    for seed in seeds:
+        _run_one(args, label, safe, seed, out_dir)
+
+
+def _run_one(args, label, safe, seed, out_dir):
+    out_path = os.path.join(out_dir, f"{safe}__seed{seed:03d}.pkl")
+    if os.path.exists(out_path):
+        print(f"[skip] seed {seed} exists", flush=True)
+        return
 
     sel_type, params = params_for(label, seed=seed)
     t0 = time.time()
@@ -94,7 +108,7 @@ def main():
 
     with open(out_path, "wb") as fh:
         pickle.dump(rec, fh, protocol=4)
-    print(f"--- done in {elapsed/60:.1f} min -> {out_path}", flush=True)
+    print(f"    seed {seed}: {elapsed/60:.1f} min -> {os.path.basename(out_path)}", flush=True)
 
 
 if __name__ == "__main__":
