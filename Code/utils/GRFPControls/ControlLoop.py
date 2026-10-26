@@ -34,6 +34,10 @@ from utils.Selector.GreedySamplingSelector import GreedySamplingSelector
 from utils.Selector.PassiveLearningSelector import PassiveLearningSelector
 from utils.Selector.WeightedGreedySamplingSelector import WeightedGreedySamplingSelector
 from utils.Selector.WiGS_MAB import WiGS_MAB_Selector
+from utils.Selector.EGALSelector import EGALSelector
+from utils.Selector.EMCMSelector import EMCMSelector
+from utils.Selector.QBCSelector import QBCSelector
+from utils.Selector.UncertaintySamplingSelector import UncertaintySamplingSelector
 
 from utils.GRFPControls.RandomArmSelector import RandomArmSelector
 from utils.GRFPControls.ControlProtocol import (
@@ -51,7 +55,23 @@ _SELECTORS = {
     "WeightedGreedySamplingSelector": WeightedGreedySamplingSelector,
     "WiGS_MAB_Selector": WiGS_MAB_Selector,
     "RandomArmSelector": RandomArmSelector,
+    "EGALSelector": EGALSelector,
+    "EMCMSelector": EMCMSelector,
+    "QBCSelector": QBCSelector,
+    "UncertaintySamplingSelector": UncertaintySamplingSelector,
 }
+
+
+def _register_sac():
+    """SAC needs torch, which not every environment has. Import it lazily."""
+    if "WiGS_SAC_Selector" in _SELECTORS:
+        return True
+    try:
+        from utils.Selector.WiGS_SAC import WiGS_SAC_Selector
+        _SELECTORS["WiGS_SAC_Selector"] = WiGS_SAC_Selector
+        return True
+    except Exception:
+        return False
 
 ### Selectors that actually consume the reward signal ###
 # Only WiGS_MAB_Selector (and its RandomArm control) read `current_rmse`; every
@@ -60,7 +80,12 @@ _SELECTORS = {
 # means skipping it for the reward-free selectors cannot change their splits,
 # their choices or their curves -- it only avoids 5 wasted refits per round.
 # `verify_cv_skip.py` asserts the curves are bit-identical either way.
-_REWARD_CONSUMERS = {"WiGS_MAB_Selector", "RandomArmSelector"}
+_REWARD_CONSUMERS = {"WiGS_MAB_Selector", "RandomArmSelector", "WiGS_SAC_Selector"}
+# WiGS_SAC_Selector puts `current_rmse` straight into its state vector and its
+# reward, so skipping the CV feeds it NaN and the actor emits NaN -- a
+# ValueError out of torch's Normal. Any selector added here must be checked for
+# a `current_rmse` reference first; the skip is only sound for selectors that
+# swallow it in **kwargs.
 
 
 def _load_dataset(name):
@@ -151,6 +176,9 @@ def RunControlIteration(DataFileInput,
     predictor_model = ModelClass(**model_init_args)
 
     ### Initialize Selector ###
+    if SelectorType == "WiGS_SAC_Selector" and SelectorType not in _SELECTORS:
+        if not _register_sac():
+            raise RuntimeError("WiGS_SAC_Selector needs torch, which is not importable here.")
     SelectorClass = _SELECTORS[SelectorType]
     sel_cfg = dict(selector_params)
     sel_cfg.setdefault("Seed", Seed)
@@ -164,7 +192,12 @@ def RunControlIteration(DataFileInput,
     needs_reward = SelectorType in _REWARD_CONSUMERS if ComputeCV is None else ComputeCV
 
     ### Logs ###
-    ErrorVecs = {'RMSE': [], 'MAE': [], 'R2': [], 'CC': []}
+    # Both metrics are recorded every round. They cost one extra predict each
+    # and are not comparable, so computing both once avoids a second full sweep
+    # when the question changes from "does it generalise" to "what does the
+    # manuscript's number say".
+    Curves = {m: {'RMSE': [], 'MAE': [], 'R2': [], 'CC': []}
+              for m in ('test', 'full_pool')}
     ArmLog = []
     SelectedObservationHistory = []
     cv_history = []
@@ -185,14 +218,16 @@ def RunControlIteration(DataFileInput,
         # "full_pool" -- the repo's own FullPoolErrorFunction, imported
         #                unmodified. The manuscript's *quoted numbers* match this
         #                one, so the controls have to be scored on it too.
-        if Metric == "full_pool":
-            TestOutputs = FullPoolErrorFunction(InputModel=predictor_model,
-                                                df_Train=df_Train,
-                                                df_Candidate=df_Candidate)
-        else:
-            TestOutputs = ControlTestSetError(InputModel=predictor_model, df_Test=df_Test)
-        for metric_name, value in TestOutputs.items():
-            ErrorVecs[metric_name].append(value)
+        both = {
+            'test': ControlTestSetError(InputModel=predictor_model, df_Test=df_Test),
+            'full_pool': FullPoolErrorFunction(InputModel=predictor_model,
+                                               df_Train=df_Train,
+                                               df_Candidate=df_Candidate),
+        }
+        for mname, out in both.items():
+            for metric_name, value in out.items():
+                Curves[mname][metric_name].append(value)
+        TestOutputs = both['full_pool' if Metric == 'full_pool' else 'test']
 
         ## 4. CV error (the bandit's reward signal -- unchanged) ##
         if needs_reward:
@@ -264,12 +299,13 @@ def RunControlIteration(DataFileInput,
             row["reward_derived"] = np.nan
 
     return {
-        "ErrorVecs": ErrorVecs,
+        "ErrorVecs": Curves['full_pool' if Metric == 'full_pool' else 'test'],
+        "Curves": Curves,
         "ArmLog": ArmLog,
         "cv_history": cv_history,
         "SelectedObservationHistory": SelectedObservationHistory,
         "InitialTrainIndices": InitialTrainIndices,
         "n_test": len(df_Test),
         "n_initial_train": len(InitialTrainIndices),
-        "n_rounds": len(ErrorVecs["RMSE"]),
+        "n_rounds": len(Curves['test']["RMSE"]),
     }
