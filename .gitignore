@@ -30,5 +30,8 @@ Results/selection_videos/**/*.svg
 
 
 # GRFP controls: cluster logs
-Code/Cluster/RunControls/ClusterMessages/
+# Keep the log directories (SLURM resolves --output before the job body runs,
+# so they must exist at submit time) but not the logs themselves.
+Code/Cluster/RunControls/ClusterMessages/**/*.out
+Code/Cluster/RunControls/ClusterMessages/**/*.err
 results_grfp_controls/cluster/

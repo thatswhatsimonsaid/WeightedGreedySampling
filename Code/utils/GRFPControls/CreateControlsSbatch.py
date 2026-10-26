@@ -73,7 +73,10 @@ def sbatch_for(dataset, n_rows, n_feat, base_minutes, n_reps, code_dir, out_dir,
     hours, mins = divmod(min(minutes, 23 * 60 + 59), 60)
     time_limit = f"{hours:02d}:{mins:02d}:59"
     memory = "8000MB" if n_rows > 2000 else "4000MB"
-    log_dir = "/".join([code_dir.rstrip("/\\"), "Cluster", "RunControls", "ClusterMessages"])
+    # Log paths are RELATIVE, so SLURM resolves them against the submit
+    # directory. Together with the cd below this makes the script portable: no
+    # absolute path is baked in, so nothing needs editing after a clone.
+    log_dir = "Cluster/RunControls/ClusterMessages"
 
     content = f"""#!/bin/bash
 #SBATCH --job-name=CTRL_{dataset}
@@ -85,13 +88,21 @@ def sbatch_for(dataset, n_rows, n_feat, base_minutes, n_reps, code_dir, out_dir,
 #SBATCH --mem-per-cpu={memory}
 #SBATCH --cpus-per-task=1
 
-cd "{code_dir}"
+# Submit from the Code/ directory (or from Cluster/RunControls/); the script
+# locates itself rather than carrying a hard-coded path.
+CODE_DIR="${{SLURM_SUBMIT_DIR:-$PWD}}"
+case "$CODE_DIR" in
+  */Cluster/RunControls) CODE_DIR="${{CODE_DIR%/Cluster/RunControls}}" ;;
+esac
+cd "$CODE_DIR" || exit 1
+
 export PYTHONDONTWRITEBYTECODE=1
 export OMP_NUM_THREADS=1
 export MKL_NUM_THREADS=1
 export OPENBLAS_NUM_THREADS=1
 
-python -m utils.GRFPControls.RunControlsCluster \\
+# Override with e.g.  PYTHON=python3  or a module/conda path, no edit needed.
+"${{PYTHON:-python}}" -m utils.GRFPControls.RunControlsCluster \\
     --Data "{dataset}" \\
     --TaskID "$SLURM_ARRAY_TASK_ID" \\
     --NReplications {n_reps} \\
