@@ -35,3 +35,9 @@ Results/selection_videos/**/*.svg
 Code/Cluster/RunControls/ClusterMessages/**/*.out
 Code/Cluster/RunControls/ClusterMessages/**/*.err
 results_grfp_controls/cluster/
+
+# Generated sbatch files: wall times are calibrated by probing the machine that
+# generates them, so a committed copy is wrong on any other machine and
+# conflicts with the regenerated one on pull. Create them with
+# Cluster/1_CreateControlsSbatch.sh.
+Code/Cluster/RunControls/controls_*.sbatch
