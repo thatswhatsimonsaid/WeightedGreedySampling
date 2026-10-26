@@ -4,7 +4,7 @@
 #SBATCH --array=1-1800
 #SBATCH --output=/gscratch/stf/troy/WeightedGreedySampling/Code/Cluster/RunControls/ClusterMessages/out/wine_red_%A_%a.out
 #SBATCH --error=/gscratch/stf/troy/WeightedGreedySampling/Code/Cluster/RunControls/ClusterMessages/error/wine_red_%A_%a.err
-#SBATCH --time=00:21:59
+#SBATCH --time=00:20:59
 #SBATCH --mem-per-cpu=4000MB
 #SBATCH --cpus-per-task=1
 

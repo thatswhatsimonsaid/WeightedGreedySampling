@@ -109,6 +109,11 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--all", action="store_true",
                     help="Every processed dataset, not just the unrun ones.")
+    ap.add_argument("--exclude", nargs="*", default=["wine_white"],
+                    help="Datasets to skip. Defaults to wine_white, which at "
+                         "n=4898 is about 9,460 core-hours on its own - 81%% of "
+                         "the full sweep - because cost grows steeply with pool "
+                         "size. Pass --exclude with no names to include it.")
     ap.add_argument("--seeds", type=int, default=100)
     ap.add_argument("--protocol", choices=["repo", "paper"], default="paper")
     ap.add_argument("--standardize", type=int, default=1)
@@ -137,6 +142,10 @@ def main():
     names = sorted(f[:-4] for f in os.listdir(data_dir) if f.endswith(".pkl"))
     if not args.all:
         names = [n for n in names if n in UNRUN]
+    skipped = [n for n in names if n in set(args.exclude)]
+    names = [n for n in names if n not in set(args.exclude)]
+    if skipped:
+        print(f"excluded: {', '.join(skipped)}\n")
 
     print(f"{len(STRATEGIES)} strategies x {args.seeds} seeds per dataset "
           f"| protocol={args.protocol} standardize={bool(args.standardize)}\n")
