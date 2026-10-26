@@ -1,0 +1,235 @@
+dataset,selector,milestone,N_rel
+beer,Fixed w=0.00,70%,1.3846153846153846
+beer,Fixed w=0.25,70%,1.0769230769230769
+beer,Fixed w=0.50,70%,1.0
+beer,Fixed w=0.75,70%,0.8461538461538461
+beer,Fixed w=1.00,70%,1.0769230769230769
+beer,MAB (c=2.0),70%,1.0
+beer,Passive,70%,1.6153846153846154
+beer,RandomArm,70%,1.1538461538461537
+beer,iGS,70%,1.0
+beer,Fixed w=0.00,80%,1.36
+beer,Fixed w=0.25,80%,0.92
+beer,Fixed w=0.50,80%,1.0
+beer,Fixed w=0.75,80%,0.84
+beer,Fixed w=1.00,80%,1.12
+beer,MAB (c=2.0),80%,0.92
+beer,Passive,80%,1.24
+beer,RandomArm,80%,0.92
+beer,iGS,80%,1.0
+bodyfat,Fixed w=0.00,70%,1.0
+bodyfat,Fixed w=0.25,70%,1.0
+bodyfat,Fixed w=0.50,70%,1.2
+bodyfat,Fixed w=0.75,70%,1.2
+bodyfat,Fixed w=1.00,70%,1.8
+bodyfat,MAB (c=2.0),70%,1.0
+bodyfat,Passive,70%,2.4
+bodyfat,RandomArm,70%,1.2
+bodyfat,iGS,70%,1.0
+bodyfat,Fixed w=0.00,80%,1.0
+bodyfat,Fixed w=0.25,80%,1.0
+bodyfat,Fixed w=0.50,80%,1.0
+bodyfat,Fixed w=0.75,80%,1.125
+bodyfat,Fixed w=1.00,80%,1.5
+bodyfat,MAB (c=2.0),80%,0.875
+bodyfat,Passive,80%,2.375
+bodyfat,RandomArm,80%,0.875
+bodyfat,iGS,80%,1.0
+concrete_cs,Fixed w=0.00,70%,1.0
+concrete_cs,Fixed w=0.25,70%,1.0
+concrete_cs,Fixed w=0.50,70%,0.8333333333333334
+concrete_cs,Fixed w=0.75,70%,1.0
+concrete_cs,Fixed w=1.00,70%,0.8333333333333334
+concrete_cs,MAB (c=2.0),70%,1.0
+concrete_cs,Passive,70%,1.1666666666666667
+concrete_cs,RandomArm,70%,1.0
+concrete_cs,iGS,70%,1.0
+concrete_cs,Fixed w=0.00,80%,1.125
+concrete_cs,Fixed w=0.25,80%,1.125
+concrete_cs,Fixed w=0.50,80%,0.875
+concrete_cs,Fixed w=0.75,80%,0.875
+concrete_cs,Fixed w=1.00,80%,0.875
+concrete_cs,MAB (c=2.0),80%,1.0
+concrete_cs,Passive,80%,1.375
+concrete_cs,RandomArm,80%,1.0
+concrete_cs,iGS,80%,1.0
+concrete_flow,Fixed w=0.00,70%,1.1666666666666667
+concrete_flow,Fixed w=0.25,70%,1.0
+concrete_flow,Fixed w=0.50,70%,1.0
+concrete_flow,Fixed w=0.75,70%,1.0
+concrete_flow,Fixed w=1.00,70%,1.0
+concrete_flow,MAB (c=2.0),70%,1.0
+concrete_flow,Passive,70%,2.0
+concrete_flow,RandomArm,70%,1.0
+concrete_flow,iGS,70%,1.0
+concrete_flow,Fixed w=0.00,80%,1.2222222222222223
+concrete_flow,Fixed w=0.25,80%,1.1111111111111112
+concrete_flow,Fixed w=0.50,80%,1.0
+concrete_flow,Fixed w=0.75,80%,1.0
+concrete_flow,Fixed w=1.00,80%,1.0
+concrete_flow,MAB (c=2.0),80%,1.0
+concrete_flow,Passive,80%,1.8888888888888888
+concrete_flow,RandomArm,80%,1.0
+concrete_flow,iGS,80%,1.0
+concrete_slump,Fixed w=0.00,70%,1.0
+concrete_slump,Fixed w=0.25,70%,1.1666666666666667
+concrete_slump,Fixed w=0.50,70%,1.1666666666666667
+concrete_slump,Fixed w=0.75,70%,1.1666666666666667
+concrete_slump,Fixed w=1.00,70%,1.1666666666666667
+concrete_slump,MAB (c=2.0),70%,1.0
+concrete_slump,Passive,70%,2.1666666666666665
+concrete_slump,RandomArm,70%,1.0
+concrete_slump,iGS,70%,1.0
+concrete_slump,Fixed w=0.00,80%,0.9
+concrete_slump,Fixed w=0.25,80%,1.1
+concrete_slump,Fixed w=0.50,80%,1.0
+concrete_slump,Fixed w=0.75,80%,0.9
+concrete_slump,Fixed w=1.00,80%,1.0
+concrete_slump,MAB (c=2.0),80%,1.0
+concrete_slump,Passive,80%,1.7
+concrete_slump,RandomArm,80%,0.9
+concrete_slump,iGS,80%,1.0
+dgp_three_regime,Fixed w=0.00,70%,31.884615384615383
+dgp_three_regime,Fixed w=0.25,70%,14.73076923076923
+dgp_three_regime,Fixed w=0.50,70%,14.807692307692308
+dgp_three_regime,Fixed w=0.75,70%,12.0
+dgp_three_regime,Fixed w=1.00,70%,47.19230769230769
+dgp_three_regime,MAB (c=2.0),70%,14.384615384615385
+dgp_three_regime,Passive,70%,5.961538461538462
+dgp_three_regime,RandomArm,70%,12.961538461538462
+dgp_three_regime,iGS,70%,1.0
+dgp_three_regime,Fixed w=0.00,80%,0.7847896440129449
+dgp_three_regime,Fixed w=0.25,80%,0.36003236245954695
+dgp_three_regime,Fixed w=0.50,80%,0.34951456310679613
+dgp_three_regime,Fixed w=0.75,80%,0.2936893203883495
+dgp_three_regime,Fixed w=1.00,80%,1.0
+dgp_three_regime,MAB (c=2.0),80%,0.3365695792880259
+dgp_three_regime,Passive,80%,0.23867313915857605
+dgp_three_regime,RandomArm,80%,0.31957928802589
+dgp_three_regime,iGS,80%,1.0
+dgp_two_regime,Fixed w=0.00,70%,7.916666666666667
+dgp_two_regime,Fixed w=0.25,70%,5.708333333333333
+dgp_two_regime,Fixed w=0.50,70%,5.416666666666667
+dgp_two_regime,Fixed w=0.75,70%,5.958333333333333
+dgp_two_regime,Fixed w=1.00,70%,0.4583333333333333
+dgp_two_regime,MAB (c=2.0),70%,4.645833333333333
+dgp_two_regime,Passive,70%,2.5416666666666665
+dgp_two_regime,RandomArm,70%,2.875
+dgp_two_regime,iGS,70%,1.0
+dgp_two_regime,Fixed w=0.00,80%,8.660714285714286
+dgp_two_regime,Fixed w=0.25,80%,6.428571428571429
+dgp_two_regime,Fixed w=0.50,80%,5.339285714285714
+dgp_two_regime,Fixed w=0.75,80%,5.892857142857143
+dgp_two_regime,Fixed w=1.00,80%,0.6071428571428571
+dgp_two_regime,MAB (c=2.0),80%,5.285714285714286
+dgp_two_regime,Passive,80%,3.107142857142857
+dgp_two_regime,RandomArm,80%,5.0
+dgp_two_regime,iGS,80%,1.0
+housing,Fixed w=0.00,70%,1.1111111111111112
+housing,Fixed w=0.25,70%,0.6666666666666666
+housing,Fixed w=0.50,70%,0.7777777777777778
+housing,Fixed w=0.75,70%,1.0
+housing,Fixed w=1.00,70%,2.0
+housing,MAB (c=2.0),70%,0.8888888888888888
+housing,Passive,70%,2.7777777777777777
+housing,RandomArm,70%,0.8888888888888888
+housing,iGS,70%,1.0
+housing,Fixed w=0.00,80%,1.1521739130434783
+housing,Fixed w=0.25,80%,1.1956521739130435
+housing,Fixed w=0.50,80%,0.9347826086956522
+housing,Fixed w=0.75,80%,0.391304347826087
+housing,Fixed w=1.00,80%,0.782608695652174
+housing,MAB (c=2.0),80%,0.9782608695652174
+housing,Passive,80%,0.9782608695652174
+housing,RandomArm,80%,1.1304347826086956
+housing,iGS,80%,1.0
+mpg,Fixed w=0.00,70%,2.0
+mpg,Fixed w=0.25,70%,1.1875
+mpg,Fixed w=0.50,70%,0.75
+mpg,Fixed w=0.75,70%,0.5625
+mpg,Fixed w=1.00,70%,0.625
+mpg,MAB (c=2.0),70%,0.6875
+mpg,Passive,70%,1.6875
+mpg,RandomArm,70%,0.6875
+mpg,iGS,70%,1.0
+mpg,Fixed w=0.00,80%,1.875
+mpg,Fixed w=0.25,80%,1.0625
+mpg,Fixed w=0.50,80%,0.75
+mpg,Fixed w=0.75,80%,0.53125
+mpg,Fixed w=1.00,80%,0.53125
+mpg,MAB (c=2.0),80%,0.71875
+mpg,Passive,80%,1.25
+mpg,RandomArm,80%,0.75
+mpg,iGS,80%,1.0
+no2,Fixed w=0.00,70%,1.1666666666666667
+no2,Fixed w=0.25,70%,1.5333333333333334
+no2,Fixed w=0.50,70%,1.2333333333333334
+no2,Fixed w=0.75,70%,1.1666666666666667
+no2,Fixed w=1.00,70%,1.2333333333333334
+no2,MAB (c=2.0),70%,1.2
+no2,Passive,70%,1.2333333333333334
+no2,RandomArm,70%,1.2666666666666666
+no2,iGS,70%,1.0
+no2,Fixed w=0.00,80%,1.0392156862745099
+no2,Fixed w=0.25,80%,1.4705882352941178
+no2,Fixed w=0.50,80%,1.2549019607843137
+no2,Fixed w=0.75,80%,1.0196078431372548
+no2,Fixed w=1.00,80%,1.1568627450980393
+no2,MAB (c=2.0),80%,1.0588235294117647
+no2,Passive,80%,1.2549019607843137
+no2,RandomArm,80%,1.2156862745098038
+no2,iGS,80%,1.0
+pm10,Fixed w=0.00,70%,1.3846153846153846
+pm10,Fixed w=0.25,70%,1.0
+pm10,Fixed w=0.50,70%,0.8461538461538461
+pm10,Fixed w=0.75,70%,0.9615384615384616
+pm10,Fixed w=1.00,70%,1.1153846153846154
+pm10,MAB (c=2.0),70%,1.0384615384615385
+pm10,Passive,70%,1.5
+pm10,RandomArm,70%,0.9615384615384616
+pm10,iGS,70%,1.0
+pm10,Fixed w=0.00,80%,1.0566037735849056
+pm10,Fixed w=0.25,80%,1.0
+pm10,Fixed w=0.50,80%,0.8490566037735849
+pm10,Fixed w=0.75,80%,1.2264150943396226
+pm10,Fixed w=1.00,80%,1.150943396226415
+pm10,MAB (c=2.0),80%,1.3396226415094339
+pm10,Passive,80%,1.2264150943396226
+pm10,RandomArm,80%,1.1320754716981132
+pm10,iGS,80%,1.0
+qsar,Fixed w=0.00,70%,1.0
+qsar,Fixed w=0.25,70%,1.175
+qsar,Fixed w=0.50,70%,0.975
+qsar,Fixed w=0.75,70%,0.8
+qsar,Fixed w=1.00,70%,0.65
+qsar,MAB (c=2.0),70%,0.95
+qsar,Passive,70%,1.025
+qsar,RandomArm,70%,1.075
+qsar,iGS,70%,1.0
+qsar,Fixed w=0.00,80%,0.984375
+qsar,Fixed w=0.25,80%,1.109375
+qsar,Fixed w=0.50,80%,1.015625
+qsar,Fixed w=0.75,80%,0.765625
+qsar,Fixed w=1.00,80%,0.75
+qsar,MAB (c=2.0),80%,0.921875
+qsar,Passive,80%,0.9375
+qsar,RandomArm,80%,0.953125
+qsar,iGS,80%,1.0
+yacht,Fixed w=0.00,70%,2.923076923076923
+yacht,Fixed w=0.25,70%,0.8461538461538461
+yacht,Fixed w=0.50,70%,1.3076923076923077
+yacht,Fixed w=0.75,70%,3.6923076923076925
+yacht,Fixed w=1.00,70%,5.384615384615385
+yacht,MAB (c=2.0),70%,1.6153846153846154
+yacht,Passive,70%,1.9230769230769231
+yacht,RandomArm,70%,1.9230769230769231
+yacht,iGS,70%,1.0
+yacht,Fixed w=0.00,80%,2.7
+yacht,Fixed w=0.25,80%,1.0666666666666667
+yacht,Fixed w=0.50,80%,1.6
+yacht,Fixed w=0.75,80%,2.1666666666666665
+yacht,Fixed w=1.00,80%,2.7333333333333334
+yacht,MAB (c=2.0),80%,1.8
+yacht,Passive,80%,1.3666666666666667
+yacht,RandomArm,80%,1.7333333333333334
+yacht,iGS,80%,1.0

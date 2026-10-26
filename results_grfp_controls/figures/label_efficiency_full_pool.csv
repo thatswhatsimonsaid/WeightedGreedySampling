@@ -1,0 +1,253 @@
+dataset,selector,milestone,N_rel
+beer,Fixed w=0.00,70%,1.0
+beer,Fixed w=0.25,70%,1.015748031496063
+beer,Fixed w=0.50,70%,1.0196850393700787
+beer,Fixed w=0.75,70%,1.015748031496063
+beer,Fixed w=1.00,70%,1.0354330708661417
+beer,MAB (c=2.0),70%,1.0196850393700787
+beer,Passive,70%,1.031496062992126
+beer,RandomArm,70%,1.015748031496063
+beer,iGS,70%,1.0
+beer,Fixed w=0.00,80%,0.9964788732394366
+beer,Fixed w=0.25,80%,1.0035211267605635
+beer,Fixed w=0.50,80%,1.0035211267605635
+beer,Fixed w=0.75,80%,1.0105633802816902
+beer,Fixed w=1.00,80%,1.0140845070422535
+beer,MAB (c=2.0),80%,1.0
+beer,Passive,80%,1.0140845070422535
+beer,RandomArm,80%,1.0
+beer,iGS,80%,1.0
+bodyfat,Fixed w=0.00,70%,1.0740740740740742
+bodyfat,Fixed w=0.25,70%,1.0185185185185186
+bodyfat,Fixed w=0.50,70%,0.9629629629629629
+bodyfat,Fixed w=0.75,70%,0.9444444444444444
+bodyfat,Fixed w=1.00,70%,0.8888888888888888
+bodyfat,MAB (c=2.0),70%,0.9629629629629629
+bodyfat,Passive,70%,1.2962962962962963
+bodyfat,RandomArm,70%,1.0
+bodyfat,iGS,70%,1.0
+bodyfat,Fixed w=0.00,80%,1.0218978102189782
+bodyfat,Fixed w=0.25,80%,0.9708029197080292
+bodyfat,Fixed w=0.50,80%,0.9635036496350365
+bodyfat,Fixed w=0.75,80%,0.9927007299270073
+bodyfat,Fixed w=1.00,80%,0.9854014598540146
+bodyfat,MAB (c=2.0),80%,0.9708029197080292
+bodyfat,Passive,80%,1.0291970802919708
+bodyfat,RandomArm,80%,0.9708029197080292
+bodyfat,iGS,80%,1.0
+concrete_cs,Fixed w=0.00,70%,1.2916666666666667
+concrete_cs,Fixed w=0.25,70%,0.9583333333333334
+concrete_cs,Fixed w=0.50,70%,0.9583333333333334
+concrete_cs,Fixed w=0.75,70%,0.875
+concrete_cs,Fixed w=1.00,70%,0.9166666666666666
+concrete_cs,MAB (c=2.0),70%,0.9166666666666666
+concrete_cs,Passive,70%,1.375
+concrete_cs,RandomArm,70%,0.9583333333333334
+concrete_cs,iGS,70%,1.0
+concrete_cs,Fixed w=0.00,80%,1.1372549019607843
+concrete_cs,Fixed w=0.25,80%,0.9803921568627451
+concrete_cs,Fixed w=0.50,80%,0.9019607843137255
+concrete_cs,Fixed w=0.75,80%,0.9411764705882353
+concrete_cs,Fixed w=1.00,80%,0.9803921568627451
+concrete_cs,MAB (c=2.0),80%,0.9215686274509803
+concrete_cs,Passive,80%,1.196078431372549
+concrete_cs,RandomArm,80%,0.9215686274509803
+concrete_cs,iGS,80%,1.0
+concrete_flow,Fixed w=0.00,70%,1.108695652173913
+concrete_flow,Fixed w=0.25,70%,0.9565217391304348
+concrete_flow,Fixed w=0.50,70%,0.9130434782608695
+concrete_flow,Fixed w=0.75,70%,0.9565217391304348
+concrete_flow,Fixed w=1.00,70%,1.0434782608695652
+concrete_flow,MAB (c=2.0),70%,0.9565217391304348
+concrete_flow,Passive,70%,1.1521739130434783
+concrete_flow,RandomArm,70%,0.9347826086956522
+concrete_flow,iGS,70%,1.0
+concrete_flow,Fixed w=0.00,80%,1.0454545454545454
+concrete_flow,Fixed w=0.25,80%,0.9848484848484849
+concrete_flow,Fixed w=0.50,80%,0.9696969696969697
+concrete_flow,Fixed w=0.75,80%,1.0
+concrete_flow,Fixed w=1.00,80%,1.0454545454545454
+concrete_flow,MAB (c=2.0),80%,0.9848484848484849
+concrete_flow,Passive,80%,1.0909090909090908
+concrete_flow,RandomArm,80%,0.9696969696969697
+concrete_flow,iGS,80%,1.0
+concrete_slump,Fixed w=0.00,70%,1.0217391304347827
+concrete_slump,Fixed w=0.25,70%,0.9782608695652174
+concrete_slump,Fixed w=0.50,70%,0.9347826086956522
+concrete_slump,Fixed w=0.75,70%,1.0434782608695652
+concrete_slump,Fixed w=1.00,70%,1.108695652173913
+concrete_slump,MAB (c=2.0),70%,1.0
+concrete_slump,Passive,70%,1.2391304347826086
+concrete_slump,RandomArm,70%,0.9782608695652174
+concrete_slump,iGS,70%,1.0
+concrete_slump,Fixed w=0.00,80%,1.0
+concrete_slump,Fixed w=0.25,80%,1.0307692307692307
+concrete_slump,Fixed w=0.50,80%,1.0
+concrete_slump,Fixed w=0.75,80%,1.0307692307692307
+concrete_slump,Fixed w=1.00,80%,1.1384615384615384
+concrete_slump,MAB (c=2.0),80%,1.0153846153846153
+concrete_slump,Passive,80%,1.123076923076923
+concrete_slump,RandomArm,80%,1.0153846153846153
+concrete_slump,iGS,80%,1.0
+dgp_three_regime,Fixed w=0.00,70%,0.9486133768352365
+dgp_three_regime,Fixed w=0.25,70%,0.7030995106035889
+dgp_three_regime,Fixed w=0.50,70%,0.6753670473083198
+dgp_three_regime,Fixed w=0.75,70%,0.6769983686786297
+dgp_three_regime,Fixed w=1.00,70%,1.0
+dgp_three_regime,MAB (c=2.0),70%,0.6688417618270799
+dgp_three_regime,Passive,70%,0.9420880913539967
+dgp_three_regime,RandomArm,70%,0.66721044045677
+dgp_three_regime,iGS,70%,1.0
+dgp_three_regime,Fixed w=0.00,80%,0.9832134292565947
+dgp_three_regime,Fixed w=0.25,80%,0.8465227817745803
+dgp_three_regime,Fixed w=0.50,80%,0.8169464428457234
+dgp_three_regime,Fixed w=0.75,80%,0.8025579536370904
+dgp_three_regime,Fixed w=1.00,80%,1.0
+dgp_three_regime,MAB (c=2.0),80%,0.8113509192645884
+dgp_three_regime,Passive,80%,0.9768185451638689
+dgp_three_regime,RandomArm,80%,0.8161470823341327
+dgp_three_regime,iGS,80%,1.0
+dgp_two_regime,Fixed w=0.00,70%,1.2662229617304492
+dgp_two_regime,Fixed w=0.25,70%,1.0016638935108153
+dgp_two_regime,Fixed w=0.50,70%,0.908485856905158
+dgp_two_regime,Fixed w=0.75,70%,0.8885191347753744
+dgp_two_regime,Fixed w=1.00,70%,1.2113144758735441
+dgp_two_regime,MAB (c=2.0),70%,0.908485856905158
+dgp_two_regime,Passive,70%,1.2795341098169717
+dgp_two_regime,RandomArm,70%,0.9168053244592346
+dgp_two_regime,iGS,70%,1.0
+dgp_two_regime,Fixed w=0.00,80%,1.1232686980609419
+dgp_two_regime,Fixed w=0.25,80%,0.9556786703601108
+dgp_two_regime,Fixed w=0.50,80%,0.9196675900277008
+dgp_two_regime,Fixed w=0.75,80%,0.8947368421052632
+dgp_two_regime,Fixed w=1.00,80%,1.0831024930747923
+dgp_two_regime,MAB (c=2.0),80%,0.9182825484764543
+dgp_two_regime,Passive,80%,1.128808864265928
+dgp_two_regime,RandomArm,80%,0.9168975069252078
+dgp_two_regime,iGS,80%,1.0
+dgp_two_regime_gmm,Fixed w=0.00,70%,1.0412234042553192
+dgp_two_regime_gmm,Fixed w=0.25,70%,1.0172872340425532
+dgp_two_regime_gmm,Fixed w=0.50,70%,1.0319148936170213
+dgp_two_regime_gmm,Fixed w=0.75,70%,1.023936170212766
+dgp_two_regime_gmm,Fixed w=1.00,70%,1.038563829787234
+dgp_two_regime_gmm,MAB (c=2.0),70%,1.0172872340425532
+dgp_two_regime_gmm,Passive,70%,1.0252659574468086
+dgp_two_regime_gmm,RandomArm,70%,1.0199468085106382
+dgp_two_regime_gmm,iGS,70%,1.0
+dgp_two_regime_gmm,Fixed w=0.00,80%,1.0098643649815042
+dgp_two_regime_gmm,Fixed w=0.25,80%,0.998766954377312
+dgp_two_regime_gmm,Fixed w=0.50,80%,1.0160295930949446
+dgp_two_regime_gmm,Fixed w=0.75,80%,1.0123304562268804
+dgp_two_regime_gmm,Fixed w=1.00,80%,1.0110974106041923
+dgp_two_regime_gmm,MAB (c=2.0),80%,1.0061652281134401
+dgp_two_regime_gmm,Passive,80%,1.0036991368680641
+dgp_two_regime_gmm,RandomArm,80%,1.0086313193588163
+dgp_two_regime_gmm,iGS,80%,1.0
+housing,Fixed w=0.00,70%,1.13
+housing,Fixed w=0.25,70%,0.925
+housing,Fixed w=0.50,70%,0.905
+housing,Fixed w=0.75,70%,0.97
+housing,Fixed w=1.00,70%,1.17
+housing,MAB (c=2.0),70%,0.93
+housing,Passive,70%,1.445
+housing,RandomArm,70%,0.92
+housing,iGS,70%,1.0
+housing,Fixed w=0.00,80%,1.0871080139372822
+housing,Fixed w=0.25,80%,0.9477351916376306
+housing,Fixed w=0.50,80%,0.9303135888501742
+housing,Fixed w=0.75,80%,0.975609756097561
+housing,Fixed w=1.00,80%,1.1602787456445993
+housing,MAB (c=2.0),80%,0.9547038327526133
+housing,Passive,80%,1.264808362369338
+housing,RandomArm,80%,0.9442508710801394
+housing,iGS,80%,1.0
+mpg,Fixed w=0.00,70%,1.08203125
+mpg,Fixed w=0.25,70%,1.0
+mpg,Fixed w=0.50,70%,1.01953125
+mpg,Fixed w=0.75,70%,1.00390625
+mpg,Fixed w=1.00,70%,1.015625
+mpg,MAB (c=2.0),70%,1.00390625
+mpg,Passive,70%,1.07421875
+mpg,RandomArm,70%,1.00390625
+mpg,iGS,70%,1.0
+mpg,Fixed w=0.00,80%,1.0335570469798658
+mpg,Fixed w=0.25,80%,0.9832214765100671
+mpg,Fixed w=0.50,80%,1.0201342281879195
+mpg,Fixed w=0.75,80%,1.0201342281879195
+mpg,Fixed w=1.00,80%,1.0067114093959733
+mpg,MAB (c=2.0),80%,1.0
+mpg,Passive,80%,1.0268456375838926
+mpg,RandomArm,80%,1.0
+mpg,iGS,80%,1.0
+no2,Fixed w=0.00,70%,0.9971098265895953
+no2,Fixed w=0.25,70%,1.0317919075144508
+no2,Fixed w=0.50,70%,1.0202312138728324
+no2,Fixed w=0.75,70%,1.0144508670520231
+no2,Fixed w=1.00,70%,1.0115606936416186
+no2,MAB (c=2.0),70%,1.023121387283237
+no2,Passive,70%,1.0664739884393064
+no2,RandomArm,70%,1.0202312138728324
+no2,iGS,70%,1.0
+no2,Fixed w=0.00,80%,0.9948320413436692
+no2,Fixed w=0.25,80%,1.0232558139534884
+no2,Fixed w=0.50,80%,1.0077519379844961
+no2,Fixed w=0.75,80%,0.9948320413436692
+no2,Fixed w=1.00,80%,1.0025839793281655
+no2,MAB (c=2.0),80%,1.0180878552971577
+no2,Passive,80%,1.0335917312661498
+no2,RandomArm,80%,1.020671834625323
+no2,iGS,80%,1.0
+pm10,Fixed w=0.00,70%,0.9944903581267218
+pm10,Fixed w=0.25,70%,0.9834710743801653
+pm10,Fixed w=0.50,70%,0.9586776859504132
+pm10,Fixed w=0.75,70%,0.9338842975206612
+pm10,Fixed w=1.00,70%,0.9862258953168044
+pm10,MAB (c=2.0),70%,0.9724517906336089
+pm10,Passive,70%,1.0137741046831956
+pm10,RandomArm,70%,0.9724517906336089
+pm10,iGS,70%,1.0
+pm10,Fixed w=0.00,80%,1.0050761421319796
+pm10,Fixed w=0.25,80%,0.9822335025380711
+pm10,Fixed w=0.50,80%,0.9593908629441624
+pm10,Fixed w=0.75,80%,0.9593908629441624
+pm10,Fixed w=1.00,80%,0.9949238578680203
+pm10,MAB (c=2.0),80%,0.9644670050761421
+pm10,Passive,80%,1.015228426395939
+pm10,RandomArm,80%,0.9644670050761421
+pm10,iGS,80%,1.0
+qsar,Fixed w=0.00,70%,1.0753623188405796
+qsar,Fixed w=0.25,70%,0.9884057971014493
+qsar,Fixed w=0.50,70%,0.9565217391304348
+qsar,Fixed w=0.75,70%,0.927536231884058
+qsar,Fixed w=1.00,70%,0.9971014492753624
+qsar,MAB (c=2.0),70%,0.9623188405797102
+qsar,Passive,70%,1.1333333333333333
+qsar,RandomArm,70%,0.9594202898550724
+qsar,iGS,70%,1.0
+qsar,Fixed w=0.00,80%,1.0603015075376885
+qsar,Fixed w=0.25,80%,1.0050251256281406
+qsar,Fixed w=0.50,80%,0.9773869346733668
+qsar,Fixed w=0.75,80%,0.9623115577889447
+qsar,Fixed w=1.00,80%,1.0075376884422111
+qsar,MAB (c=2.0),80%,0.9748743718592965
+qsar,Passive,80%,1.0829145728643217
+qsar,RandomArm,80%,0.9773869346733668
+qsar,iGS,80%,1.0
+yacht,Fixed w=0.00,70%,1.0670391061452513
+yacht,Fixed w=0.25,70%,0.9776536312849162
+yacht,Fixed w=0.50,70%,0.9888268156424581
+yacht,Fixed w=0.75,70%,1.0223463687150838
+yacht,Fixed w=1.00,70%,1.1955307262569832
+yacht,MAB (c=2.0),70%,1.0167597765363128
+yacht,Passive,70%,1.2122905027932962
+yacht,RandomArm,70%,1.0223463687150838
+yacht,iGS,70%,1.0
+yacht,Fixed w=0.00,80%,1.0194174757281553
+yacht,Fixed w=0.25,80%,1.0242718446601942
+yacht,Fixed w=0.50,80%,0.9951456310679612
+yacht,Fixed w=0.75,80%,1.029126213592233
+yacht,Fixed w=1.00,80%,1.1601941747572815
+yacht,MAB (c=2.0),80%,1.0242718446601942
+yacht,Passive,80%,1.174757281553398
+yacht,RandomArm,80%,1.0242718446601942
+yacht,iGS,80%,1.0
