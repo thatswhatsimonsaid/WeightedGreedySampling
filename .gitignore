@@ -28,3 +28,7 @@ Results/selection_videos/**/frames_png_for_video/
 Results/selection_videos/**/*.png
 Results/selection_videos/**/*.svg
 
+
+# GRFP controls: cluster logs
+Code/Cluster/RunControls/ClusterMessages/
+results_grfp_controls/cluster/
