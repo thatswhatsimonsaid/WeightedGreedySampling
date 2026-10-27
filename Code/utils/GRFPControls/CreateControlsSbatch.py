@@ -107,9 +107,17 @@ export OPENBLAS_NUM_THREADS=1
     --Data "{dataset}" \\
     --TaskID "$SLURM_ARRAY_TASK_ID" \\
     --NReplications {n_reps} \\
+    --SeedsPerTask {seeds_per_task} \\
     --Protocol {protocol} \\
     --Standardize {standardize}
 """
+    # The array size and --SeedsPerTask must agree: the array is
+    # len(STRATEGIES) * ceil(n_reps / seeds_per_task), and the runner derives
+    # the same chunking from --SeedsPerTask. If the flag is missing the runner
+    # defaults to 1 seed per task, so a 180-element array covers only the first
+    # two strategies instead of all eighteen.
+    assert f"--SeedsPerTask {seeds_per_task}" in content, \
+        "sbatch template lost --SeedsPerTask; array size and chunking would disagree"
     path = os.path.join(out_dir, f"controls_{dataset}.sbatch")
     with open(path, "w", newline="\n") as f:
         f.write(content)
