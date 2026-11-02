@@ -29,9 +29,15 @@ for METRIC in full_pool test; do
         --dirs "$SRC" --metrics "$METRIC" --out "$OUT" --budget "$BUDGET"
 done
 
-echo ""
-echo "--- Summary tables (relative to iGS) ---"
-"${PYTHON:-python}" -m utils.GRFPControls.RelativeToIGS --ref iGS
-"${PYTHON:-python}" -m utils.GRFPControls.WinLossTie
+for METRIC in full_pool test; do
+    SRC="../results_grfp_controls/full_suite/${METRIC}"
+    [ -f "${SRC}/exp_a_runs.csv" ] || continue
+    echo ""
+    echo "=============================================================="
+    echo " Summary tables -- ${METRIC}"
+    echo "=============================================================="
+    "${PYTHON:-python}" -m utils.GRFPControls.RelativeToIGS         --dirs "$SRC" --ref iGS --label "${METRIC} (relative to iGS)"
+    "${PYTHON:-python}" -m utils.GRFPControls.RelativeToIGS         --dirs "$SRC" --ref "WiGS (MAB-UCB1, c=2.0)"         --label "${METRIC} (relative to the bandit)"
+done
 echo ""
 echo "Figures written to $(realpath "$OUT")"

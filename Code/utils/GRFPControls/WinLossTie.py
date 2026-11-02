@@ -1,43 +1,45 @@
-import os, sys
-sys.path.insert(0, os.getcwd())
-from utils.GRFPControls import _bootstrap  # noqa
-import numpy as np, pandas as pd
-from utils.GRFPControls.Analyze import paired_bootstrap_ci
+"""
+Win / loss / tie record of every selector against a reference.
 
-R='C:/vscode/WeightedGreedySampling_Test_Split/results_grfp_controls/'
-ORDER=['Fixed w=0.00','Fixed w=0.25','Fixed w=0.50','Fixed w=0.75','Fixed w=1.00',
-       'MAB (c=2.0)','RandomArm','iGS','Passive']
+A win or loss requires the paired 95% bootstrap CI on the per-seed difference
+to exclude zero; anything else is a tie. The tie column is the point of this
+table: a headline Relative AUC can rest on datasets that are individually
+indistinguishable, and that only shows up here.
 
-def tbl(paths,label):
-    r=pd.concat([pd.read_csv(p) for p in paths],ignore_index=True)
-    dss=sorted(r.dataset.unique()); n=len(dss)
-    rows=[]
-    for sel in ORDER:
-        rels=[];b=l=t=0
-        for ds in dss:
-            w=r[r.dataset==ds].pivot_table(index='seed',columns='selector',values='area')
-            if sel not in w.columns: continue
-            pr=w[[sel,'iGS']].dropna()
-            rels.append(pr[sel].mean()/pr['iGS'].mean())
-            if sel=='iGS': continue
-            m,lo,hi=paired_bootstrap_ci((pr[sel]-pr['iGS']).values,n_boot=10000,seed=17)
-            if hi<0: b+=1
-            elif lo>0: l+=1
-            else: t+=1
-        if not rels: continue
-        rows.append({'Selector':sel,'RelAUC':np.mean(rels),'pct':100*(np.mean(rels)-1),
-                     'Win':b,'Loss':l,'Tie':t,'n':n})
-    d=pd.DataFrame(rows).sort_values('RelAUC')
-    print(f'\n=== {label}  ({n} datasets x 100 seeds) ===')
-    print(f'{"Selector":<14} {"Rel.AUC":>8} {"vs iGS":>8}   {"beats / loses / ties":>22}')
-    print('-'*58)
-    for _,x in d.iterrows():
-        if x.Selector=='iGS':
-            print(f'{x.Selector:<14} {x.RelAUC:>8.4f} {"—":>8}   {"(reference)":>22}')
-        else:
-            wlt=f'{int(x.Win)} / {int(x.Loss)} / {int(x.Tie)}'
-            print(f'{x.Selector:<14} {x.RelAUC:>8.4f} {x.pct:>+7.2f}%   {wlt:>22}')
+Usage (from the Code/ directory):
+    python -m utils.GRFPControls.WinLossTie --dirs ../results_grfp_controls/full_suite/full_pool
+"""
 
-tbl([R+'paper_metric_fullpool/exp_a_runs.csv'], "FULL-POOL — the paper's own metric")
-tbl([R+'paper_protocol/exp_a_runs.csv'], "TEST RMSE — paper protocol")
-tbl([R+'exp_a_runs.csv',R+'benchmarks/exp_a_runs.csv'], "TEST RMSE — repo config")
+from utils.GRFPControls import _bootstrap  # noqa: F401
+
+import argparse
+import os
+
+from utils.GRFPControls.RelativeToIGS import table, results_root
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--dirs", nargs="*", default=None)
+    ap.add_argument("--ref", default="iGS")
+    ap.add_argument("--n-boot", type=int, default=10000)
+    args = ap.parse_args()
+
+    if args.dirs:
+        for d in args.dirs:
+            table([d], os.path.basename(d.rstrip("/\\")), ref=args.ref,
+                  n_boot=args.n_boot)
+        return
+
+    R = results_root()
+    for sub, lab in (("full_suite/full_pool", "FULL SUITE + FULL-POOL"),
+                     ("full_suite/test", "FULL SUITE + TEST RMSE"),
+                     ("paper_metric_fullpool", "PAPER PROTOCOL + FULL-POOL"),
+                     ("paper_protocol", "PAPER PROTOCOL + TEST RMSE")):
+        p = os.path.join(R, sub)
+        if os.path.exists(os.path.join(p, "exp_a_runs.csv")):
+            table([p], lab, ref=args.ref, n_boot=args.n_boot)
+
+
+if __name__ == "__main__":
+    main()

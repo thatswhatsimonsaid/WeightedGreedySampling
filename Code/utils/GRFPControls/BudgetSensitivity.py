@@ -5,7 +5,7 @@ import numpy as np, pandas as pd
 from utils.GRFPControls.Analyze import paired_bootstrap_ci
 from utils.GRFPControls.ControlProtocol import LearningCurveArea
 
-R='C:/vscode/WeightedGreedySampling_Test_Split/results_grfp_controls/'
+R=os.path.join(os.path.dirname(os.getcwd()),'results_grfp_controls')+os.sep
 ORDER=['Fixed w=0.00','Fixed w=0.25','Fixed w=0.50','Fixed w=0.75','Fixed w=1.00',
        'MAB (c=2.0)','RandomArm','iGS','Passive']
 FIXED=['Fixed w=0.00','Fixed w=0.25','Fixed w=0.50','Fixed w=0.75','Fixed w=1.00']
