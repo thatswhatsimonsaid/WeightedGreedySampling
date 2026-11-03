@@ -1,43 +1,47 @@
 #!/bin/bash
-# Regenerate the manuscript's figures from the control sweep, relative to iGS.
+# Regenerate the manuscript's figures from the control sweep.
 #
-# Mirrors 5_GenerateManuscriptPlots.sh, but writes to results_grfp_controls/
-# instead of Results/original_run/, and produces every figure twice: once on
-# full-pool (the metric the manuscript's quoted numbers match) and once on
-# held-out test error (the metric its Evaluation Metrics section names).
+# Uses the repository's own plotting code rather than reimplementing it:
+# GeneratePlots.generate_all_plots for the per-dataset trace plots,
+# GenerateAUCTable for the relative-AUC heatmaps, and
+# GenerateLabellingComplexity for the N_rel boxplot. The control sweep is first
+# exported into the aggregated layout those expect, so the figures come out
+# with the repository's colours, linestyles, legend and axis labels, one file
+# per dataset.
 #
-# BUDGET controls the AUC integration window; the trace plots always use the
-# full curve, and label efficiency keeps its own 70%/80% gain milestones.
+# Everything is produced for both metrics: full-pool, which the manuscript's
+# quoted numbers match, and held-out test error, which its Evaluation Metrics
+# section names.
 
 set -euo pipefail
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 cd "$SCRIPT_DIR/.."
 
-BUDGET="${BUDGET:-0.70}"
-OUT="../results_grfp_controls/figures"
-mkdir -p "$OUT"
+SUITE="../results_grfp_controls/full_suite"
+OUT="../results_grfp_controls/manuscript_figures"
 
-for METRIC in full_pool test; do
-    SRC="../results_grfp_controls/full_suite/${METRIC}"
-    if [ ! -f "${SRC}/exp_a_runs.csv" ]; then
-        echo "--- skipping ${METRIC}: run 3_ProcessControlResults.sh first ---"
-        continue
-    fi
-    echo ""
-    echo "--- Figures for ${METRIC} (AUC over first ${BUDGET} of budget) ---"
-    "${PYTHON:-python}" -m utils.GRFPControls.ManuscriptFigures \
-        --dirs "$SRC" --metrics "$METRIC" --out "$OUT" --budget "$BUDGET"
-done
+echo "--- Exporting to the aggregated layout and generating figures ---"
+"${PYTHON:-python}" -m utils.GRFPControls.ExportToAggregated \
+    --suite "$SUITE" --out "$OUT"
 
+echo ""
+echo "--- Summary tables (relative AUC) ---"
 for METRIC in full_pool test; do
-    SRC="../results_grfp_controls/full_suite/${METRIC}"
+    SRC="${SUITE}/${METRIC}"
     [ -f "${SRC}/exp_a_runs.csv" ] || continue
     echo ""
     echo "=============================================================="
     echo " Summary tables -- ${METRIC}"
     echo "=============================================================="
-    "${PYTHON:-python}" -m utils.GRFPControls.RelativeToIGS         --dirs "$SRC" --ref iGS --label "${METRIC} (relative to iGS)"
-    "${PYTHON:-python}" -m utils.GRFPControls.RelativeToIGS         --dirs "$SRC" --ref "WiGS (MAB-UCB1, c=2.0)"         --label "${METRIC} (relative to the bandit)"
+    "${PYTHON:-python}" -m utils.GRFPControls.RelativeToIGS \
+        --dirs "$SRC" --ref iGS --label "${METRIC} (relative to iGS)"
+    "${PYTHON:-python}" -m utils.GRFPControls.RelativeToIGS \
+        --dirs "$SRC" --ref "WiGS (MAB-UCB1, c=2.0)" \
+        --label "${METRIC} (relative to the bandit)"
 done
+
 echo ""
-echo "Figures written to $(realpath "$OUT")"
+echo "Per-dataset trace plots:"
+find "$OUT" -name "*TracePlot.png" | sed 's|.*/||' | sort | head -8
+echo "  ... $(find "$OUT" -name '*TracePlot.png' | wc -l) trace plots total"
+echo "Figures under $(realpath "$OUT")"
