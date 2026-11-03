@@ -83,8 +83,10 @@ def table(paths, label, ref="iGS", subset=None, n_boot=10000):
             else:
                 ties += 1
         if rels:
+            # Named Win/Loss/Tie, not W/L/T: `row.T` resolves to the DataFrame
+            # transpose rather than a column named "T".
             rows.append({"selector": sel, "rel": float(np.mean(rels)),
-                         "W": better, "L": worse, "T": ties})
+                         "Win": better, "Loss": worse, "Tie": ties})
 
     d = pd.DataFrame(rows).sort_values("rel")
     print(f"\n=== {label} ({len(dss)} datasets x 100 seeds) ===")
@@ -96,7 +98,7 @@ def table(paths, label, ref="iGS", subset=None, n_boot=10000):
         if x.selector == ref:
             print(f"  {x.selector:<32}{x.rel:>9.4f}{'—':>9}   {'(reference)':>18}")
         else:
-            wlt = f"{int(x.W)} / {int(x.L)} / {int(x.T)}"
+            wlt = f"{int(x.Win)} / {int(x.Loss)} / {int(x.Tie)}"
             print(f"  {x.selector:<32}{x.rel:>9.4f}{100*(x.rel-1):>+8.2f}%   {wlt:>18}")
     return d
 
