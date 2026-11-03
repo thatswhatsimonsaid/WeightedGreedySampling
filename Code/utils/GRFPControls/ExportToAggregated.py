@@ -38,6 +38,28 @@ import pandas as pd
 TRAIN_PROPORTION = 0.05   # the manuscript's initial labelled share
 
 
+def reset_style():
+    """
+    Return matplotlib to its defaults between plot types.
+
+    GenerateLabellingComplexity calls sns.set_context("talk", font_scale=1.5)
+    and sns.set_style("whitegrid"), which mutate global state. Running the
+    three plot types in sequence therefore leaked that styling from one
+    metric's efficiency plot into the next metric's trace plots (grey gridded
+    background) and heatmap (oversized, overlapping annotations). Each of the
+    repository's plotting entry points is run from a clean slate instead.
+    """
+    import matplotlib as mpl
+    import matplotlib.pyplot as plt
+    plt.close("all")
+    mpl.rcdefaults()
+    try:
+        import seaborn as sns
+        sns.reset_orig()
+    except Exception:
+        pass
+
+
 def _load_curves(metric_dir):
     for name in ("exp_a_curves.pkl.gz", "exp_a_curves.pkl"):
         p = os.path.join(metric_dir, name)
@@ -126,11 +148,13 @@ def main():
             continue
 
         ### 1. Trace plots, one file per dataset ###
+        reset_style()
         from utils.Auxiliary.GeneratePlots import generate_all_plots
         generate_all_plots(aggregated_results_dir=agg, image_dir=img,
                            show_legend=True)
 
         ### 2. Relative-AUC heatmaps, over --budget of the curve ###
+        reset_style()
         from utils.Auxiliary import GenerateAUCTable as AUC
         if args.budget < 1.0:
             agg_b = os.path.join(args.out, metric, f"aggregated_{int(args.budget*100)}pct")
@@ -154,6 +178,7 @@ def main():
         # at our own directory before calling, and do not expect a figure back.
         # The 70%/80% here are shares of the achievable gain, unrelated to the
         # AUC budget, so this uses the untruncated export.
+        reset_style()
         from utils.Auxiliary import GenerateLabellingComplexity as LC
         LC.OUTPUT_DIR = img
         ratios = LC.calculate_n_rel(agg)
@@ -163,6 +188,7 @@ def main():
             print(f"  label efficiency: {len(ratios)} points, "
                   f"{ratios['Method'].nunique()} methods, "
                   f"targets {sorted(ratios['Target'].unique())}")
+            print(f"  -> {os.path.join(img, 'DataEfficiency_Grouped.png')}")
         else:
             print("  [label efficiency produced no rows]")
 
