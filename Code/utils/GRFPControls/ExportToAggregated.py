@@ -147,18 +147,24 @@ def main():
             except Exception as e:                      # a baseline may be absent
                 print(f"    [skip heatmap vs {baseline}: {type(e).__name__}]")
 
-        ### 3. Label efficiency ###
+        ### 3. Label efficiency, on the full curve ###
+        # plot_efficiency_boxplot saves to the module-level OUTPUT_DIR and
+        # returns None; that default is the relative "Results/images/manuscript/",
+        # which would land inside Code/ and write into a Results tree. Point it
+        # at our own directory before calling, and do not expect a figure back.
+        # The 70%/80% here are shares of the achievable gain, unrelated to the
+        # AUC budget, so this uses the untruncated export.
         from utils.Auxiliary import GenerateLabellingComplexity as LC
-        try:
-            ratios = LC.calculate_n_rel(agg)
-            if ratios is not None and len(ratios):
-                fig = LC.plot_efficiency_boxplot(ratios)
-                if fig is not None:
-                    fig.savefig(os.path.join(img, "DataEfficiency_Grouped.png"),
-                                bbox_inches="tight", dpi=200)
-                ratios.to_csv(os.path.join(img, "label_efficiency.csv"), index=False)
-        except Exception as e:
-            print(f"    [skip label efficiency: {type(e).__name__}: {e}]")
+        LC.OUTPUT_DIR = img
+        ratios = LC.calculate_n_rel(agg)
+        if ratios is not None and len(ratios):
+            LC.plot_efficiency_boxplot(ratios)
+            ratios.to_csv(os.path.join(img, "label_efficiency.csv"), index=False)
+            print(f"  label efficiency: {len(ratios)} points, "
+                  f"{ratios['Method'].nunique()} methods, "
+                  f"targets {sorted(ratios['Target'].unique())}")
+        else:
+            print("  [label efficiency produced no rows]")
 
     print(f"\nDone. Figures under {os.path.abspath(args.out)}")
 
