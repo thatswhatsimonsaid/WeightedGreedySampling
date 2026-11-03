@@ -43,17 +43,10 @@ echo "=== 1/2  Aggregating 36,000 task pickles ==="
     --out ../results_grfp_controls/full_suite || exit 1
 
 echo ""
-echo "=== 2/2  Generating figures and summary tables ==="
+echo "=== 2/2  Generating figures with the repository's plotting code ==="
 BUDGET="${BUDGET:-0.70}"
-OUT="../results_grfp_controls/figures"
-mkdir -p "$OUT"
-
-for METRIC in full_pool test; do
-    SRC="../results_grfp_controls/full_suite/${METRIC}"
-    [ -f "${SRC}/exp_a_runs.csv" ] || { echo "skipping ${METRIC}"; continue; }
-    "$PY" -m utils.GRFPControls.ManuscriptFigures \
-        --dirs "$SRC" --metrics "$METRIC" --out "$OUT" --budget "$BUDGET"
-done
+OUT="../results_grfp_controls/manuscript_figures"
+"$PY" -m utils.GRFPControls.ExportToAggregated     --suite ../results_grfp_controls/full_suite     --out "$OUT" --budget "$BUDGET" || exit 1
 
 for METRIC in full_pool test; do
     SRC="../results_grfp_controls/full_suite/${METRIC}"
@@ -62,13 +55,11 @@ for METRIC in full_pool test; do
     echo "=============================================================="
     echo " Summary tables -- ${METRIC}"
     echo "=============================================================="
-    "$PY" -m utils.GRFPControls.RelativeToIGS \
-        --dirs "$SRC" --ref iGS --label "${METRIC} (relative to iGS)"
-    "$PY" -m utils.GRFPControls.RelativeToIGS \
-        --dirs "$SRC" --ref "WiGS (MAB-UCB1, c=2.0)" \
-        --label "${METRIC} (relative to the bandit)"
+    "$PY" -m utils.GRFPControls.RelativeToIGS         --dirs "$SRC" --ref iGS --label "${METRIC} (relative to iGS)"
+    "$PY" -m utils.GRFPControls.RelativeToIGS         --dirs "$SRC" --ref "WiGS (MAB-UCB1, c=2.0)"         --label "${METRIC} (relative to the bandit)"
 done
 
 echo ""
-echo "Done. Figures in $(realpath "$OUT")"
+echo "$(find "$OUT" -name '*TracePlot.png' | wc -l) trace plots written"
+echo "Figures under $(realpath "$OUT")"
 du -sh ../results_grfp_controls/full_suite/*/* 2>/dev/null
