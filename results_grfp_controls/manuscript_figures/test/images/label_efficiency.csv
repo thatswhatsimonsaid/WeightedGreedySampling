@@ -1,0 +1,721 @@
+Dataset,Method,Target,N_rel
+beer,EGAL,70% Gain,1.3076923076923077
+beer,EMCM,70% Gain,0.6923076923076923
+beer,GSx,70% Gain,1.0769230769230769
+beer,GSy,70% Gain,1.3846153846153846
+beer,Random,70% Gain,1.6153846153846154
+beer,QBC,70% Gain,0.6923076923076923
+beer,Uncertainty,70% Gain,0.5384615384615384
+beer,"WiGS (MAB, c=0.5)",70% Gain,1.0769230769230769
+beer,"WiGS (MAB, c=2.0)",70% Gain,1.0
+beer,"WiGS (MAB, c=5.0)",70% Gain,1.0769230769230769
+beer,WiGS (Random Arm),70% Gain,1.1538461538461537
+beer,WiGS (SAC),70% Gain,1.1538461538461537
+beer,"WiGS (Static, 0.25)",70% Gain,1.0769230769230769
+beer,"WiGS (Static, 0.5)",70% Gain,1.0
+beer,"WiGS (Static, 0.75)",70% Gain,0.8461538461538461
+beer,WiGS (Exp),70% Gain,1.0
+beer,WiGS (Linear),70% Gain,1.0769230769230769
+beer,iGS,70% Gain,1.0
+beer,EGAL,80% Gain,1.24
+beer,EMCM,80% Gain,1.0
+beer,GSx,80% Gain,1.12
+beer,GSy,80% Gain,1.36
+beer,Random,80% Gain,1.24
+beer,QBC,80% Gain,0.64
+beer,Uncertainty,80% Gain,0.52
+beer,"WiGS (MAB, c=0.5)",80% Gain,0.92
+beer,"WiGS (MAB, c=2.0)",80% Gain,0.92
+beer,"WiGS (MAB, c=5.0)",80% Gain,0.88
+beer,WiGS (Random Arm),80% Gain,0.92
+beer,WiGS (SAC),80% Gain,0.88
+beer,"WiGS (Static, 0.25)",80% Gain,0.92
+beer,"WiGS (Static, 0.5)",80% Gain,1.0
+beer,"WiGS (Static, 0.75)",80% Gain,0.84
+beer,WiGS (Exp),80% Gain,0.88
+beer,WiGS (Linear),80% Gain,0.96
+beer,iGS,80% Gain,1.0
+bodyfat,EGAL,70% Gain,2.2
+bodyfat,EMCM,70% Gain,1.2
+bodyfat,GSx,70% Gain,1.8
+bodyfat,GSy,70% Gain,1.0
+bodyfat,Random,70% Gain,2.4
+bodyfat,QBC,70% Gain,1.4
+bodyfat,Uncertainty,70% Gain,1.4
+bodyfat,"WiGS (MAB, c=0.5)",70% Gain,1.0
+bodyfat,"WiGS (MAB, c=2.0)",70% Gain,1.0
+bodyfat,"WiGS (MAB, c=5.0)",70% Gain,1.0
+bodyfat,WiGS (Random Arm),70% Gain,1.2
+bodyfat,WiGS (SAC),70% Gain,1.2
+bodyfat,"WiGS (Static, 0.25)",70% Gain,1.0
+bodyfat,"WiGS (Static, 0.5)",70% Gain,1.2
+bodyfat,"WiGS (Static, 0.75)",70% Gain,1.2
+bodyfat,WiGS (Exp),70% Gain,1.4
+bodyfat,WiGS (Linear),70% Gain,1.6
+bodyfat,iGS,70% Gain,1.0
+bodyfat,EGAL,80% Gain,1.875
+bodyfat,EMCM,80% Gain,1.0
+bodyfat,GSx,80% Gain,1.5
+bodyfat,GSy,80% Gain,1.0
+bodyfat,Random,80% Gain,2.375
+bodyfat,QBC,80% Gain,1.125
+bodyfat,Uncertainty,80% Gain,1.0
+bodyfat,"WiGS (MAB, c=0.5)",80% Gain,0.875
+bodyfat,"WiGS (MAB, c=2.0)",80% Gain,0.875
+bodyfat,"WiGS (MAB, c=5.0)",80% Gain,1.0
+bodyfat,WiGS (Random Arm),80% Gain,0.875
+bodyfat,WiGS (SAC),80% Gain,1.0
+bodyfat,"WiGS (Static, 0.25)",80% Gain,1.0
+bodyfat,"WiGS (Static, 0.5)",80% Gain,1.0
+bodyfat,"WiGS (Static, 0.75)",80% Gain,1.125
+bodyfat,WiGS (Exp),80% Gain,1.25
+bodyfat,WiGS (Linear),80% Gain,1.375
+bodyfat,iGS,80% Gain,1.0
+burbidge_correct,EGAL,70% Gain,0.858508604206501
+burbidge_correct,EMCM,70% Gain,1.2370936902485659
+burbidge_correct,GSx,70% Gain,1.0038240917782026
+burbidge_correct,GSy,70% Gain,1.0994263862332696
+burbidge_correct,Random,70% Gain,0.30210325047801145
+burbidge_correct,QBC,70% Gain,1.225621414913958
+burbidge_correct,Uncertainty,70% Gain,1.2370936902485659
+burbidge_correct,"WiGS (MAB, c=0.5)",70% Gain,1.022944550669216
+burbidge_correct,"WiGS (MAB, c=2.0)",70% Gain,1.0248565965583174
+burbidge_correct,"WiGS (MAB, c=5.0)",70% Gain,1.022944550669216
+burbidge_correct,WiGS (Random Arm),70% Gain,0.988527724665392
+burbidge_correct,WiGS (SAC),70% Gain,1.0554493307839388
+burbidge_correct,"WiGS (Static, 0.25)",70% Gain,1.0152963671128108
+burbidge_correct,"WiGS (Static, 0.5)",70% Gain,0.994263862332696
+burbidge_correct,"WiGS (Static, 0.75)",70% Gain,1.0210325047801148
+burbidge_correct,WiGS (Exp),70% Gain,1.0152963671128108
+burbidge_correct,WiGS (Linear),70% Gain,0.9904397705544933
+burbidge_correct,iGS,70% Gain,1.0
+burbidge_correct,EGAL,80% Gain,0.9381625441696113
+burbidge_correct,EMCM,80% Gain,1.196113074204947
+burbidge_correct,GSx,80% Gain,1.0070671378091873
+burbidge_correct,GSy,80% Gain,1.0954063604240283
+burbidge_correct,Random,80% Gain,0.3321554770318021
+burbidge_correct,QBC,80% Gain,1.1802120141342756
+burbidge_correct,Uncertainty,80% Gain,1.196113074204947
+burbidge_correct,"WiGS (MAB, c=0.5)",80% Gain,1.0318021201413428
+burbidge_correct,"WiGS (MAB, c=2.0)",80% Gain,1.030035335689046
+burbidge_correct,"WiGS (MAB, c=5.0)",80% Gain,1.0371024734982333
+burbidge_correct,WiGS (Random Arm),80% Gain,1.0035335689045937
+burbidge_correct,WiGS (SAC),80% Gain,1.0600706713780919
+burbidge_correct,"WiGS (Static, 0.25)",80% Gain,1.0247349823321554
+burbidge_correct,"WiGS (Static, 0.5)",80% Gain,1.0
+burbidge_correct,"WiGS (Static, 0.75)",80% Gain,1.0247349823321554
+burbidge_correct,WiGS (Exp),80% Gain,1.0371024734982333
+burbidge_correct,WiGS (Linear),80% Gain,1.0
+burbidge_correct,iGS,80% Gain,1.0
+burbidge_low_noise,EGAL,70% Gain,1.0095785440613028
+burbidge_low_noise,EMCM,70% Gain,1.3045977011494252
+burbidge_low_noise,GSx,70% Gain,1.0727969348659003
+burbidge_low_noise,GSy,70% Gain,1.1800766283524904
+burbidge_low_noise,Random,70% Gain,0.2624521072796935
+burbidge_low_noise,QBC,70% Gain,1.2662835249042146
+burbidge_low_noise,Uncertainty,70% Gain,1.3045977011494252
+burbidge_low_noise,"WiGS (MAB, c=0.5)",70% Gain,0.9310344827586207
+burbidge_low_noise,"WiGS (MAB, c=2.0)",70% Gain,0.9367816091954023
+burbidge_low_noise,"WiGS (MAB, c=5.0)",70% Gain,0.9444444444444444
+burbidge_low_noise,WiGS (Random Arm),70% Gain,0.9425287356321839
+burbidge_low_noise,WiGS (SAC),70% Gain,0.9540229885057471
+burbidge_low_noise,"WiGS (Static, 0.25)",70% Gain,0.9137931034482759
+burbidge_low_noise,"WiGS (Static, 0.5)",70% Gain,0.9386973180076629
+burbidge_low_noise,"WiGS (Static, 0.75)",70% Gain,0.9789272030651341
+burbidge_low_noise,WiGS (Exp),70% Gain,0.9444444444444444
+burbidge_low_noise,WiGS (Linear),70% Gain,0.9406130268199234
+burbidge_low_noise,iGS,70% Gain,1.0
+burbidge_low_noise,EGAL,80% Gain,1.0034662045060658
+burbidge_low_noise,EMCM,80% Gain,1.2253032928942809
+burbidge_low_noise,GSx,80% Gain,1.0398613518197575
+burbidge_low_noise,GSy,80% Gain,1.1421143847487
+burbidge_low_noise,Random,80% Gain,0.3188908145580589
+burbidge_low_noise,QBC,80% Gain,1.199306759098787
+burbidge_low_noise,Uncertainty,80% Gain,1.2253032928942809
+burbidge_low_noise,"WiGS (MAB, c=0.5)",80% Gain,0.9306759098786829
+burbidge_low_noise,"WiGS (MAB, c=2.0)",80% Gain,0.9324090121317158
+burbidge_low_noise,"WiGS (MAB, c=5.0)",80% Gain,0.9428076256499134
+burbidge_low_noise,WiGS (Random Arm),80% Gain,0.9341421143847487
+burbidge_low_noise,WiGS (SAC),80% Gain,0.949740034662045
+burbidge_low_noise,"WiGS (Static, 0.25)",80% Gain,0.902946273830156
+burbidge_low_noise,"WiGS (Static, 0.5)",80% Gain,0.9341421143847487
+burbidge_low_noise,"WiGS (Static, 0.75)",80% Gain,0.9636048526863085
+burbidge_low_noise,WiGS (Exp),80% Gain,0.925476603119584
+burbidge_low_noise,WiGS (Linear),80% Gain,0.92894280762565
+burbidge_low_noise,iGS,80% Gain,1.0
+burbidge_misspecified,EGAL,70% Gain,0.9118236472945892
+burbidge_misspecified,EMCM,70% Gain,1.2865731462925851
+burbidge_misspecified,GSx,70% Gain,1.0480961923847696
+burbidge_misspecified,GSy,70% Gain,1.0801603206412826
+burbidge_misspecified,Random,70% Gain,0.31462925851703405
+burbidge_misspecified,QBC,70% Gain,1.248496993987976
+burbidge_misspecified,Uncertainty,70% Gain,1.2865731462925851
+burbidge_misspecified,"WiGS (MAB, c=0.5)",70% Gain,1.0200400801603207
+burbidge_misspecified,"WiGS (MAB, c=2.0)",70% Gain,1.002004008016032
+burbidge_misspecified,"WiGS (MAB, c=5.0)",70% Gain,1.002004008016032
+burbidge_misspecified,WiGS (Random Arm),70% Gain,1.034068136272545
+burbidge_misspecified,WiGS (SAC),70% Gain,1.0480961923847696
+burbidge_misspecified,"WiGS (Static, 0.25)",70% Gain,1.034068136272545
+burbidge_misspecified,"WiGS (Static, 0.5)",70% Gain,0.9979959919839679
+burbidge_misspecified,"WiGS (Static, 0.75)",70% Gain,0.9919839679358717
+burbidge_misspecified,WiGS (Exp),70% Gain,1.0220440881763526
+burbidge_misspecified,WiGS (Linear),70% Gain,1.032064128256513
+burbidge_misspecified,iGS,70% Gain,1.0
+burbidge_misspecified,EGAL,80% Gain,0.988950276243094
+burbidge_misspecified,EMCM,80% Gain,1.2412523020257826
+burbidge_misspecified,GSx,80% Gain,1.0497237569060773
+burbidge_misspecified,GSy,80% Gain,1.0681399631675874
+burbidge_misspecified,Random,80% Gain,0.3425414364640884
+burbidge_misspecified,QBC,80% Gain,1.2117863720073665
+burbidge_misspecified,Uncertainty,80% Gain,1.2412523020257826
+burbidge_misspecified,"WiGS (MAB, c=0.5)",80% Gain,1.0552486187845305
+burbidge_misspecified,"WiGS (MAB, c=2.0)",80% Gain,1.0257826887661141
+burbidge_misspecified,"WiGS (MAB, c=5.0)",80% Gain,1.0165745856353592
+burbidge_misspecified,WiGS (Random Arm),80% Gain,1.0478821362799264
+burbidge_misspecified,WiGS (SAC),80% Gain,1.0589318600368325
+burbidge_misspecified,"WiGS (Static, 0.25)",80% Gain,1.0478821362799264
+burbidge_misspecified,"WiGS (Static, 0.5)",80% Gain,1.0257826887661141
+burbidge_misspecified,"WiGS (Static, 0.75)",80% Gain,0.9871086556169429
+burbidge_misspecified,WiGS (Exp),80% Gain,1.0257826887661141
+burbidge_misspecified,WiGS (Linear),80% Gain,1.0441988950276244
+burbidge_misspecified,iGS,80% Gain,1.0
+concrete_4,EGAL,70% Gain,2.2661870503597124
+concrete_4,EMCM,70% Gain,2.115107913669065
+concrete_4,GSx,70% Gain,0.8129496402877698
+concrete_4,GSy,70% Gain,1.0215827338129497
+concrete_4,Random,70% Gain,0.5035971223021583
+concrete_4,QBC,70% Gain,1.7266187050359711
+concrete_4,Uncertainty,70% Gain,1.6258992805755397
+concrete_4,"WiGS (MAB, c=0.5)",70% Gain,1.525179856115108
+concrete_4,"WiGS (MAB, c=2.0)",70% Gain,1.539568345323741
+concrete_4,"WiGS (MAB, c=5.0)",70% Gain,1.5467625899280575
+concrete_4,WiGS (Random Arm),70% Gain,1.525179856115108
+concrete_4,WiGS (SAC),70% Gain,1.525179856115108
+concrete_4,"WiGS (Static, 0.25)",70% Gain,1.5107913669064748
+concrete_4,"WiGS (Static, 0.5)",70% Gain,1.5035971223021583
+concrete_4,"WiGS (Static, 0.75)",70% Gain,1.3741007194244603
+concrete_4,WiGS (Exp),70% Gain,1.4316546762589928
+concrete_4,WiGS (Linear),70% Gain,0.8489208633093526
+concrete_4,iGS,70% Gain,1.0
+concrete_4,EGAL,80% Gain,1.5627906976744186
+concrete_4,EMCM,80% Gain,1.8372093023255813
+concrete_4,GSx,80% Gain,0.827906976744186
+concrete_4,GSy,80% Gain,1.0604651162790697
+concrete_4,Random,80% Gain,0.5441860465116279
+concrete_4,QBC,80% Gain,1.3953488372093024
+concrete_4,Uncertainty,80% Gain,1.413953488372093
+concrete_4,"WiGS (MAB, c=0.5)",80% Gain,1.4604651162790698
+concrete_4,"WiGS (MAB, c=2.0)",80% Gain,1.372093023255814
+concrete_4,"WiGS (MAB, c=5.0)",80% Gain,1.4372093023255814
+concrete_4,WiGS (Random Arm),80% Gain,1.427906976744186
+concrete_4,WiGS (SAC),80% Gain,1.3534883720930233
+concrete_4,"WiGS (Static, 0.25)",80% Gain,1.4511627906976745
+concrete_4,"WiGS (Static, 0.5)",80% Gain,1.3953488372093024
+concrete_4,"WiGS (Static, 0.75)",80% Gain,1.241860465116279
+concrete_4,WiGS (Exp),80% Gain,1.4232558139534883
+concrete_4,WiGS (Linear),80% Gain,1.2046511627906977
+concrete_4,iGS,80% Gain,1.0
+concrete_cs,EGAL,70% Gain,0.8333333333333334
+concrete_cs,EMCM,70% Gain,1.1666666666666667
+concrete_cs,GSx,70% Gain,0.8333333333333334
+concrete_cs,GSy,70% Gain,1.0
+concrete_cs,Random,70% Gain,1.1666666666666667
+concrete_cs,QBC,70% Gain,1.1666666666666667
+concrete_cs,Uncertainty,70% Gain,1.3333333333333333
+concrete_cs,"WiGS (MAB, c=0.5)",70% Gain,1.0
+concrete_cs,"WiGS (MAB, c=2.0)",70% Gain,1.0
+concrete_cs,"WiGS (MAB, c=5.0)",70% Gain,1.0
+concrete_cs,WiGS (Random Arm),70% Gain,1.0
+concrete_cs,WiGS (SAC),70% Gain,0.8333333333333334
+concrete_cs,"WiGS (Static, 0.25)",70% Gain,1.1666666666666667
+concrete_cs,"WiGS (Static, 0.5)",70% Gain,1.0
+concrete_cs,"WiGS (Static, 0.75)",70% Gain,1.0
+concrete_cs,WiGS (Exp),70% Gain,0.8333333333333334
+concrete_cs,WiGS (Linear),70% Gain,0.8333333333333334
+concrete_cs,iGS,70% Gain,1.0
+concrete_cs,EGAL,80% Gain,0.875
+concrete_cs,EMCM,80% Gain,1.375
+concrete_cs,GSx,80% Gain,0.875
+concrete_cs,GSy,80% Gain,1.25
+concrete_cs,Random,80% Gain,1.375
+concrete_cs,QBC,80% Gain,1.375
+concrete_cs,Uncertainty,80% Gain,1.125
+concrete_cs,"WiGS (MAB, c=0.5)",80% Gain,1.0
+concrete_cs,"WiGS (MAB, c=2.0)",80% Gain,1.0
+concrete_cs,"WiGS (MAB, c=5.0)",80% Gain,1.0
+concrete_cs,WiGS (Random Arm),80% Gain,1.0
+concrete_cs,WiGS (SAC),80% Gain,1.125
+concrete_cs,"WiGS (Static, 0.25)",80% Gain,1.125
+concrete_cs,"WiGS (Static, 0.5)",80% Gain,0.875
+concrete_cs,"WiGS (Static, 0.75)",80% Gain,0.875
+concrete_cs,WiGS (Exp),80% Gain,1.0
+concrete_cs,WiGS (Linear),80% Gain,0.875
+concrete_cs,iGS,80% Gain,1.0
+concrete_flow,EGAL,70% Gain,1.6666666666666667
+concrete_flow,EMCM,70% Gain,1.1666666666666667
+concrete_flow,GSx,70% Gain,1.0
+concrete_flow,GSy,70% Gain,1.1666666666666667
+concrete_flow,Random,70% Gain,2.0
+concrete_flow,QBC,70% Gain,1.1666666666666667
+concrete_flow,Uncertainty,70% Gain,1.3333333333333333
+concrete_flow,"WiGS (MAB, c=0.5)",70% Gain,1.0
+concrete_flow,"WiGS (MAB, c=2.0)",70% Gain,1.0
+concrete_flow,"WiGS (MAB, c=5.0)",70% Gain,1.0
+concrete_flow,WiGS (Random Arm),70% Gain,1.0
+concrete_flow,WiGS (SAC),70% Gain,1.0
+concrete_flow,"WiGS (Static, 0.25)",70% Gain,1.0
+concrete_flow,"WiGS (Static, 0.5)",70% Gain,1.0
+concrete_flow,"WiGS (Static, 0.75)",70% Gain,1.0
+concrete_flow,WiGS (Exp),70% Gain,0.8333333333333334
+concrete_flow,WiGS (Linear),70% Gain,1.0
+concrete_flow,iGS,70% Gain,1.0
+concrete_flow,EGAL,80% Gain,1.4444444444444444
+concrete_flow,EMCM,80% Gain,1.1111111111111112
+concrete_flow,GSx,80% Gain,1.0
+concrete_flow,GSy,80% Gain,1.2222222222222223
+concrete_flow,Random,80% Gain,1.8888888888888888
+concrete_flow,QBC,80% Gain,1.1111111111111112
+concrete_flow,Uncertainty,80% Gain,1.0
+concrete_flow,"WiGS (MAB, c=0.5)",80% Gain,0.8888888888888888
+concrete_flow,"WiGS (MAB, c=2.0)",80% Gain,1.0
+concrete_flow,"WiGS (MAB, c=5.0)",80% Gain,1.0
+concrete_flow,WiGS (Random Arm),80% Gain,1.0
+concrete_flow,WiGS (SAC),80% Gain,1.1111111111111112
+concrete_flow,"WiGS (Static, 0.25)",80% Gain,1.1111111111111112
+concrete_flow,"WiGS (Static, 0.5)",80% Gain,1.0
+concrete_flow,"WiGS (Static, 0.75)",80% Gain,1.0
+concrete_flow,WiGS (Exp),80% Gain,1.1111111111111112
+concrete_flow,WiGS (Linear),80% Gain,1.0
+concrete_flow,iGS,80% Gain,1.0
+concrete_slump,EGAL,70% Gain,1.6666666666666667
+concrete_slump,EMCM,70% Gain,1.3333333333333333
+concrete_slump,GSx,70% Gain,1.1666666666666667
+concrete_slump,GSy,70% Gain,1.0
+concrete_slump,Random,70% Gain,2.1666666666666665
+concrete_slump,QBC,70% Gain,1.5
+concrete_slump,Uncertainty,70% Gain,1.3333333333333333
+concrete_slump,"WiGS (MAB, c=0.5)",70% Gain,1.0
+concrete_slump,"WiGS (MAB, c=2.0)",70% Gain,1.0
+concrete_slump,"WiGS (MAB, c=5.0)",70% Gain,1.0
+concrete_slump,WiGS (Random Arm),70% Gain,1.0
+concrete_slump,WiGS (SAC),70% Gain,1.1666666666666667
+concrete_slump,"WiGS (Static, 0.25)",70% Gain,1.1666666666666667
+concrete_slump,"WiGS (Static, 0.5)",70% Gain,1.1666666666666667
+concrete_slump,"WiGS (Static, 0.75)",70% Gain,1.1666666666666667
+concrete_slump,WiGS (Exp),70% Gain,1.1666666666666667
+concrete_slump,WiGS (Linear),70% Gain,1.0
+concrete_slump,iGS,70% Gain,1.0
+concrete_slump,EGAL,80% Gain,1.3
+concrete_slump,EMCM,80% Gain,1.1
+concrete_slump,GSx,80% Gain,1.0
+concrete_slump,GSy,80% Gain,0.9
+concrete_slump,Random,80% Gain,1.7
+concrete_slump,QBC,80% Gain,1.5
+concrete_slump,Uncertainty,80% Gain,1.1
+concrete_slump,"WiGS (MAB, c=0.5)",80% Gain,1.1
+concrete_slump,"WiGS (MAB, c=2.0)",80% Gain,1.0
+concrete_slump,"WiGS (MAB, c=5.0)",80% Gain,0.9
+concrete_slump,WiGS (Random Arm),80% Gain,0.9
+concrete_slump,WiGS (SAC),80% Gain,1.1
+concrete_slump,"WiGS (Static, 0.25)",80% Gain,1.1
+concrete_slump,"WiGS (Static, 0.5)",80% Gain,1.0
+concrete_slump,"WiGS (Static, 0.75)",80% Gain,0.9
+concrete_slump,WiGS (Exp),80% Gain,1.0
+concrete_slump,WiGS (Linear),80% Gain,1.0
+concrete_slump,iGS,80% Gain,1.0
+cps_wage,EGAL,70% Gain,3.0833333333333335
+cps_wage,EMCM,70% Gain,1.6666666666666667
+cps_wage,GSx,70% Gain,1.8333333333333333
+cps_wage,GSy,70% Gain,1.0833333333333333
+cps_wage,Random,70% Gain,3.1666666666666665
+cps_wage,QBC,70% Gain,1.8333333333333333
+cps_wage,Uncertainty,70% Gain,1.5
+cps_wage,"WiGS (MAB, c=0.5)",70% Gain,1.0833333333333333
+cps_wage,"WiGS (MAB, c=2.0)",70% Gain,0.9166666666666666
+cps_wage,"WiGS (MAB, c=5.0)",70% Gain,0.9166666666666666
+cps_wage,WiGS (Random Arm),70% Gain,1.0833333333333333
+cps_wage,WiGS (SAC),70% Gain,1.0833333333333333
+cps_wage,"WiGS (Static, 0.25)",70% Gain,0.8333333333333334
+cps_wage,"WiGS (Static, 0.5)",70% Gain,1.0
+cps_wage,"WiGS (Static, 0.75)",70% Gain,1.25
+cps_wage,WiGS (Exp),70% Gain,1.5
+cps_wage,WiGS (Linear),70% Gain,1.75
+cps_wage,iGS,70% Gain,1.0
+cps_wage,EGAL,80% Gain,2.1785714285714284
+cps_wage,EMCM,80% Gain,2.6785714285714284
+cps_wage,GSx,80% Gain,1.3571428571428572
+cps_wage,GSy,80% Gain,1.3214285714285714
+cps_wage,Random,80% Gain,2.142857142857143
+cps_wage,QBC,80% Gain,1.1785714285714286
+cps_wage,Uncertainty,80% Gain,1.2857142857142858
+cps_wage,"WiGS (MAB, c=0.5)",80% Gain,0.9642857142857143
+cps_wage,"WiGS (MAB, c=2.0)",80% Gain,0.8928571428571429
+cps_wage,"WiGS (MAB, c=5.0)",80% Gain,0.8571428571428571
+cps_wage,WiGS (Random Arm),80% Gain,1.1071428571428572
+cps_wage,WiGS (SAC),80% Gain,0.9642857142857143
+cps_wage,"WiGS (Static, 0.25)",80% Gain,0.7142857142857143
+cps_wage,"WiGS (Static, 0.5)",80% Gain,0.8928571428571429
+cps_wage,"WiGS (Static, 0.75)",80% Gain,1.0714285714285714
+cps_wage,WiGS (Exp),80% Gain,1.1071428571428572
+cps_wage,WiGS (Linear),80% Gain,1.25
+cps_wage,iGS,80% Gain,1.0
+dgp_new,EGAL,70% Gain,1.0478260869565217
+dgp_new,EMCM,70% Gain,0.7815217391304348
+dgp_new,GSx,70% Gain,1.0913043478260869
+dgp_new,GSy,70% Gain,1.2456521739130435
+dgp_new,Random,70% Gain,0.15869565217391304
+dgp_new,QBC,70% Gain,0.9847826086956522
+dgp_new,Uncertainty,70% Gain,0.7815217391304348
+dgp_new,"WiGS (MAB, c=0.5)",70% Gain,1.1152173913043477
+dgp_new,"WiGS (MAB, c=2.0)",70% Gain,1.1184782608695651
+dgp_new,"WiGS (MAB, c=5.0)",70% Gain,1.1130434782608696
+dgp_new,WiGS (Random Arm),70% Gain,1.108695652173913
+dgp_new,WiGS (SAC),70% Gain,1.1032608695652173
+dgp_new,"WiGS (Static, 0.25)",70% Gain,1.1554347826086957
+dgp_new,"WiGS (Static, 0.5)",70% Gain,1.1130434782608696
+dgp_new,"WiGS (Static, 0.75)",70% Gain,1.0782608695652174
+dgp_new,WiGS (Exp),70% Gain,1.275
+dgp_new,WiGS (Linear),70% Gain,1.15
+dgp_new,iGS,70% Gain,1.0
+dgp_new,EGAL,80% Gain,1.0721757322175731
+dgp_new,EMCM,80% Gain,0.7771966527196653
+dgp_new,GSx,80% Gain,1.100418410041841
+dgp_new,GSy,80% Gain,1.2301255230125523
+dgp_new,Random,80% Gain,0.20292887029288703
+dgp_new,QBC,80% Gain,0.9748953974895398
+dgp_new,Uncertainty,80% Gain,0.7771966527196653
+dgp_new,"WiGS (MAB, c=0.5)",80% Gain,1.1098326359832635
+dgp_new,"WiGS (MAB, c=2.0)",80% Gain,1.1119246861924685
+dgp_new,"WiGS (MAB, c=5.0)",80% Gain,1.1119246861924685
+dgp_new,WiGS (Random Arm),80% Gain,1.106694560669456
+dgp_new,WiGS (SAC),80% Gain,1.098326359832636
+dgp_new,"WiGS (Static, 0.25)",80% Gain,1.139121338912134
+dgp_new,"WiGS (Static, 0.5)",80% Gain,1.1035564853556485
+dgp_new,"WiGS (Static, 0.75)",80% Gain,1.0815899581589958
+dgp_new,WiGS (Exp),80% Gain,1.247907949790795
+dgp_new,WiGS (Linear),80% Gain,1.1349372384937237
+dgp_new,iGS,80% Gain,1.0
+dgp_three_regime,EGAL,70% Gain,47.19230769230769
+dgp_three_regime,EMCM,70% Gain,8.76923076923077
+dgp_three_regime,GSx,70% Gain,47.19230769230769
+dgp_three_regime,GSy,70% Gain,31.884615384615383
+dgp_three_regime,Random,70% Gain,5.961538461538462
+dgp_three_regime,QBC,70% Gain,17.5
+dgp_three_regime,Uncertainty,70% Gain,8.76923076923077
+dgp_three_regime,"WiGS (MAB, c=0.5)",70% Gain,14.192307692307692
+dgp_three_regime,"WiGS (MAB, c=2.0)",70% Gain,14.384615384615385
+dgp_three_regime,"WiGS (MAB, c=5.0)",70% Gain,14.461538461538462
+dgp_three_regime,WiGS (Random Arm),70% Gain,12.961538461538462
+dgp_three_regime,WiGS (SAC),70% Gain,13.807692307692308
+dgp_three_regime,"WiGS (Static, 0.25)",70% Gain,14.73076923076923
+dgp_three_regime,"WiGS (Static, 0.5)",70% Gain,14.807692307692308
+dgp_three_regime,"WiGS (Static, 0.75)",70% Gain,12.0
+dgp_three_regime,WiGS (Exp),70% Gain,16.346153846153847
+dgp_three_regime,WiGS (Linear),70% Gain,11.653846153846153
+dgp_three_regime,iGS,70% Gain,1.0
+dgp_three_regime,EGAL,80% Gain,1.0
+dgp_three_regime,EMCM,80% Gain,0.18851132686084143
+dgp_three_regime,GSx,80% Gain,1.0
+dgp_three_regime,GSy,80% Gain,0.7847896440129449
+dgp_three_regime,Random,80% Gain,0.23867313915857605
+dgp_three_regime,QBC,80% Gain,0.3907766990291262
+dgp_three_regime,Uncertainty,80% Gain,0.18851132686084143
+dgp_three_regime,"WiGS (MAB, c=0.5)",80% Gain,0.3309061488673139
+dgp_three_regime,"WiGS (MAB, c=2.0)",80% Gain,0.3365695792880259
+dgp_three_regime,"WiGS (MAB, c=5.0)",80% Gain,0.3365695792880259
+dgp_three_regime,WiGS (Random Arm),80% Gain,0.31957928802589
+dgp_three_regime,WiGS (SAC),80% Gain,0.3389967637540453
+dgp_three_regime,"WiGS (Static, 0.25)",80% Gain,0.36003236245954695
+dgp_three_regime,"WiGS (Static, 0.5)",80% Gain,0.34951456310679613
+dgp_three_regime,"WiGS (Static, 0.75)",80% Gain,0.2936893203883495
+dgp_three_regime,WiGS (Exp),80% Gain,0.39239482200647247
+dgp_three_regime,WiGS (Linear),80% Gain,0.2815533980582524
+dgp_three_regime,iGS,80% Gain,1.0
+dgp_two_regime,EGAL,70% Gain,0.2708333333333333
+dgp_two_regime,EMCM,70% Gain,9.583333333333334
+dgp_two_regime,GSx,70% Gain,0.4583333333333333
+dgp_two_regime,GSy,70% Gain,7.916666666666667
+dgp_two_regime,Random,70% Gain,2.5625
+dgp_two_regime,QBC,70% Gain,3.0416666666666665
+dgp_two_regime,Uncertainty,70% Gain,9.583333333333334
+dgp_two_regime,"WiGS (MAB, c=0.5)",70% Gain,4.8125
+dgp_two_regime,"WiGS (MAB, c=2.0)",70% Gain,4.645833333333333
+dgp_two_regime,"WiGS (MAB, c=5.0)",70% Gain,4.625
+dgp_two_regime,WiGS (Random Arm),70% Gain,2.8958333333333335
+dgp_two_regime,WiGS (SAC),70% Gain,0.5
+dgp_two_regime,"WiGS (Static, 0.25)",70% Gain,5.708333333333333
+dgp_two_regime,"WiGS (Static, 0.5)",70% Gain,5.416666666666667
+dgp_two_regime,"WiGS (Static, 0.75)",70% Gain,5.958333333333333
+dgp_two_regime,WiGS (Exp),70% Gain,0.14583333333333334
+dgp_two_regime,WiGS (Linear),70% Gain,0.2708333333333333
+dgp_two_regime,iGS,70% Gain,1.0
+dgp_two_regime,EGAL,80% Gain,0.5892857142857143
+dgp_two_regime,EMCM,80% Gain,8.428571428571429
+dgp_two_regime,GSx,80% Gain,0.6071428571428571
+dgp_two_regime,GSy,80% Gain,8.678571428571429
+dgp_two_regime,Random,80% Gain,3.107142857142857
+dgp_two_regime,QBC,80% Gain,8.357142857142858
+dgp_two_regime,Uncertainty,80% Gain,8.428571428571429
+dgp_two_regime,"WiGS (MAB, c=0.5)",80% Gain,5.553571428571429
+dgp_two_regime,"WiGS (MAB, c=2.0)",80% Gain,5.321428571428571
+dgp_two_regime,"WiGS (MAB, c=5.0)",80% Gain,5.053571428571429
+dgp_two_regime,WiGS (Random Arm),80% Gain,5.0
+dgp_two_regime,WiGS (SAC),80% Gain,1.7678571428571428
+dgp_two_regime,"WiGS (Static, 0.25)",80% Gain,6.428571428571429
+dgp_two_regime,"WiGS (Static, 0.5)",80% Gain,5.339285714285714
+dgp_two_regime,"WiGS (Static, 0.75)",80% Gain,5.892857142857143
+dgp_two_regime,WiGS (Exp),80% Gain,0.21428571428571427
+dgp_two_regime,WiGS (Linear),80% Gain,0.3392857142857143
+dgp_two_regime,iGS,80% Gain,1.0
+housing,EGAL,70% Gain,3.111111111111111
+housing,EMCM,70% Gain,0.7777777777777778
+housing,GSx,70% Gain,2.0
+housing,GSy,70% Gain,1.1111111111111112
+housing,Random,70% Gain,2.7777777777777777
+housing,QBC,70% Gain,1.3333333333333333
+housing,Uncertainty,70% Gain,0.7777777777777778
+housing,"WiGS (MAB, c=0.5)",70% Gain,1.0
+housing,"WiGS (MAB, c=2.0)",70% Gain,1.0
+housing,"WiGS (MAB, c=5.0)",70% Gain,0.8888888888888888
+housing,WiGS (Random Arm),70% Gain,0.8888888888888888
+housing,WiGS (SAC),70% Gain,0.8888888888888888
+housing,"WiGS (Static, 0.25)",70% Gain,0.6666666666666666
+housing,"WiGS (Static, 0.5)",70% Gain,0.7777777777777778
+housing,"WiGS (Static, 0.75)",70% Gain,1.0
+housing,WiGS (Exp),70% Gain,1.4444444444444444
+housing,WiGS (Linear),70% Gain,1.7777777777777777
+housing,iGS,70% Gain,1.0
+housing,EGAL,80% Gain,1.127659574468085
+housing,EMCM,80% Gain,0.48936170212765956
+housing,GSx,80% Gain,0.7872340425531915
+housing,GSy,80% Gain,1.148936170212766
+housing,Random,80% Gain,0.9574468085106383
+housing,QBC,80% Gain,1.5957446808510638
+housing,Uncertainty,80% Gain,0.46808510638297873
+housing,"WiGS (MAB, c=0.5)",80% Gain,0.8085106382978723
+housing,"WiGS (MAB, c=2.0)",80% Gain,0.9787234042553191
+housing,"WiGS (MAB, c=5.0)",80% Gain,1.1914893617021276
+housing,WiGS (Random Arm),80% Gain,1.1063829787234043
+housing,WiGS (SAC),80% Gain,1.3617021276595744
+housing,"WiGS (Static, 0.25)",80% Gain,1.2127659574468086
+housing,"WiGS (Static, 0.5)",80% Gain,0.9787234042553191
+housing,"WiGS (Static, 0.75)",80% Gain,0.3829787234042553
+housing,WiGS (Exp),80% Gain,0.5319148936170213
+housing,WiGS (Linear),80% Gain,0.7446808510638298
+housing,iGS,80% Gain,1.0
+mpg,EGAL,70% Gain,0.9375
+mpg,EMCM,70% Gain,0.9375
+mpg,GSx,70% Gain,0.625
+mpg,GSy,70% Gain,2.0
+mpg,Random,70% Gain,1.6875
+mpg,QBC,70% Gain,1.0
+mpg,Uncertainty,70% Gain,0.8125
+mpg,"WiGS (MAB, c=0.5)",70% Gain,0.625
+mpg,"WiGS (MAB, c=2.0)",70% Gain,0.6875
+mpg,"WiGS (MAB, c=5.0)",70% Gain,0.9375
+mpg,WiGS (Random Arm),70% Gain,0.6875
+mpg,WiGS (SAC),70% Gain,0.8125
+mpg,"WiGS (Static, 0.25)",70% Gain,1.1875
+mpg,"WiGS (Static, 0.5)",70% Gain,0.75
+mpg,"WiGS (Static, 0.75)",70% Gain,0.5625
+mpg,WiGS (Exp),70% Gain,0.625
+mpg,WiGS (Linear),70% Gain,0.625
+mpg,iGS,70% Gain,1.0
+mpg,EGAL,80% Gain,0.8181818181818182
+mpg,EMCM,80% Gain,0.8484848484848485
+mpg,GSx,80% Gain,0.5151515151515151
+mpg,GSy,80% Gain,1.8181818181818181
+mpg,Random,80% Gain,1.2121212121212122
+mpg,QBC,80% Gain,0.8181818181818182
+mpg,Uncertainty,80% Gain,0.6666666666666666
+mpg,"WiGS (MAB, c=0.5)",80% Gain,0.6666666666666666
+mpg,"WiGS (MAB, c=2.0)",80% Gain,0.696969696969697
+mpg,"WiGS (MAB, c=5.0)",80% Gain,0.6666666666666666
+mpg,WiGS (Random Arm),80% Gain,0.7272727272727273
+mpg,WiGS (SAC),80% Gain,0.7575757575757576
+mpg,"WiGS (Static, 0.25)",80% Gain,1.0303030303030303
+mpg,"WiGS (Static, 0.5)",80% Gain,0.7272727272727273
+mpg,"WiGS (Static, 0.75)",80% Gain,0.5151515151515151
+mpg,WiGS (Exp),80% Gain,0.48484848484848486
+mpg,WiGS (Linear),80% Gain,0.48484848484848486
+mpg,iGS,80% Gain,1.0
+no2,EGAL,70% Gain,1.4666666666666666
+no2,EMCM,70% Gain,1.3333333333333333
+no2,GSx,70% Gain,1.2333333333333334
+no2,GSy,70% Gain,1.1666666666666667
+no2,Random,70% Gain,1.2333333333333334
+no2,QBC,70% Gain,1.4666666666666666
+no2,Uncertainty,70% Gain,1.5666666666666667
+no2,"WiGS (MAB, c=0.5)",70% Gain,1.2666666666666666
+no2,"WiGS (MAB, c=2.0)",70% Gain,1.2
+no2,"WiGS (MAB, c=5.0)",70% Gain,1.2333333333333334
+no2,WiGS (Random Arm),70% Gain,1.2666666666666666
+no2,WiGS (SAC),70% Gain,1.3333333333333333
+no2,"WiGS (Static, 0.25)",70% Gain,1.5333333333333334
+no2,"WiGS (Static, 0.5)",70% Gain,1.2333333333333334
+no2,"WiGS (Static, 0.75)",70% Gain,1.1666666666666667
+no2,WiGS (Exp),70% Gain,1.1333333333333333
+no2,WiGS (Linear),70% Gain,1.1333333333333333
+no2,iGS,70% Gain,1.0
+no2,EGAL,80% Gain,1.4230769230769231
+no2,EMCM,80% Gain,1.3269230769230769
+no2,GSx,80% Gain,1.1346153846153846
+no2,GSy,80% Gain,1.0192307692307692
+no2,Random,80% Gain,1.2307692307692308
+no2,QBC,80% Gain,1.3846153846153846
+no2,Uncertainty,80% Gain,1.3269230769230769
+no2,"WiGS (MAB, c=0.5)",80% Gain,1.1923076923076923
+no2,"WiGS (MAB, c=2.0)",80% Gain,1.0384615384615385
+no2,"WiGS (MAB, c=5.0)",80% Gain,1.0192307692307692
+no2,WiGS (Random Arm),80% Gain,1.1923076923076923
+no2,WiGS (SAC),80% Gain,1.2692307692307692
+no2,"WiGS (Static, 0.25)",80% Gain,1.4615384615384615
+no2,"WiGS (Static, 0.5)",80% Gain,1.2307692307692308
+no2,"WiGS (Static, 0.75)",80% Gain,1.0
+no2,WiGS (Exp),80% Gain,1.1730769230769231
+no2,WiGS (Linear),80% Gain,1.1153846153846154
+no2,iGS,80% Gain,1.0
+pm10,EGAL,70% Gain,1.5
+pm10,EMCM,70% Gain,0.9230769230769231
+pm10,GSx,70% Gain,1.1153846153846154
+pm10,GSy,70% Gain,1.3846153846153846
+pm10,Random,70% Gain,1.5
+pm10,QBC,70% Gain,1.0384615384615385
+pm10,Uncertainty,70% Gain,0.9615384615384616
+pm10,"WiGS (MAB, c=0.5)",70% Gain,0.9230769230769231
+pm10,"WiGS (MAB, c=2.0)",70% Gain,1.0384615384615385
+pm10,"WiGS (MAB, c=5.0)",70% Gain,0.9615384615384616
+pm10,WiGS (Random Arm),70% Gain,0.9615384615384616
+pm10,WiGS (SAC),70% Gain,0.7692307692307693
+pm10,"WiGS (Static, 0.25)",70% Gain,1.0
+pm10,"WiGS (Static, 0.5)",70% Gain,0.8461538461538461
+pm10,"WiGS (Static, 0.75)",70% Gain,0.9615384615384616
+pm10,WiGS (Exp),70% Gain,1.1923076923076923
+pm10,WiGS (Linear),70% Gain,1.1538461538461537
+pm10,iGS,70% Gain,1.0
+pm10,EGAL,80% Gain,1.4339622641509433
+pm10,EMCM,80% Gain,0.8490566037735849
+pm10,GSx,80% Gain,1.150943396226415
+pm10,GSy,80% Gain,1.0566037735849056
+pm10,Random,80% Gain,1.2264150943396226
+pm10,QBC,80% Gain,0.9056603773584906
+pm10,Uncertainty,80% Gain,0.7547169811320755
+pm10,"WiGS (MAB, c=0.5)",80% Gain,0.9622641509433962
+pm10,"WiGS (MAB, c=2.0)",80% Gain,1.3396226415094339
+pm10,"WiGS (MAB, c=5.0)",80% Gain,1.1886792452830188
+pm10,WiGS (Random Arm),80% Gain,1.1320754716981132
+pm10,WiGS (SAC),80% Gain,0.9433962264150944
+pm10,"WiGS (Static, 0.25)",80% Gain,1.0
+pm10,"WiGS (Static, 0.5)",80% Gain,0.8490566037735849
+pm10,"WiGS (Static, 0.75)",80% Gain,1.2264150943396226
+pm10,WiGS (Exp),80% Gain,1.169811320754717
+pm10,WiGS (Linear),80% Gain,1.1320754716981132
+pm10,iGS,80% Gain,1.0
+qsar,EGAL,70% Gain,1.05
+qsar,EMCM,70% Gain,0.95
+qsar,GSx,70% Gain,0.7
+qsar,GSy,70% Gain,1.0
+qsar,Random,70% Gain,1.025
+qsar,QBC,70% Gain,0.575
+qsar,Uncertainty,70% Gain,0.75
+qsar,"WiGS (MAB, c=0.5)",70% Gain,0.925
+qsar,"WiGS (MAB, c=2.0)",70% Gain,0.95
+qsar,"WiGS (MAB, c=5.0)",70% Gain,1.025
+qsar,WiGS (Random Arm),70% Gain,1.075
+qsar,WiGS (SAC),70% Gain,1.05
+qsar,"WiGS (Static, 0.25)",70% Gain,1.175
+qsar,"WiGS (Static, 0.5)",70% Gain,1.0
+qsar,"WiGS (Static, 0.75)",70% Gain,0.8
+qsar,WiGS (Exp),70% Gain,0.775
+qsar,WiGS (Linear),70% Gain,0.675
+qsar,iGS,70% Gain,1.0
+qsar,EGAL,80% Gain,1.75
+qsar,EMCM,80% Gain,0.96875
+qsar,GSx,80% Gain,0.75
+qsar,GSy,80% Gain,1.0
+qsar,Random,80% Gain,0.9375
+qsar,QBC,80% Gain,0.71875
+qsar,Uncertainty,80% Gain,0.71875
+qsar,"WiGS (MAB, c=0.5)",80% Gain,0.921875
+qsar,"WiGS (MAB, c=2.0)",80% Gain,0.921875
+qsar,"WiGS (MAB, c=5.0)",80% Gain,1.0
+qsar,WiGS (Random Arm),80% Gain,0.953125
+qsar,WiGS (SAC),80% Gain,0.96875
+qsar,"WiGS (Static, 0.25)",80% Gain,1.109375
+qsar,"WiGS (Static, 0.5)",80% Gain,1.015625
+qsar,"WiGS (Static, 0.75)",80% Gain,0.765625
+qsar,WiGS (Exp),80% Gain,0.921875
+qsar,WiGS (Linear),80% Gain,0.734375
+qsar,iGS,80% Gain,1.0
+wine_red,EGAL,70% Gain,0.8596491228070176
+wine_red,EMCM,70% Gain,1.394736842105263
+wine_red,GSx,70% Gain,0.9912280701754386
+wine_red,GSy,70% Gain,0.8771929824561403
+wine_red,Random,70% Gain,1.1403508771929824
+wine_red,QBC,70% Gain,1.1754385964912282
+wine_red,Uncertainty,70% Gain,1.043859649122807
+wine_red,"WiGS (MAB, c=0.5)",70% Gain,0.7894736842105263
+wine_red,"WiGS (MAB, c=2.0)",70% Gain,0.8596491228070176
+wine_red,"WiGS (MAB, c=5.0)",70% Gain,0.8333333333333334
+wine_red,WiGS (Random Arm),70% Gain,0.8771929824561403
+wine_red,WiGS (SAC),70% Gain,0.8947368421052632
+wine_red,"WiGS (Static, 0.25)",70% Gain,0.9385964912280702
+wine_red,"WiGS (Static, 0.5)",70% Gain,0.9385964912280702
+wine_red,"WiGS (Static, 0.75)",70% Gain,0.8947368421052632
+wine_red,WiGS (Exp),70% Gain,0.8859649122807017
+wine_red,WiGS (Linear),70% Gain,0.9473684210526315
+wine_red,iGS,70% Gain,1.0
+wine_red,EGAL,80% Gain,0.8851674641148325
+wine_red,EMCM,80% Gain,1.014354066985646
+wine_red,GSx,80% Gain,0.7511961722488039
+wine_red,GSy,80% Gain,0.8708133971291866
+wine_red,Random,80% Gain,0.9090909090909091
+wine_red,QBC,80% Gain,1.105263157894737
+wine_red,Uncertainty,80% Gain,1.105263157894737
+wine_red,"WiGS (MAB, c=0.5)",80% Gain,0.8708133971291866
+wine_red,"WiGS (MAB, c=2.0)",80% Gain,0.8708133971291866
+wine_red,"WiGS (MAB, c=5.0)",80% Gain,0.8516746411483254
+wine_red,WiGS (Random Arm),80% Gain,0.8660287081339713
+wine_red,WiGS (SAC),80% Gain,0.8133971291866029
+wine_red,"WiGS (Static, 0.25)",80% Gain,0.9138755980861244
+wine_red,"WiGS (Static, 0.5)",80% Gain,0.8516746411483254
+wine_red,"WiGS (Static, 0.75)",80% Gain,0.8421052631578947
+wine_red,WiGS (Exp),80% Gain,0.8755980861244019
+wine_red,WiGS (Linear),80% Gain,0.7081339712918661
+wine_red,iGS,80% Gain,1.0
+yacht,EGAL,70% Gain,0.9230769230769231
+yacht,EMCM,70% Gain,5.3076923076923075
+yacht,GSx,70% Gain,5.384615384615385
+yacht,GSy,70% Gain,2.923076923076923
+yacht,Random,70% Gain,1.9230769230769231
+yacht,QBC,70% Gain,8.692307692307692
+yacht,Uncertainty,70% Gain,8.615384615384615
+yacht,"WiGS (MAB, c=0.5)",70% Gain,1.6923076923076923
+yacht,"WiGS (MAB, c=2.0)",70% Gain,1.6153846153846154
+yacht,"WiGS (MAB, c=5.0)",70% Gain,1.6153846153846154
+yacht,WiGS (Random Arm),70% Gain,1.9230769230769231
+yacht,WiGS (SAC),70% Gain,2.923076923076923
+yacht,"WiGS (Static, 0.25)",70% Gain,0.8461538461538461
+yacht,"WiGS (Static, 0.5)",70% Gain,1.3076923076923077
+yacht,"WiGS (Static, 0.75)",70% Gain,3.6923076923076925
+yacht,WiGS (Exp),70% Gain,2.6153846153846154
+yacht,WiGS (Linear),70% Gain,4.230769230769231
+yacht,iGS,70% Gain,1.0
+yacht,EGAL,80% Gain,2.2333333333333334
+yacht,EMCM,80% Gain,2.8
+yacht,GSx,80% Gain,2.7333333333333334
+yacht,GSy,80% Gain,2.7
+yacht,Random,80% Gain,1.3666666666666667
+yacht,QBC,80% Gain,4.4
+yacht,Uncertainty,80% Gain,4.433333333333334
+yacht,"WiGS (MAB, c=0.5)",80% Gain,1.8333333333333333
+yacht,"WiGS (MAB, c=2.0)",80% Gain,1.8
+yacht,"WiGS (MAB, c=5.0)",80% Gain,1.6666666666666667
+yacht,WiGS (Random Arm),80% Gain,1.7333333333333334
+yacht,WiGS (SAC),80% Gain,2.1333333333333333
+yacht,"WiGS (Static, 0.25)",80% Gain,1.0666666666666667
+yacht,"WiGS (Static, 0.5)",80% Gain,1.6
+yacht,"WiGS (Static, 0.75)",80% Gain,2.1666666666666665
+yacht,WiGS (Exp),80% Gain,1.6666666666666667
+yacht,WiGS (Linear),80% Gain,2.2666666666666666
+yacht,iGS,80% Gain,1.0
