@@ -1,253 +1,721 @@
 dataset,selector,milestone,N_rel
-beer,Fixed w=0.00,70%,1.0
-beer,Fixed w=0.25,70%,1.015748031496063
-beer,Fixed w=0.50,70%,1.0196850393700787
-beer,Fixed w=0.75,70%,1.015748031496063
-beer,Fixed w=1.00,70%,1.0354330708661417
-beer,MAB (c=2.0),70%,1.0196850393700787
-beer,Passive,70%,1.031496062992126
-beer,RandomArm,70%,1.015748031496063
+beer,EGAL,70%,1.0275590551181102
+beer,EMCM,70%,0.984251968503937
+beer,GSx,70%,1.0354330708661417
+beer,GSy,70%,1.0
+beer,Passive Learning,70%,1.031496062992126
+beer,QBC,70%,0.968503937007874
+beer,Uncertainty Sampling,70%,0.9881889763779528
+beer,"WiGS (MAB-UCB1, c=0.5)",70%,1.015748031496063
+beer,"WiGS (MAB-UCB1, c=2.0)",70%,1.0196850393700787
+beer,"WiGS (MAB-UCB1, c=5.0)",70%,1.015748031496063
+beer,WiGS (Random Arm),70%,1.015748031496063
+beer,WiGS (SAC),70%,1.0118110236220472
+beer,WiGS (Static w_x=0.25),70%,1.015748031496063
+beer,WiGS (Static w_x=0.5),70%,1.0196850393700787
+beer,WiGS (Static w_x=0.75),70%,1.015748031496063
+beer,"WiGS (Time-Decay, Exponential)",70%,0.9881889763779528
+beer,"WiGS (Time-Decay, Linear)",70%,1.0118110236220472
 beer,iGS,70%,1.0
-beer,Fixed w=0.00,80%,0.9964788732394366
-beer,Fixed w=0.25,80%,1.0035211267605635
-beer,Fixed w=0.50,80%,1.0035211267605635
-beer,Fixed w=0.75,80%,1.0105633802816902
-beer,Fixed w=1.00,80%,1.0140845070422535
-beer,MAB (c=2.0),80%,1.0
-beer,Passive,80%,1.0140845070422535
-beer,RandomArm,80%,1.0
+beer,EGAL,80%,1.0211267605633803
+beer,EMCM,80%,0.9859154929577465
+beer,GSx,80%,1.0140845070422535
+beer,GSy,80%,0.9964788732394366
+beer,Passive Learning,80%,1.0140845070422535
+beer,QBC,80%,0.9788732394366197
+beer,Uncertainty Sampling,80%,0.9929577464788732
+beer,"WiGS (MAB-UCB1, c=0.5)",80%,1.0
+beer,"WiGS (MAB-UCB1, c=2.0)",80%,1.0
+beer,"WiGS (MAB-UCB1, c=5.0)",80%,1.0
+beer,WiGS (Random Arm),80%,1.0
+beer,WiGS (SAC),80%,0.9964788732394366
+beer,WiGS (Static w_x=0.25),80%,1.0035211267605635
+beer,WiGS (Static w_x=0.5),80%,1.0035211267605635
+beer,WiGS (Static w_x=0.75),80%,1.0105633802816902
+beer,"WiGS (Time-Decay, Exponential)",80%,0.9964788732394366
+beer,"WiGS (Time-Decay, Linear)",80%,1.0070422535211268
 beer,iGS,80%,1.0
-bodyfat,Fixed w=0.00,70%,1.0740740740740742
-bodyfat,Fixed w=0.25,70%,1.0185185185185186
-bodyfat,Fixed w=0.50,70%,0.9629629629629629
-bodyfat,Fixed w=0.75,70%,0.9444444444444444
-bodyfat,Fixed w=1.00,70%,0.8888888888888888
-bodyfat,MAB (c=2.0),70%,0.9629629629629629
-bodyfat,Passive,70%,1.2962962962962963
-bodyfat,RandomArm,70%,1.0
+bodyfat,EGAL,70%,1.2407407407407407
+bodyfat,EMCM,70%,1.037037037037037
+bodyfat,GSx,70%,0.8888888888888888
+bodyfat,GSy,70%,1.0740740740740742
+bodyfat,Passive Learning,70%,1.2962962962962963
+bodyfat,QBC,70%,1.0185185185185186
+bodyfat,Uncertainty Sampling,70%,1.037037037037037
+bodyfat,"WiGS (MAB-UCB1, c=0.5)",70%,0.9814814814814815
+bodyfat,"WiGS (MAB-UCB1, c=2.0)",70%,0.9629629629629629
+bodyfat,"WiGS (MAB-UCB1, c=5.0)",70%,0.9814814814814815
+bodyfat,WiGS (Random Arm),70%,1.0
+bodyfat,WiGS (SAC),70%,1.0
+bodyfat,WiGS (Static w_x=0.25),70%,1.0185185185185186
+bodyfat,WiGS (Static w_x=0.5),70%,0.9629629629629629
+bodyfat,WiGS (Static w_x=0.75),70%,0.9444444444444444
+bodyfat,"WiGS (Time-Decay, Exponential)",70%,1.037037037037037
+bodyfat,"WiGS (Time-Decay, Linear)",70%,0.9444444444444444
 bodyfat,iGS,70%,1.0
-bodyfat,Fixed w=0.00,80%,1.0218978102189782
-bodyfat,Fixed w=0.25,80%,0.9708029197080292
-bodyfat,Fixed w=0.50,80%,0.9635036496350365
-bodyfat,Fixed w=0.75,80%,0.9927007299270073
-bodyfat,Fixed w=1.00,80%,0.9854014598540146
-bodyfat,MAB (c=2.0),80%,0.9708029197080292
-bodyfat,Passive,80%,1.0291970802919708
-bodyfat,RandomArm,80%,0.9708029197080292
+bodyfat,EGAL,80%,1.072992700729927
+bodyfat,EMCM,80%,1.0
+bodyfat,GSx,80%,0.9854014598540146
+bodyfat,GSy,80%,1.0218978102189782
+bodyfat,Passive Learning,80%,1.0291970802919708
+bodyfat,QBC,80%,0.9781021897810219
+bodyfat,Uncertainty Sampling,80%,0.9416058394160584
+bodyfat,"WiGS (MAB-UCB1, c=0.5)",80%,0.9781021897810219
+bodyfat,"WiGS (MAB-UCB1, c=2.0)",80%,0.9708029197080292
+bodyfat,"WiGS (MAB-UCB1, c=5.0)",80%,0.9635036496350365
+bodyfat,WiGS (Random Arm),80%,0.9708029197080292
+bodyfat,WiGS (SAC),80%,0.9781021897810219
+bodyfat,WiGS (Static w_x=0.25),80%,0.9708029197080292
+bodyfat,WiGS (Static w_x=0.5),80%,0.9635036496350365
+bodyfat,WiGS (Static w_x=0.75),80%,0.9927007299270073
+bodyfat,"WiGS (Time-Decay, Exponential)",80%,1.0
+bodyfat,"WiGS (Time-Decay, Linear)",80%,0.948905109489051
 bodyfat,iGS,80%,1.0
-concrete_cs,Fixed w=0.00,70%,1.2916666666666667
-concrete_cs,Fixed w=0.25,70%,0.9583333333333334
-concrete_cs,Fixed w=0.50,70%,0.9583333333333334
-concrete_cs,Fixed w=0.75,70%,0.875
-concrete_cs,Fixed w=1.00,70%,0.9166666666666666
-concrete_cs,MAB (c=2.0),70%,0.9166666666666666
-concrete_cs,Passive,70%,1.375
-concrete_cs,RandomArm,70%,0.9583333333333334
+burbidge_correct,EGAL,70%,1.0213903743315509
+burbidge_correct,EMCM,70%,0.9933155080213903
+burbidge_correct,GSx,70%,1.0133689839572193
+burbidge_correct,GSy,70%,0.9946524064171123
+burbidge_correct,Passive Learning,70%,1.032085561497326
+burbidge_correct,QBC,70%,0.9933155080213903
+burbidge_correct,Uncertainty Sampling,70%,0.9933155080213903
+burbidge_correct,"WiGS (MAB-UCB1, c=0.5)",70%,0.9893048128342246
+burbidge_correct,"WiGS (MAB-UCB1, c=2.0)",70%,0.9906417112299465
+burbidge_correct,"WiGS (MAB-UCB1, c=5.0)",70%,0.9906417112299465
+burbidge_correct,WiGS (Random Arm),70%,0.9893048128342246
+burbidge_correct,WiGS (SAC),70%,0.9919786096256684
+burbidge_correct,WiGS (Static w_x=0.25),70%,0.9946524064171123
+burbidge_correct,WiGS (Static w_x=0.5),70%,0.983957219251337
+burbidge_correct,WiGS (Static w_x=0.75),70%,0.9893048128342246
+burbidge_correct,"WiGS (Time-Decay, Exponential)",70%,0.9973262032085561
+burbidge_correct,"WiGS (Time-Decay, Linear)",70%,0.9866310160427807
+burbidge_correct,iGS,70%,1.0
+burbidge_correct,EGAL,80%,0.9950980392156863
+burbidge_correct,EMCM,80%,0.9803921568627451
+burbidge_correct,GSx,80%,0.9950980392156863
+burbidge_correct,GSy,80%,0.9828431372549019
+burbidge_correct,Passive Learning,80%,0.9975490196078431
+burbidge_correct,QBC,80%,0.9828431372549019
+burbidge_correct,Uncertainty Sampling,80%,0.9803921568627451
+burbidge_correct,"WiGS (MAB-UCB1, c=0.5)",80%,0.9840686274509803
+burbidge_correct,"WiGS (MAB-UCB1, c=2.0)",80%,0.9840686274509803
+burbidge_correct,"WiGS (MAB-UCB1, c=5.0)",80%,0.9840686274509803
+burbidge_correct,WiGS (Random Arm),80%,0.9852941176470589
+burbidge_correct,WiGS (SAC),80%,0.9852941176470589
+burbidge_correct,WiGS (Static w_x=0.25),80%,0.9803921568627451
+burbidge_correct,WiGS (Static w_x=0.5),80%,0.9816176470588235
+burbidge_correct,WiGS (Static w_x=0.75),80%,0.9901960784313726
+burbidge_correct,"WiGS (Time-Decay, Exponential)",80%,0.9840686274509803
+burbidge_correct,"WiGS (Time-Decay, Linear)",80%,0.9791666666666666
+burbidge_correct,iGS,80%,1.0
+burbidge_low_noise,EGAL,70%,1.0917573872472783
+burbidge_low_noise,EMCM,70%,1.1073094867807154
+burbidge_low_noise,GSx,70%,1.0715396578538103
+burbidge_low_noise,GSy,70%,1.062208398133748
+burbidge_low_noise,Passive Learning,70%,1.1897356143079316
+burbidge_low_noise,QBC,70%,1.0839813374805598
+burbidge_low_noise,Uncertainty Sampling,70%,1.1073094867807154
+burbidge_low_noise,"WiGS (MAB-UCB1, c=0.5)",70%,0.9486780715396579
+burbidge_low_noise,"WiGS (MAB-UCB1, c=2.0)",70%,0.9502332814930016
+burbidge_low_noise,"WiGS (MAB-UCB1, c=5.0)",70%,0.9502332814930016
+burbidge_low_noise,WiGS (Random Arm),70%,0.9502332814930016
+burbidge_low_noise,WiGS (SAC),70%,0.9580093312597201
+burbidge_low_noise,WiGS (Static w_x=0.25),70%,0.9455676516329704
+burbidge_low_noise,WiGS (Static w_x=0.5),70%,0.9580093312597201
+burbidge_low_noise,WiGS (Static w_x=0.75),70%,0.9673405909797823
+burbidge_low_noise,"WiGS (Time-Decay, Exponential)",70%,0.9502332814930016
+burbidge_low_noise,"WiGS (Time-Decay, Linear)",70%,0.9595645412130638
+burbidge_low_noise,iGS,70%,1.0
+burbidge_low_noise,EGAL,80%,1.0423280423280423
+burbidge_low_noise,EMCM,80%,1.029100529100529
+burbidge_low_noise,GSx,80%,1.0251322751322751
+burbidge_low_noise,GSy,80%,1.0119047619047619
+burbidge_low_noise,Passive Learning,80%,1.0714285714285714
+burbidge_low_noise,QBC,80%,1.0251322751322751
+burbidge_low_noise,Uncertainty Sampling,80%,1.029100529100529
+burbidge_low_noise,"WiGS (MAB-UCB1, c=0.5)",80%,0.9484126984126984
+burbidge_low_noise,"WiGS (MAB-UCB1, c=2.0)",80%,0.9497354497354498
+burbidge_low_noise,"WiGS (MAB-UCB1, c=5.0)",80%,0.9497354497354498
+burbidge_low_noise,WiGS (Random Arm),80%,0.9497354497354498
+burbidge_low_noise,WiGS (SAC),80%,0.951058201058201
+burbidge_low_noise,WiGS (Static w_x=0.25),80%,0.9431216931216931
+burbidge_low_noise,WiGS (Static w_x=0.5),80%,0.9523809523809523
+burbidge_low_noise,WiGS (Static w_x=0.75),80%,0.9682539682539683
+burbidge_low_noise,"WiGS (Time-Decay, Exponential)",80%,0.9537037037037037
+burbidge_low_noise,"WiGS (Time-Decay, Linear)",80%,0.9457671957671958
+burbidge_low_noise,iGS,80%,1.0
+burbidge_misspecified,EGAL,70%,1.021505376344086
+burbidge_misspecified,EMCM,70%,0.9905913978494624
+burbidge_misspecified,GSx,70%,1.0080645161290323
+burbidge_misspecified,GSy,70%,0.9946236559139785
+burbidge_misspecified,Passive Learning,70%,1.0349462365591398
+burbidge_misspecified,QBC,70%,0.9905913978494624
+burbidge_misspecified,Uncertainty Sampling,70%,0.9905913978494624
+burbidge_misspecified,"WiGS (MAB-UCB1, c=0.5)",70%,0.989247311827957
+burbidge_misspecified,"WiGS (MAB-UCB1, c=2.0)",70%,0.9879032258064516
+burbidge_misspecified,"WiGS (MAB-UCB1, c=5.0)",70%,0.9879032258064516
+burbidge_misspecified,WiGS (Random Arm),70%,0.9905913978494624
+burbidge_misspecified,WiGS (SAC),70%,0.9905913978494624
+burbidge_misspecified,WiGS (Static w_x=0.25),70%,0.9798387096774194
+burbidge_misspecified,WiGS (Static w_x=0.5),70%,0.989247311827957
+burbidge_misspecified,WiGS (Static w_x=0.75),70%,0.9919354838709677
+burbidge_misspecified,"WiGS (Time-Decay, Exponential)",70%,0.9905913978494624
+burbidge_misspecified,"WiGS (Time-Decay, Linear)",70%,0.9798387096774194
+burbidge_misspecified,iGS,70%,1.0
+burbidge_misspecified,EGAL,80%,0.995085995085995
+burbidge_misspecified,EMCM,80%,0.9791154791154791
+burbidge_misspecified,GSx,80%,0.995085995085995
+burbidge_misspecified,GSy,80%,0.9828009828009828
+burbidge_misspecified,Passive Learning,80%,0.9987714987714987
+burbidge_misspecified,QBC,80%,0.9852579852579852
+burbidge_misspecified,Uncertainty Sampling,80%,0.9791154791154791
+burbidge_misspecified,"WiGS (MAB-UCB1, c=0.5)",80%,0.9791154791154791
+burbidge_misspecified,"WiGS (MAB-UCB1, c=2.0)",80%,0.9791154791154791
+burbidge_misspecified,"WiGS (MAB-UCB1, c=5.0)",80%,0.9778869778869779
+burbidge_misspecified,WiGS (Random Arm),80%,0.9815724815724816
+burbidge_misspecified,WiGS (SAC),80%,0.9778869778869779
+burbidge_misspecified,WiGS (Static w_x=0.25),80%,0.9791154791154791
+burbidge_misspecified,WiGS (Static w_x=0.5),80%,0.9815724815724816
+burbidge_misspecified,WiGS (Static w_x=0.75),80%,0.9803439803439803
+burbidge_misspecified,"WiGS (Time-Decay, Exponential)",80%,0.9815724815724816
+burbidge_misspecified,"WiGS (Time-Decay, Linear)",80%,0.9778869778869779
+burbidge_misspecified,iGS,80%,1.0
+concrete_4,EGAL,70%,1.0344370860927152
+concrete_4,EMCM,70%,0.9708609271523179
+concrete_4,GSx,70%,1.0158940397350993
+concrete_4,GSy,70%,0.9933774834437086
+concrete_4,Passive Learning,70%,1.0211920529801324
+concrete_4,QBC,70%,0.9125827814569536
+concrete_4,Uncertainty Sampling,70%,0.9655629139072848
+concrete_4,"WiGS (MAB-UCB1, c=0.5)",70%,0.909933774834437
+concrete_4,"WiGS (MAB-UCB1, c=2.0)",70%,0.909933774834437
+concrete_4,"WiGS (MAB-UCB1, c=5.0)",70%,0.909933774834437
+concrete_4,WiGS (Random Arm),70%,0.9086092715231788
+concrete_4,WiGS (SAC),70%,0.9033112582781457
+concrete_4,WiGS (Static w_x=0.25),70%,0.9231788079470199
+concrete_4,WiGS (Static w_x=0.5),70%,0.9112582781456954
+concrete_4,WiGS (Static w_x=0.75),70%,0.8887417218543047
+concrete_4,"WiGS (Time-Decay, Exponential)",70%,0.9456953642384106
+concrete_4,"WiGS (Time-Decay, Linear)",70%,0.8940397350993378
+concrete_4,iGS,70%,1.0
+concrete_4,EGAL,80%,0.9988276670574443
+concrete_4,EMCM,80%,0.9472450175849941
+concrete_4,GSx,80%,1.0
+concrete_4,GSy,80%,0.9601406799531067
+concrete_4,Passive Learning,80%,0.9695193434935522
+concrete_4,QBC,80%,0.9132473622508792
+concrete_4,Uncertainty Sampling,80%,0.9425556858147714
+concrete_4,"WiGS (MAB-UCB1, c=0.5)",80%,0.8980070339976554
+concrete_4,"WiGS (MAB-UCB1, c=2.0)",80%,0.9003516998827668
+concrete_4,"WiGS (MAB-UCB1, c=5.0)",80%,0.9003516998827668
+concrete_4,WiGS (Random Arm),80%,0.8968347010550997
+concrete_4,WiGS (SAC),80%,0.9003516998827668
+concrete_4,WiGS (Static w_x=0.25),80%,0.9132473622508792
+concrete_4,WiGS (Static w_x=0.5),80%,0.8980070339976554
+concrete_4,WiGS (Static w_x=0.75),80%,0.8898007033997656
+concrete_4,"WiGS (Time-Decay, Exponential)",80%,0.9390386869871044
+concrete_4,"WiGS (Time-Decay, Linear)",80%,0.9097303634232122
+concrete_4,iGS,80%,1.0
+concrete_cs,EGAL,70%,1.1666666666666667
+concrete_cs,EMCM,70%,1.3333333333333333
+concrete_cs,GSx,70%,0.9166666666666666
+concrete_cs,GSy,70%,1.2916666666666667
+concrete_cs,Passive Learning,70%,1.375
+concrete_cs,QBC,70%,1.0416666666666667
+concrete_cs,Uncertainty Sampling,70%,0.9166666666666666
+concrete_cs,"WiGS (MAB-UCB1, c=0.5)",70%,0.9166666666666666
+concrete_cs,"WiGS (MAB-UCB1, c=2.0)",70%,0.9166666666666666
+concrete_cs,"WiGS (MAB-UCB1, c=5.0)",70%,0.9583333333333334
+concrete_cs,WiGS (Random Arm),70%,0.9583333333333334
+concrete_cs,WiGS (SAC),70%,1.0416666666666667
+concrete_cs,WiGS (Static w_x=0.25),70%,0.9583333333333334
+concrete_cs,WiGS (Static w_x=0.5),70%,0.9583333333333334
+concrete_cs,WiGS (Static w_x=0.75),70%,0.875
+concrete_cs,"WiGS (Time-Decay, Exponential)",70%,0.9166666666666666
+concrete_cs,"WiGS (Time-Decay, Linear)",70%,0.9166666666666666
 concrete_cs,iGS,70%,1.0
-concrete_cs,Fixed w=0.00,80%,1.1372549019607843
-concrete_cs,Fixed w=0.25,80%,0.9803921568627451
-concrete_cs,Fixed w=0.50,80%,0.9019607843137255
-concrete_cs,Fixed w=0.75,80%,0.9411764705882353
-concrete_cs,Fixed w=1.00,80%,0.9803921568627451
-concrete_cs,MAB (c=2.0),80%,0.9215686274509803
-concrete_cs,Passive,80%,1.196078431372549
-concrete_cs,RandomArm,80%,0.9215686274509803
+concrete_cs,EGAL,80%,1.2156862745098038
+concrete_cs,EMCM,80%,1.0392156862745099
+concrete_cs,GSx,80%,0.9803921568627451
+concrete_cs,GSy,80%,1.1372549019607843
+concrete_cs,Passive Learning,80%,1.196078431372549
+concrete_cs,QBC,80%,1.0
+concrete_cs,Uncertainty Sampling,80%,1.0196078431372548
+concrete_cs,"WiGS (MAB-UCB1, c=0.5)",80%,0.9607843137254902
+concrete_cs,"WiGS (MAB-UCB1, c=2.0)",80%,0.9215686274509803
+concrete_cs,"WiGS (MAB-UCB1, c=5.0)",80%,0.9411764705882353
+concrete_cs,WiGS (Random Arm),80%,0.9215686274509803
+concrete_cs,WiGS (SAC),80%,0.9803921568627451
+concrete_cs,WiGS (Static w_x=0.25),80%,0.9803921568627451
+concrete_cs,WiGS (Static w_x=0.5),80%,0.9019607843137255
+concrete_cs,WiGS (Static w_x=0.75),80%,0.9411764705882353
+concrete_cs,"WiGS (Time-Decay, Exponential)",80%,0.9607843137254902
+concrete_cs,"WiGS (Time-Decay, Linear)",80%,0.9215686274509803
 concrete_cs,iGS,80%,1.0
-concrete_flow,Fixed w=0.00,70%,1.108695652173913
-concrete_flow,Fixed w=0.25,70%,0.9565217391304348
-concrete_flow,Fixed w=0.50,70%,0.9130434782608695
-concrete_flow,Fixed w=0.75,70%,0.9565217391304348
-concrete_flow,Fixed w=1.00,70%,1.0434782608695652
-concrete_flow,MAB (c=2.0),70%,0.9565217391304348
-concrete_flow,Passive,70%,1.1521739130434783
-concrete_flow,RandomArm,70%,0.9347826086956522
+concrete_flow,EGAL,70%,1.2608695652173914
+concrete_flow,EMCM,70%,1.0869565217391304
+concrete_flow,GSx,70%,1.0434782608695652
+concrete_flow,GSy,70%,1.108695652173913
+concrete_flow,Passive Learning,70%,1.1521739130434783
+concrete_flow,QBC,70%,1.173913043478261
+concrete_flow,Uncertainty Sampling,70%,1.2173913043478262
+concrete_flow,"WiGS (MAB-UCB1, c=0.5)",70%,0.9565217391304348
+concrete_flow,"WiGS (MAB-UCB1, c=2.0)",70%,0.9565217391304348
+concrete_flow,"WiGS (MAB-UCB1, c=5.0)",70%,0.9347826086956522
+concrete_flow,WiGS (Random Arm),70%,0.9347826086956522
+concrete_flow,WiGS (SAC),70%,1.0
+concrete_flow,WiGS (Static w_x=0.25),70%,0.9565217391304348
+concrete_flow,WiGS (Static w_x=0.5),70%,0.9130434782608695
+concrete_flow,WiGS (Static w_x=0.75),70%,0.9565217391304348
+concrete_flow,"WiGS (Time-Decay, Exponential)",70%,0.9782608695652174
+concrete_flow,"WiGS (Time-Decay, Linear)",70%,0.9347826086956522
 concrete_flow,iGS,70%,1.0
-concrete_flow,Fixed w=0.00,80%,1.0454545454545454
-concrete_flow,Fixed w=0.25,80%,0.9848484848484849
-concrete_flow,Fixed w=0.50,80%,0.9696969696969697
-concrete_flow,Fixed w=0.75,80%,1.0
-concrete_flow,Fixed w=1.00,80%,1.0454545454545454
-concrete_flow,MAB (c=2.0),80%,0.9848484848484849
-concrete_flow,Passive,80%,1.0909090909090908
-concrete_flow,RandomArm,80%,0.9696969696969697
+concrete_flow,EGAL,80%,1.0606060606060606
+concrete_flow,EMCM,80%,1.121212121212121
+concrete_flow,GSx,80%,1.0454545454545454
+concrete_flow,GSy,80%,1.0454545454545454
+concrete_flow,Passive Learning,80%,1.0909090909090908
+concrete_flow,QBC,80%,1.0909090909090908
+concrete_flow,Uncertainty Sampling,80%,1.0606060606060606
+concrete_flow,"WiGS (MAB-UCB1, c=0.5)",80%,0.9848484848484849
+concrete_flow,"WiGS (MAB-UCB1, c=2.0)",80%,0.9848484848484849
+concrete_flow,"WiGS (MAB-UCB1, c=5.0)",80%,0.9696969696969697
+concrete_flow,WiGS (Random Arm),80%,0.9696969696969697
+concrete_flow,WiGS (SAC),80%,1.0
+concrete_flow,WiGS (Static w_x=0.25),80%,0.9848484848484849
+concrete_flow,WiGS (Static w_x=0.5),80%,0.9696969696969697
+concrete_flow,WiGS (Static w_x=0.75),80%,1.0
+concrete_flow,"WiGS (Time-Decay, Exponential)",80%,1.0303030303030303
+concrete_flow,"WiGS (Time-Decay, Linear)",80%,0.9848484848484849
 concrete_flow,iGS,80%,1.0
-concrete_slump,Fixed w=0.00,70%,1.0217391304347827
-concrete_slump,Fixed w=0.25,70%,0.9782608695652174
-concrete_slump,Fixed w=0.50,70%,0.9347826086956522
-concrete_slump,Fixed w=0.75,70%,1.0434782608695652
-concrete_slump,Fixed w=1.00,70%,1.108695652173913
-concrete_slump,MAB (c=2.0),70%,1.0
-concrete_slump,Passive,70%,1.2391304347826086
-concrete_slump,RandomArm,70%,0.9782608695652174
+concrete_slump,EGAL,70%,1.3043478260869565
+concrete_slump,EMCM,70%,1.2608695652173914
+concrete_slump,GSx,70%,1.108695652173913
+concrete_slump,GSy,70%,1.0217391304347827
+concrete_slump,Passive Learning,70%,1.2391304347826086
+concrete_slump,QBC,70%,1.2608695652173914
+concrete_slump,Uncertainty Sampling,70%,1.2391304347826086
+concrete_slump,"WiGS (MAB-UCB1, c=0.5)",70%,1.0
+concrete_slump,"WiGS (MAB-UCB1, c=2.0)",70%,1.0
+concrete_slump,"WiGS (MAB-UCB1, c=5.0)",70%,0.9782608695652174
+concrete_slump,WiGS (Random Arm),70%,0.9782608695652174
+concrete_slump,WiGS (SAC),70%,0.9782608695652174
+concrete_slump,WiGS (Static w_x=0.25),70%,0.9782608695652174
+concrete_slump,WiGS (Static w_x=0.5),70%,0.9347826086956522
+concrete_slump,WiGS (Static w_x=0.75),70%,1.0434782608695652
+concrete_slump,"WiGS (Time-Decay, Exponential)",70%,1.0217391304347827
+concrete_slump,"WiGS (Time-Decay, Linear)",70%,0.9565217391304348
 concrete_slump,iGS,70%,1.0
-concrete_slump,Fixed w=0.00,80%,1.0
-concrete_slump,Fixed w=0.25,80%,1.0307692307692307
-concrete_slump,Fixed w=0.50,80%,1.0
-concrete_slump,Fixed w=0.75,80%,1.0307692307692307
-concrete_slump,Fixed w=1.00,80%,1.1384615384615384
-concrete_slump,MAB (c=2.0),80%,1.0153846153846153
-concrete_slump,Passive,80%,1.123076923076923
-concrete_slump,RandomArm,80%,1.0153846153846153
+concrete_slump,EGAL,80%,1.1538461538461537
+concrete_slump,EMCM,80%,1.1692307692307693
+concrete_slump,GSx,80%,1.1384615384615384
+concrete_slump,GSy,80%,1.0
+concrete_slump,Passive Learning,80%,1.123076923076923
+concrete_slump,QBC,80%,1.123076923076923
+concrete_slump,Uncertainty Sampling,80%,1.0923076923076922
+concrete_slump,"WiGS (MAB-UCB1, c=0.5)",80%,1.0153846153846153
+concrete_slump,"WiGS (MAB-UCB1, c=2.0)",80%,1.0153846153846153
+concrete_slump,"WiGS (MAB-UCB1, c=5.0)",80%,1.0153846153846153
+concrete_slump,WiGS (Random Arm),80%,1.0153846153846153
+concrete_slump,WiGS (SAC),80%,1.0153846153846153
+concrete_slump,WiGS (Static w_x=0.25),80%,1.0307692307692307
+concrete_slump,WiGS (Static w_x=0.5),80%,1.0
+concrete_slump,WiGS (Static w_x=0.75),80%,1.0307692307692307
+concrete_slump,"WiGS (Time-Decay, Exponential)",80%,1.0153846153846153
+concrete_slump,"WiGS (Time-Decay, Linear)",80%,1.0307692307692307
 concrete_slump,iGS,80%,1.0
-dgp_three_regime,Fixed w=0.00,70%,0.9486133768352365
-dgp_three_regime,Fixed w=0.25,70%,0.7030995106035889
-dgp_three_regime,Fixed w=0.50,70%,0.6753670473083198
-dgp_three_regime,Fixed w=0.75,70%,0.6769983686786297
-dgp_three_regime,Fixed w=1.00,70%,1.0
-dgp_three_regime,MAB (c=2.0),70%,0.6688417618270799
-dgp_three_regime,Passive,70%,0.9420880913539967
-dgp_three_regime,RandomArm,70%,0.66721044045677
+cps_wage,EGAL,70%,0.9887640449438202
+cps_wage,EMCM,70%,0.8792134831460674
+cps_wage,GSx,70%,0.9859550561797753
+cps_wage,GSy,70%,0.9241573033707865
+cps_wage,Passive Learning,70%,1.0168539325842696
+cps_wage,QBC,70%,0.8876404494382022
+cps_wage,Uncertainty Sampling,70%,0.9606741573033708
+cps_wage,"WiGS (MAB-UCB1, c=0.5)",70%,0.9943820224719101
+cps_wage,"WiGS (MAB-UCB1, c=2.0)",70%,0.9943820224719101
+cps_wage,"WiGS (MAB-UCB1, c=5.0)",70%,0.9971910112359551
+cps_wage,WiGS (Random Arm),70%,0.9887640449438202
+cps_wage,WiGS (SAC),70%,0.9831460674157303
+cps_wage,WiGS (Static w_x=0.25),70%,0.9747191011235955
+cps_wage,WiGS (Static w_x=0.5),70%,1.0056179775280898
+cps_wage,WiGS (Static w_x=0.75),70%,0.9887640449438202
+cps_wage,"WiGS (Time-Decay, Exponential)",70%,0.9887640449438202
+cps_wage,"WiGS (Time-Decay, Linear)",70%,0.9859550561797753
+cps_wage,iGS,70%,1.0
+cps_wage,EGAL,80%,0.9879227053140096
+cps_wage,EMCM,80%,0.9009661835748792
+cps_wage,GSx,80%,0.9879227053140096
+cps_wage,GSy,80%,0.9444444444444444
+cps_wage,Passive Learning,80%,0.9975845410628019
+cps_wage,QBC,80%,0.9347826086956522
+cps_wage,Uncertainty Sampling,80%,0.9516908212560387
+cps_wage,"WiGS (MAB-UCB1, c=0.5)",80%,1.0144927536231885
+cps_wage,"WiGS (MAB-UCB1, c=2.0)",80%,1.0193236714975846
+cps_wage,"WiGS (MAB-UCB1, c=5.0)",80%,1.0217391304347827
+cps_wage,WiGS (Random Arm),80%,1.0169082125603865
+cps_wage,WiGS (SAC),80%,1.0072463768115942
+cps_wage,WiGS (Static w_x=0.25),80%,1.0169082125603865
+cps_wage,WiGS (Static w_x=0.5),80%,1.0241545893719808
+cps_wage,WiGS (Static w_x=0.75),80%,1.0072463768115942
+cps_wage,"WiGS (Time-Decay, Exponential)",80%,0.9782608695652174
+cps_wage,"WiGS (Time-Decay, Linear)",80%,1.0072463768115942
+cps_wage,iGS,80%,1.0
+dgp_new,EGAL,70%,1.0051194539249146
+dgp_new,EMCM,70%,0.908703071672355
+dgp_new,GSx,70%,1.0136518771331058
+dgp_new,GSy,70%,1.0196245733788396
+dgp_new,Passive Learning,70%,0.9872013651877133
+dgp_new,QBC,70%,0.6962457337883959
+dgp_new,Uncertainty Sampling,70%,0.908703071672355
+dgp_new,"WiGS (MAB-UCB1, c=0.5)",70%,1.0110921501706485
+dgp_new,"WiGS (MAB-UCB1, c=2.0)",70%,1.0136518771331058
+dgp_new,"WiGS (MAB-UCB1, c=5.0)",70%,1.0110921501706485
+dgp_new,WiGS (Random Arm),70%,1.0110921501706485
+dgp_new,WiGS (SAC),70%,1.0127986348122866
+dgp_new,WiGS (Static w_x=0.25),70%,1.0093856655290103
+dgp_new,WiGS (Static w_x=0.5),70%,1.0059726962457338
+dgp_new,WiGS (Static w_x=0.75),70%,1.0059726962457338
+dgp_new,"WiGS (Time-Decay, Exponential)",70%,1.0409556313993173
+dgp_new,"WiGS (Time-Decay, Linear)",70%,1.014505119453925
+dgp_new,iGS,70%,1.0
+dgp_new,EGAL,80%,1.000814332247557
+dgp_new,EMCM,80%,0.9356677524429967
+dgp_new,GSx,80%,1.005700325732899
+dgp_new,GSy,80%,1.008957654723127
+dgp_new,Passive Learning,80%,0.996742671009772
+dgp_new,QBC,80%,0.7353420195439739
+dgp_new,Uncertainty Sampling,80%,0.9356677524429967
+dgp_new,"WiGS (MAB-UCB1, c=0.5)",80%,0.996742671009772
+dgp_new,"WiGS (MAB-UCB1, c=2.0)",80%,0.996742671009772
+dgp_new,"WiGS (MAB-UCB1, c=5.0)",80%,0.995928338762215
+dgp_new,WiGS (Random Arm),80%,0.996742671009772
+dgp_new,WiGS (SAC),80%,1.000814332247557
+dgp_new,WiGS (Static w_x=0.25),80%,0.994299674267101
+dgp_new,WiGS (Static w_x=0.5),80%,0.99185667752443
+dgp_new,WiGS (Static w_x=0.75),80%,0.994299674267101
+dgp_new,"WiGS (Time-Decay, Exponential)",80%,1.01628664495114
+dgp_new,"WiGS (Time-Decay, Linear)",80%,1.0
+dgp_new,iGS,80%,1.0
+dgp_three_regime,EGAL,70%,1.0
+dgp_three_regime,EMCM,70%,0.6386623164763459
+dgp_three_regime,GSx,70%,1.0
+dgp_three_regime,GSy,70%,0.9486133768352365
+dgp_three_regime,Passive Learning,70%,0.9420880913539967
+dgp_three_regime,QBC,70%,0.6867862969004894
+dgp_three_regime,Uncertainty Sampling,70%,0.6386623164763459
+dgp_three_regime,"WiGS (MAB-UCB1, c=0.5)",70%,0.6704730831973899
+dgp_three_regime,"WiGS (MAB-UCB1, c=2.0)",70%,0.6688417618270799
+dgp_three_regime,"WiGS (MAB-UCB1, c=5.0)",70%,0.6696574225122349
+dgp_three_regime,WiGS (Random Arm),70%,0.66721044045677
+dgp_three_regime,WiGS (SAC),70%,0.668026101141925
+dgp_three_regime,WiGS (Static w_x=0.25),70%,0.7030995106035889
+dgp_three_regime,WiGS (Static w_x=0.5),70%,0.6753670473083198
+dgp_three_regime,WiGS (Static w_x=0.75),70%,0.6769983686786297
+dgp_three_regime,"WiGS (Time-Decay, Exponential)",70%,0.7528548123980424
+dgp_three_regime,"WiGS (Time-Decay, Linear)",70%,0.6639477977161501
 dgp_three_regime,iGS,70%,1.0
-dgp_three_regime,Fixed w=0.00,80%,0.9832134292565947
-dgp_three_regime,Fixed w=0.25,80%,0.8465227817745803
-dgp_three_regime,Fixed w=0.50,80%,0.8169464428457234
-dgp_three_regime,Fixed w=0.75,80%,0.8025579536370904
-dgp_three_regime,Fixed w=1.00,80%,1.0
-dgp_three_regime,MAB (c=2.0),80%,0.8113509192645884
-dgp_three_regime,Passive,80%,0.9768185451638689
-dgp_three_regime,RandomArm,80%,0.8161470823341327
+dgp_three_regime,EGAL,80%,1.0
+dgp_three_regime,EMCM,80%,0.6602717825739408
+dgp_three_regime,GSx,80%,1.0
+dgp_three_regime,GSy,80%,0.9832134292565947
+dgp_three_regime,Passive Learning,80%,0.9768185451638689
+dgp_three_regime,QBC,80%,0.812150279776179
+dgp_three_regime,Uncertainty Sampling,80%,0.6602717825739408
+dgp_three_regime,"WiGS (MAB-UCB1, c=0.5)",80%,0.8177458033573142
+dgp_three_regime,"WiGS (MAB-UCB1, c=2.0)",80%,0.8113509192645884
+dgp_three_regime,"WiGS (MAB-UCB1, c=5.0)",80%,0.8145483613109512
+dgp_three_regime,WiGS (Random Arm),80%,0.8161470823341327
+dgp_three_regime,WiGS (SAC),80%,0.806554756195044
+dgp_three_regime,WiGS (Static w_x=0.25),80%,0.8465227817745803
+dgp_three_regime,WiGS (Static w_x=0.5),80%,0.8169464428457234
+dgp_three_regime,WiGS (Static w_x=0.75),80%,0.8025579536370904
+dgp_three_regime,"WiGS (Time-Decay, Exponential)",80%,0.8545163868904876
+dgp_three_regime,"WiGS (Time-Decay, Linear)",80%,0.8273381294964028
 dgp_three_regime,iGS,80%,1.0
-dgp_two_regime,Fixed w=0.00,70%,1.2662229617304492
-dgp_two_regime,Fixed w=0.25,70%,1.0016638935108153
-dgp_two_regime,Fixed w=0.50,70%,0.908485856905158
-dgp_two_regime,Fixed w=0.75,70%,0.8885191347753744
-dgp_two_regime,Fixed w=1.00,70%,1.2113144758735441
-dgp_two_regime,MAB (c=2.0),70%,0.908485856905158
-dgp_two_regime,Passive,70%,1.2795341098169717
-dgp_two_regime,RandomArm,70%,0.9168053244592346
+dgp_two_regime,EGAL,70%,1.2196339434276207
+dgp_two_regime,EMCM,70%,1.221297836938436
+dgp_two_regime,GSx,70%,1.2113144758735441
+dgp_two_regime,GSy,70%,1.2662229617304492
+dgp_two_regime,Passive Learning,70%,1.2795341098169717
+dgp_two_regime,QBC,70%,1.064891846921797
+dgp_two_regime,Uncertainty Sampling,70%,1.221297836938436
+dgp_two_regime,"WiGS (MAB-UCB1, c=0.5)",70%,0.908485856905158
+dgp_two_regime,"WiGS (MAB-UCB1, c=2.0)",70%,0.908485856905158
+dgp_two_regime,"WiGS (MAB-UCB1, c=5.0)",70%,0.9101497504159733
+dgp_two_regime,WiGS (Random Arm),70%,0.9168053244592346
+dgp_two_regime,WiGS (SAC),70%,0.8935108153078203
+dgp_two_regime,WiGS (Static w_x=0.25),70%,1.0016638935108153
+dgp_two_regime,WiGS (Static w_x=0.5),70%,0.908485856905158
+dgp_two_regime,WiGS (Static w_x=0.75),70%,0.8885191347753744
+dgp_two_regime,"WiGS (Time-Decay, Exponential)",70%,1.1331114808652247
+dgp_two_regime,"WiGS (Time-Decay, Linear)",70%,0.9168053244592346
 dgp_two_regime,iGS,70%,1.0
-dgp_two_regime,Fixed w=0.00,80%,1.1232686980609419
-dgp_two_regime,Fixed w=0.25,80%,0.9556786703601108
-dgp_two_regime,Fixed w=0.50,80%,0.9196675900277008
-dgp_two_regime,Fixed w=0.75,80%,0.8947368421052632
-dgp_two_regime,Fixed w=1.00,80%,1.0831024930747923
-dgp_two_regime,MAB (c=2.0),80%,0.9182825484764543
-dgp_two_regime,Passive,80%,1.128808864265928
-dgp_two_regime,RandomArm,80%,0.9168975069252078
+dgp_two_regime,EGAL,80%,1.0831024930747923
+dgp_two_regime,EMCM,80%,1.0678670360110802
+dgp_two_regime,GSx,80%,1.0831024930747923
+dgp_two_regime,GSy,80%,1.1232686980609419
+dgp_two_regime,Passive Learning,80%,1.128808864265928
+dgp_two_regime,QBC,80%,1.018005540166205
+dgp_two_regime,Uncertainty Sampling,80%,1.0678670360110802
+dgp_two_regime,"WiGS (MAB-UCB1, c=0.5)",80%,0.9210526315789473
+dgp_two_regime,"WiGS (MAB-UCB1, c=2.0)",80%,0.9182825484764543
+dgp_two_regime,"WiGS (MAB-UCB1, c=5.0)",80%,0.9182825484764543
+dgp_two_regime,WiGS (Random Arm),80%,0.9168975069252078
+dgp_two_regime,WiGS (SAC),80%,0.9016620498614959
+dgp_two_regime,WiGS (Static w_x=0.25),80%,0.9556786703601108
+dgp_two_regime,WiGS (Static w_x=0.5),80%,0.9196675900277008
+dgp_two_regime,WiGS (Static w_x=0.75),80%,0.8947368421052632
+dgp_two_regime,"WiGS (Time-Decay, Exponential)",80%,1.0498614958448753
+dgp_two_regime,"WiGS (Time-Decay, Linear)",80%,0.9293628808864266
 dgp_two_regime,iGS,80%,1.0
-dgp_two_regime_gmm,Fixed w=0.00,70%,1.0412234042553192
-dgp_two_regime_gmm,Fixed w=0.25,70%,1.0172872340425532
-dgp_two_regime_gmm,Fixed w=0.50,70%,1.0319148936170213
-dgp_two_regime_gmm,Fixed w=0.75,70%,1.023936170212766
-dgp_two_regime_gmm,Fixed w=1.00,70%,1.038563829787234
-dgp_two_regime_gmm,MAB (c=2.0),70%,1.0172872340425532
-dgp_two_regime_gmm,Passive,70%,1.0252659574468086
-dgp_two_regime_gmm,RandomArm,70%,1.0199468085106382
-dgp_two_regime_gmm,iGS,70%,1.0
-dgp_two_regime_gmm,Fixed w=0.00,80%,1.0098643649815042
-dgp_two_regime_gmm,Fixed w=0.25,80%,0.998766954377312
-dgp_two_regime_gmm,Fixed w=0.50,80%,1.0160295930949446
-dgp_two_regime_gmm,Fixed w=0.75,80%,1.0123304562268804
-dgp_two_regime_gmm,Fixed w=1.00,80%,1.0110974106041923
-dgp_two_regime_gmm,MAB (c=2.0),80%,1.0061652281134401
-dgp_two_regime_gmm,Passive,80%,1.0036991368680641
-dgp_two_regime_gmm,RandomArm,80%,1.0086313193588163
-dgp_two_regime_gmm,iGS,80%,1.0
-housing,Fixed w=0.00,70%,1.13
-housing,Fixed w=0.25,70%,0.925
-housing,Fixed w=0.50,70%,0.905
-housing,Fixed w=0.75,70%,0.97
-housing,Fixed w=1.00,70%,1.17
-housing,MAB (c=2.0),70%,0.93
-housing,Passive,70%,1.445
-housing,RandomArm,70%,0.92
+housing,EGAL,70%,1.245
+housing,EMCM,70%,1.24
+housing,GSx,70%,1.17
+housing,GSy,70%,1.13
+housing,Passive Learning,70%,1.445
+housing,QBC,70%,1.115
+housing,Uncertainty Sampling,70%,1.19
+housing,"WiGS (MAB-UCB1, c=0.5)",70%,0.935
+housing,"WiGS (MAB-UCB1, c=2.0)",70%,0.93
+housing,"WiGS (MAB-UCB1, c=5.0)",70%,0.925
+housing,WiGS (Random Arm),70%,0.92
+housing,WiGS (SAC),70%,0.95
+housing,WiGS (Static w_x=0.25),70%,0.925
+housing,WiGS (Static w_x=0.5),70%,0.905
+housing,WiGS (Static w_x=0.75),70%,0.97
+housing,"WiGS (Time-Decay, Exponential)",70%,0.94
+housing,"WiGS (Time-Decay, Linear)",70%,0.93
 housing,iGS,70%,1.0
-housing,Fixed w=0.00,80%,1.0871080139372822
-housing,Fixed w=0.25,80%,0.9477351916376306
-housing,Fixed w=0.50,80%,0.9303135888501742
-housing,Fixed w=0.75,80%,0.975609756097561
-housing,Fixed w=1.00,80%,1.1602787456445993
-housing,MAB (c=2.0),80%,0.9547038327526133
-housing,Passive,80%,1.264808362369338
-housing,RandomArm,80%,0.9442508710801394
+housing,EGAL,80%,1.2055749128919862
+housing,EMCM,80%,1.1637630662020906
+housing,GSx,80%,1.1602787456445993
+housing,GSy,80%,1.0871080139372822
+housing,Passive Learning,80%,1.264808362369338
+housing,QBC,80%,1.0522648083623694
+housing,Uncertainty Sampling,80%,1.1393728222996515
+housing,"WiGS (MAB-UCB1, c=0.5)",80%,0.9547038327526133
+housing,"WiGS (MAB-UCB1, c=2.0)",80%,0.9547038327526133
+housing,"WiGS (MAB-UCB1, c=5.0)",80%,0.9442508710801394
+housing,WiGS (Random Arm),80%,0.9442508710801394
+housing,WiGS (SAC),80%,0.9616724738675958
+housing,WiGS (Static w_x=0.25),80%,0.9477351916376306
+housing,WiGS (Static w_x=0.5),80%,0.9303135888501742
+housing,WiGS (Static w_x=0.75),80%,0.975609756097561
+housing,"WiGS (Time-Decay, Exponential)",80%,0.9895470383275261
+housing,"WiGS (Time-Decay, Linear)",80%,0.9512195121951219
 housing,iGS,80%,1.0
-mpg,Fixed w=0.00,70%,1.08203125
-mpg,Fixed w=0.25,70%,1.0
-mpg,Fixed w=0.50,70%,1.01953125
-mpg,Fixed w=0.75,70%,1.00390625
-mpg,Fixed w=1.00,70%,1.015625
-mpg,MAB (c=2.0),70%,1.00390625
-mpg,Passive,70%,1.07421875
-mpg,RandomArm,70%,1.00390625
+mpg,EGAL,70%,1.03515625
+mpg,EMCM,70%,1.0234375
+mpg,GSx,70%,1.015625
+mpg,GSy,70%,1.08203125
+mpg,Passive Learning,70%,1.07421875
+mpg,QBC,70%,0.96875
+mpg,Uncertainty Sampling,70%,0.99609375
+mpg,"WiGS (MAB-UCB1, c=0.5)",70%,1.00390625
+mpg,"WiGS (MAB-UCB1, c=2.0)",70%,1.00390625
+mpg,"WiGS (MAB-UCB1, c=5.0)",70%,0.99609375
+mpg,WiGS (Random Arm),70%,1.00390625
+mpg,WiGS (SAC),70%,0.9921875
+mpg,WiGS (Static w_x=0.25),70%,1.0
+mpg,WiGS (Static w_x=0.5),70%,1.01953125
+mpg,WiGS (Static w_x=0.75),70%,1.00390625
+mpg,"WiGS (Time-Decay, Exponential)",70%,1.00390625
+mpg,"WiGS (Time-Decay, Linear)",70%,1.00390625
 mpg,iGS,70%,1.0
-mpg,Fixed w=0.00,80%,1.0335570469798658
-mpg,Fixed w=0.25,80%,0.9832214765100671
-mpg,Fixed w=0.50,80%,1.0201342281879195
-mpg,Fixed w=0.75,80%,1.0201342281879195
-mpg,Fixed w=1.00,80%,1.0067114093959733
-mpg,MAB (c=2.0),80%,1.0
-mpg,Passive,80%,1.0268456375838926
-mpg,RandomArm,80%,1.0
+mpg,EGAL,80%,1.0134228187919463
+mpg,EMCM,80%,1.0268456375838926
+mpg,GSx,80%,1.0067114093959733
+mpg,GSy,80%,1.0335570469798658
+mpg,Passive Learning,80%,1.0268456375838926
+mpg,QBC,80%,0.9496644295302014
+mpg,Uncertainty Sampling,80%,0.9798657718120806
+mpg,"WiGS (MAB-UCB1, c=0.5)",80%,1.0033557046979866
+mpg,"WiGS (MAB-UCB1, c=2.0)",80%,1.0
+mpg,"WiGS (MAB-UCB1, c=5.0)",80%,0.9932885906040269
+mpg,WiGS (Random Arm),80%,1.0
+mpg,WiGS (SAC),80%,0.9899328859060402
+mpg,WiGS (Static w_x=0.25),80%,0.9832214765100671
+mpg,WiGS (Static w_x=0.5),80%,1.0201342281879195
+mpg,WiGS (Static w_x=0.75),80%,1.0201342281879195
+mpg,"WiGS (Time-Decay, Exponential)",80%,1.0033557046979866
+mpg,"WiGS (Time-Decay, Linear)",80%,0.9798657718120806
 mpg,iGS,80%,1.0
-no2,Fixed w=0.00,70%,0.9971098265895953
-no2,Fixed w=0.25,70%,1.0317919075144508
-no2,Fixed w=0.50,70%,1.0202312138728324
-no2,Fixed w=0.75,70%,1.0144508670520231
-no2,Fixed w=1.00,70%,1.0115606936416186
-no2,MAB (c=2.0),70%,1.023121387283237
-no2,Passive,70%,1.0664739884393064
-no2,RandomArm,70%,1.0202312138728324
+no2,EGAL,70%,1.0346820809248556
+no2,EMCM,70%,1.0491329479768785
+no2,GSx,70%,1.0115606936416186
+no2,GSy,70%,0.9971098265895953
+no2,Passive Learning,70%,1.0664739884393064
+no2,QBC,70%,0.9942196531791907
+no2,Uncertainty Sampling,70%,1.0433526011560694
+no2,"WiGS (MAB-UCB1, c=0.5)",70%,1.0173410404624277
+no2,"WiGS (MAB-UCB1, c=2.0)",70%,1.023121387283237
+no2,"WiGS (MAB-UCB1, c=5.0)",70%,1.023121387283237
+no2,WiGS (Random Arm),70%,1.0202312138728324
+no2,WiGS (SAC),70%,1.0144508670520231
+no2,WiGS (Static w_x=0.25),70%,1.0317919075144508
+no2,WiGS (Static w_x=0.5),70%,1.0202312138728324
+no2,WiGS (Static w_x=0.75),70%,1.0144508670520231
+no2,"WiGS (Time-Decay, Exponential)",70%,1.023121387283237
+no2,"WiGS (Time-Decay, Linear)",70%,1.0202312138728324
 no2,iGS,70%,1.0
-no2,Fixed w=0.00,80%,0.9948320413436692
-no2,Fixed w=0.25,80%,1.0232558139534884
-no2,Fixed w=0.50,80%,1.0077519379844961
-no2,Fixed w=0.75,80%,0.9948320413436692
-no2,Fixed w=1.00,80%,1.0025839793281655
-no2,MAB (c=2.0),80%,1.0180878552971577
-no2,Passive,80%,1.0335917312661498
-no2,RandomArm,80%,1.020671834625323
+no2,EGAL,80%,1.0129198966408268
+no2,EMCM,80%,1.0103359173126616
+no2,GSx,80%,1.0025839793281655
+no2,GSy,80%,0.9948320413436692
+no2,Passive Learning,80%,1.0335917312661498
+no2,QBC,80%,0.9844961240310077
+no2,Uncertainty Sampling,80%,0.9896640826873385
+no2,"WiGS (MAB-UCB1, c=0.5)",80%,1.0155038759689923
+no2,"WiGS (MAB-UCB1, c=2.0)",80%,1.0180878552971577
+no2,"WiGS (MAB-UCB1, c=5.0)",80%,1.020671834625323
+no2,WiGS (Random Arm),80%,1.020671834625323
+no2,WiGS (SAC),80%,1.0180878552971577
+no2,WiGS (Static w_x=0.25),80%,1.0232558139534884
+no2,WiGS (Static w_x=0.5),80%,1.0077519379844961
+no2,WiGS (Static w_x=0.75),80%,0.9948320413436692
+no2,"WiGS (Time-Decay, Exponential)",80%,1.0077519379844961
+no2,"WiGS (Time-Decay, Linear)",80%,1.0180878552971577
 no2,iGS,80%,1.0
-pm10,Fixed w=0.00,70%,0.9944903581267218
-pm10,Fixed w=0.25,70%,0.9834710743801653
-pm10,Fixed w=0.50,70%,0.9586776859504132
-pm10,Fixed w=0.75,70%,0.9338842975206612
-pm10,Fixed w=1.00,70%,0.9862258953168044
-pm10,MAB (c=2.0),70%,0.9724517906336089
-pm10,Passive,70%,1.0137741046831956
-pm10,RandomArm,70%,0.9724517906336089
+pm10,EGAL,70%,0.9752066115702479
+pm10,EMCM,70%,1.002754820936639
+pm10,GSx,70%,0.9862258953168044
+pm10,GSy,70%,0.9944903581267218
+pm10,Passive Learning,70%,1.0137741046831956
+pm10,QBC,70%,1.0
+pm10,Uncertainty Sampling,70%,1.0082644628099173
+pm10,"WiGS (MAB-UCB1, c=0.5)",70%,0.9724517906336089
+pm10,"WiGS (MAB-UCB1, c=2.0)",70%,0.9724517906336089
+pm10,"WiGS (MAB-UCB1, c=5.0)",70%,0.9696969696969697
+pm10,WiGS (Random Arm),70%,0.9724517906336089
+pm10,WiGS (SAC),70%,0.9807162534435262
+pm10,WiGS (Static w_x=0.25),70%,0.9834710743801653
+pm10,WiGS (Static w_x=0.5),70%,0.9586776859504132
+pm10,WiGS (Static w_x=0.75),70%,0.9338842975206612
+pm10,"WiGS (Time-Decay, Exponential)",70%,1.0055096418732783
+pm10,"WiGS (Time-Decay, Linear)",70%,0.9917355371900827
 pm10,iGS,70%,1.0
-pm10,Fixed w=0.00,80%,1.0050761421319796
-pm10,Fixed w=0.25,80%,0.9822335025380711
-pm10,Fixed w=0.50,80%,0.9593908629441624
-pm10,Fixed w=0.75,80%,0.9593908629441624
-pm10,Fixed w=1.00,80%,0.9949238578680203
-pm10,MAB (c=2.0),80%,0.9644670050761421
-pm10,Passive,80%,1.015228426395939
-pm10,RandomArm,80%,0.9644670050761421
+pm10,EGAL,80%,1.0101522842639594
+pm10,EMCM,80%,1.0101522842639594
+pm10,GSx,80%,0.9949238578680203
+pm10,GSy,80%,1.0050761421319796
+pm10,Passive Learning,80%,1.015228426395939
+pm10,QBC,80%,0.9949238578680203
+pm10,Uncertainty Sampling,80%,0.9923857868020305
+pm10,"WiGS (MAB-UCB1, c=0.5)",80%,0.9619289340101523
+pm10,"WiGS (MAB-UCB1, c=2.0)",80%,0.9644670050761421
+pm10,"WiGS (MAB-UCB1, c=5.0)",80%,0.9644670050761421
+pm10,WiGS (Random Arm),80%,0.9644670050761421
+pm10,WiGS (SAC),80%,0.9720812182741116
+pm10,WiGS (Static w_x=0.25),80%,0.9822335025380711
+pm10,WiGS (Static w_x=0.5),80%,0.9593908629441624
+pm10,WiGS (Static w_x=0.75),80%,0.9593908629441624
+pm10,"WiGS (Time-Decay, Exponential)",80%,1.0050761421319796
+pm10,"WiGS (Time-Decay, Linear)",80%,0.9974619289340102
 pm10,iGS,80%,1.0
-qsar,Fixed w=0.00,70%,1.0753623188405796
-qsar,Fixed w=0.25,70%,0.9884057971014493
-qsar,Fixed w=0.50,70%,0.9565217391304348
-qsar,Fixed w=0.75,70%,0.927536231884058
-qsar,Fixed w=1.00,70%,0.9971014492753624
-qsar,MAB (c=2.0),70%,0.9623188405797102
-qsar,Passive,70%,1.1333333333333333
-qsar,RandomArm,70%,0.9594202898550724
+qsar,EGAL,70%,1.0695652173913044
+qsar,EMCM,70%,1.03768115942029
+qsar,GSx,70%,0.9971014492753624
+qsar,GSy,70%,1.0753623188405796
+qsar,Passive Learning,70%,1.1333333333333333
+qsar,QBC,70%,0.9884057971014493
+qsar,Uncertainty Sampling,70%,1.0
+qsar,"WiGS (MAB-UCB1, c=0.5)",70%,0.9565217391304348
+qsar,"WiGS (MAB-UCB1, c=2.0)",70%,0.9623188405797102
+qsar,"WiGS (MAB-UCB1, c=5.0)",70%,0.9623188405797102
+qsar,WiGS (Random Arm),70%,0.9594202898550724
+qsar,WiGS (SAC),70%,0.9681159420289855
+qsar,WiGS (Static w_x=0.25),70%,0.9884057971014493
+qsar,WiGS (Static w_x=0.5),70%,0.9565217391304348
+qsar,WiGS (Static w_x=0.75),70%,0.927536231884058
+qsar,"WiGS (Time-Decay, Exponential)",70%,1.0318840579710145
+qsar,"WiGS (Time-Decay, Linear)",70%,0.9797101449275363
 qsar,iGS,70%,1.0
-qsar,Fixed w=0.00,80%,1.0603015075376885
-qsar,Fixed w=0.25,80%,1.0050251256281406
-qsar,Fixed w=0.50,80%,0.9773869346733668
-qsar,Fixed w=0.75,80%,0.9623115577889447
-qsar,Fixed w=1.00,80%,1.0075376884422111
-qsar,MAB (c=2.0),80%,0.9748743718592965
-qsar,Passive,80%,1.0829145728643217
-qsar,RandomArm,80%,0.9773869346733668
+qsar,EGAL,80%,1.0402010050251256
+qsar,EMCM,80%,1.0175879396984924
+qsar,GSx,80%,1.0075376884422111
+qsar,GSy,80%,1.0603015075376885
+qsar,Passive Learning,80%,1.0829145728643217
+qsar,QBC,80%,1.0175879396984924
+qsar,Uncertainty Sampling,80%,1.0251256281407035
+qsar,"WiGS (MAB-UCB1, c=0.5)",80%,0.9723618090452262
+qsar,"WiGS (MAB-UCB1, c=2.0)",80%,0.9748743718592965
+qsar,"WiGS (MAB-UCB1, c=5.0)",80%,0.9773869346733668
+qsar,WiGS (Random Arm),80%,0.9773869346733668
+qsar,WiGS (SAC),80%,0.9773869346733668
+qsar,WiGS (Static w_x=0.25),80%,1.0050251256281406
+qsar,WiGS (Static w_x=0.5),80%,0.9773869346733668
+qsar,WiGS (Static w_x=0.75),80%,0.9623115577889447
+qsar,"WiGS (Time-Decay, Exponential)",80%,1.0427135678391959
+qsar,"WiGS (Time-Decay, Linear)",80%,1.0075376884422111
 qsar,iGS,80%,1.0
-yacht,Fixed w=0.00,70%,1.0670391061452513
-yacht,Fixed w=0.25,70%,0.9776536312849162
-yacht,Fixed w=0.50,70%,0.9888268156424581
-yacht,Fixed w=0.75,70%,1.0223463687150838
-yacht,Fixed w=1.00,70%,1.1955307262569832
-yacht,MAB (c=2.0),70%,1.0167597765363128
-yacht,Passive,70%,1.2122905027932962
-yacht,RandomArm,70%,1.0223463687150838
+wine_red,EGAL,70%,0.9991445680068435
+wine_red,EMCM,70%,1.0230966638152268
+wine_red,GSx,70%,1.0
+wine_red,GSy,70%,1.0128314798973481
+wine_red,Passive Learning,70%,1.0333618477331052
+wine_red,QBC,70%,1.0239520958083832
+wine_red,Uncertainty Sampling,70%,1.0239520958083832
+wine_red,"WiGS (MAB-UCB1, c=0.5)",70%,0.9461077844311377
+wine_red,"WiGS (MAB-UCB1, c=2.0)",70%,0.9461077844311377
+wine_red,"WiGS (MAB-UCB1, c=5.0)",70%,0.9461077844311377
+wine_red,WiGS (Random Arm),70%,0.9461077844311377
+wine_red,WiGS (SAC),70%,0.9503849443969205
+wine_red,WiGS (Static w_x=0.25),70%,0.9769033361847733
+wine_red,WiGS (Static w_x=0.5),70%,0.9375534644995723
+wine_red,WiGS (Static w_x=0.75),70%,0.9007698887938409
+wine_red,"WiGS (Time-Decay, Exponential)",70%,1.007698887938409
+wine_red,"WiGS (Time-Decay, Linear)",70%,0.9863130881094953
+wine_red,iGS,70%,1.0
+wine_red,EGAL,80%,0.996078431372549
+wine_red,EMCM,80%,1.0101960784313726
+wine_red,GSx,80%,1.0
+wine_red,GSy,80%,1.0094117647058825
+wine_red,Passive Learning,80%,1.0133333333333334
+wine_red,QBC,80%,1.008627450980392
+wine_red,Uncertainty Sampling,80%,1.0062745098039216
+wine_red,"WiGS (MAB-UCB1, c=0.5)",80%,0.9537254901960784
+wine_red,"WiGS (MAB-UCB1, c=2.0)",80%,0.9537254901960784
+wine_red,"WiGS (MAB-UCB1, c=5.0)",80%,0.9537254901960784
+wine_red,WiGS (Random Arm),80%,0.9537254901960784
+wine_red,WiGS (SAC),80%,0.9607843137254902
+wine_red,WiGS (Static w_x=0.25),80%,0.9772549019607844
+wine_red,WiGS (Static w_x=0.5),80%,0.9309803921568628
+wine_red,WiGS (Static w_x=0.75),80%,0.9066666666666666
+wine_red,"WiGS (Time-Decay, Exponential)",80%,1.0054901960784313
+wine_red,"WiGS (Time-Decay, Linear)",80%,0.996078431372549
+wine_red,iGS,80%,1.0
+yacht,EGAL,70%,1.1396648044692737
+yacht,EMCM,70%,1.1675977653631284
+yacht,GSx,70%,1.1955307262569832
+yacht,GSy,70%,1.0670391061452513
+yacht,Passive Learning,70%,1.2122905027932962
+yacht,QBC,70%,1.089385474860335
+yacht,Uncertainty Sampling,70%,1.1508379888268156
+yacht,"WiGS (MAB-UCB1, c=0.5)",70%,1.0
+yacht,"WiGS (MAB-UCB1, c=2.0)",70%,1.0167597765363128
+yacht,"WiGS (MAB-UCB1, c=5.0)",70%,1.0167597765363128
+yacht,WiGS (Random Arm),70%,1.0223463687150838
+yacht,WiGS (SAC),70%,1.0335195530726258
+yacht,WiGS (Static w_x=0.25),70%,0.9776536312849162
+yacht,WiGS (Static w_x=0.5),70%,0.9888268156424581
+yacht,WiGS (Static w_x=0.75),70%,1.0223463687150838
+yacht,"WiGS (Time-Decay, Exponential)",70%,1.0446927374301676
+yacht,"WiGS (Time-Decay, Linear)",70%,0.9720670391061452
 yacht,iGS,70%,1.0
-yacht,Fixed w=0.00,80%,1.0194174757281553
-yacht,Fixed w=0.25,80%,1.0242718446601942
-yacht,Fixed w=0.50,80%,0.9951456310679612
-yacht,Fixed w=0.75,80%,1.029126213592233
-yacht,Fixed w=1.00,80%,1.1601941747572815
-yacht,MAB (c=2.0),80%,1.0242718446601942
-yacht,Passive,80%,1.174757281553398
-yacht,RandomArm,80%,1.0242718446601942
+yacht,EGAL,80%,1.203883495145631
+yacht,EMCM,80%,1.1650485436893203
+yacht,GSx,80%,1.1601941747572815
+yacht,GSy,80%,1.0194174757281553
+yacht,Passive Learning,80%,1.174757281553398
+yacht,QBC,80%,1.0922330097087378
+yacht,Uncertainty Sampling,80%,1.1310679611650485
+yacht,"WiGS (MAB-UCB1, c=0.5)",80%,1.0194174757281553
+yacht,"WiGS (MAB-UCB1, c=2.0)",80%,1.0242718446601942
+yacht,"WiGS (MAB-UCB1, c=5.0)",80%,1.029126213592233
+yacht,WiGS (Random Arm),80%,1.0242718446601942
+yacht,WiGS (SAC),80%,1.0339805825242718
+yacht,WiGS (Static w_x=0.25),80%,1.0242718446601942
+yacht,WiGS (Static w_x=0.5),80%,0.9951456310679612
+yacht,WiGS (Static w_x=0.75),80%,1.029126213592233
+yacht,"WiGS (Time-Decay, Exponential)",80%,1.0194174757281553
+yacht,"WiGS (Time-Decay, Linear)",80%,1.0145631067961165
 yacht,iGS,80%,1.0

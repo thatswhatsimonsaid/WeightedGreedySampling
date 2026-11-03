@@ -41,3 +41,5 @@ results_grfp_controls/cluster/
 # conflicts with the regenerated one on pull. Create them with
 # Cluster/1_CreateControlsSbatch.sh.
 Code/Cluster/RunControls/controls_*.sbatch
+results_grfp_controls/full_suite/*/exp_a_curves.pkl.gz
+results_grfp_controls/full_suite/*/exp_a_arms.csv.gz
