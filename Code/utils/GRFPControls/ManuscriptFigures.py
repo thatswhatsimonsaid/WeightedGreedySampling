@@ -154,7 +154,7 @@ def fig_auc_heatmap(curves, out_dir, metric, budget=0.70):
 
 
 ### Figure 2: trace plots relative to iGS ###
-def fig_traces(curves, out_dir, metric, ncol=4):
+def fig_traces(curves, out_dir, metric, ncol=4, relative=True):
     datasets, sels = _frame(curves)
     sels = [s for s in _ordered(sels) if s != BASELINE]
     nrow = int(np.ceil(len(datasets) / ncol))
@@ -167,14 +167,18 @@ def fig_traces(curves, out_dir, metric, ncol=4):
             ax.axis("off"); continue
         n = min(len(v) for v in base)
         B = np.vstack([v[:n] for v in base]).mean(axis=0)
-        ax.axhline(0, color="#d14b4b", lw=1.4, zorder=3)
+        if relative:
+            ax.axhline(0, color="#d14b4b", lw=1.4, zorder=3)
+        else:
+            # iGS is a plotted series in absolute mode, not the zero line
+            ax.plot(B, color="#d14b4b", lw=1.8, zorder=5, label=BASELINE)
         for sel in sels:
             cs = [v for (d, s, _), v in curves.items() if d == ds and s == sel]
             if not cs:
                 continue
             m = min(n, min(len(v) for v in cs))
             A = np.vstack([v[:m] for v in cs])
-            delta = A.mean(axis=0) - B[:m]
+            delta = A.mean(axis=0) - B[:m] if relative else A.mean(axis=0)
             hi = sel in HILITE
             ax.plot(delta, lw=2.0 if hi else 0.9,
                     color=HILITE.get(sel, "#9a9992"), alpha=1.0 if hi else 0.55,
@@ -184,15 +188,21 @@ def fig_traces(curves, out_dir, metric, ncol=4):
                 ax.fill_between(np.arange(m), delta - 1.96 * se, delta + 1.96 * se,
                                 color=HILITE[sel], alpha=0.15, lw=0, zorder=3)
         ax.set_title(ds, loc="left", fontsize=10, color=C_INK)
-        ax.set_xlabel("Round"); ax.set_ylabel(f"$\\Delta$ {metric} vs {BASELINE}")
+        ax.set_xlabel("Round")
+        ax.set_ylabel(f"$\\Delta$ {metric} vs {BASELINE}" if relative
+                      else f"{metric} RMSE")
         if k == 0:
             ax.legend(fontsize=7, loc="upper right")
     for k in range(len(datasets), nrow * ncol):
         axes[k // ncol][k % ncol].axis("off")
-    fig.suptitle(f"Trace relative to {BASELINE} — {metric}. Below 0 = lower error than {BASELINE}. "
-                 f"Grey = other strategies.", x=0.01, ha="left", fontsize=12, color=C_INK)
+    title = (f"Trace relative to {BASELINE} — {metric}. Below 0 = lower error than {BASELINE}."
+             if relative else
+             f"Learning curves — {metric}. Red = {BASELINE}.")
+    fig.suptitle(title + " Grey = other strategies.",
+                 x=0.01, ha="left", fontsize=12, color=C_INK)
     fig.tight_layout(rect=[0, 0, 1, 0.98])
-    p = os.path.join(out_dir, f"fig_traces_vs_iGS_{metric}.png")
+    p = os.path.join(out_dir, f"fig_traces_vs_iGS_{metric}.png" if relative
+                     else f"fig_traces_absolute_{metric}.png")
     fig.savefig(p, dpi=170); plt.close(fig)
     return p
 
@@ -293,7 +303,8 @@ def main():
         print(f"\n[{metric}] {len(ds)} datasets x {len(sel)} selectors "
               f"x {len({k[2] for k in curves})} seeds")
         for p in (fig_auc_heatmap(curves, args.out, metric, args.budget),
-                  fig_traces(curves, args.out, metric),
+                  fig_traces(curves, args.out, metric, relative=True),
+                  fig_traces(curves, args.out, metric, relative=False),
                   fig_label_efficiency(curves, args.out, metric)):
             if p:
                 print("  wrote", os.path.basename(p))
