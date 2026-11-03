@@ -47,11 +47,14 @@ def main():
             if metric not in r["curves"]:
                 missing += 1
                 continue
-            c = np.asarray(r["curves"][metric], dtype=float)
+            # float32 halves the stored curves at no cost that matters: these
+            # are RMSE traces and every downstream number is an area or a
+            # paired difference, far above float32's ~7 significant digits.
+            c = np.asarray(r["curves"][metric], dtype=np.float32)
             key = (r["dataset"], r["selector"], r["seed"])
             curves[key] = c
             recs.append({"dataset": r["dataset"], "selector": r["selector"],
-                         "seed": r["seed"], "area": LearningCurveArea(c),
+                         "seed": r["seed"], "area": LearningCurveArea(c.astype(np.float64)),
                          "final_rmse": float(c[-1]), "n_rounds": len(c),
                          "elapsed": r.get("elapsed", np.nan)})
             for a in r.get("arms", []):
