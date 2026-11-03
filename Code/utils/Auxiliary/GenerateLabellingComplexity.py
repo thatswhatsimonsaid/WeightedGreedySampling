@@ -21,11 +21,17 @@ NAME_MAPPING = {
     'EGAL': 'EGAL', 
     'iGS': 'iGS',
     'QBC': 'QBC',
+    # This order sets the row order of the efficiency plot, so the static
+    # weights ascend and the three bandits sit together, with the random-arm
+    # control last so it reads against them.
+    'WiGS (Static w_x=0.25)': 'WiGS (Static, 0.25)',
+    'WiGS (Static w_x=0.5)': 'WiGS (Static, 0.5)',
     'WiGS (Static w_x=0.75)': 'WiGS (Static, 0.75)',
-    'WiGS (Static w_x=0.25)': 'WiGS (Static, 0.25)', 
     'WiGS (Time-Decay, Linear)': 'WiGS (Linear)',
     'WiGS (Time-Decay, Exponential)': 'WiGS (Exp)',
+    'WiGS (MAB-UCB1, c=0.5)': 'WiGS (MAB, c=0.5)',
     'WiGS (MAB-UCB1, c=2.0)': 'WiGS (MAB, c=2.0)',
+    'WiGS (MAB-UCB1, c=5.0)': 'WiGS (MAB, c=5.0)',
     'WiGS (SAC)': 'WiGS (SAC)',
     'WiGS (Random Arm)': 'WiGS (Random Arm)'
 }
