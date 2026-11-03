@@ -60,8 +60,15 @@ def initial_train_size(dataset):
     return max(2, int(round(n * TRAIN_PROPORTION)))
 
 
-def export(metric_dir, out_dir, metric_name="RMSE"):
-    """Write the aggregated layout the Auxiliary plotting code reads."""
+def export(metric_dir, out_dir, metric_name="RMSE", budget=1.0):
+    """
+    Write the aggregated layout the Auxiliary plotting code reads.
+
+    `budget` < 1 truncates every curve to that leading fraction of its rounds.
+    GenerateAUCTable integrates whatever curve it is given over the full length
+    and has no truncation option, so truncating here is how a budget-limited
+    relative AUC is obtained from the repository's own code.
+    """
     curves = _load_curves(metric_dir)
     datasets = sorted({k[0] for k in curves})
     for ds in datasets:
@@ -72,6 +79,8 @@ def export(metric_dir, out_dir, metric_name="RMSE"):
             cols = {f"Sim_{s}": np.asarray(curves[(ds, sel, s)], dtype=float)
                     for s in seeds}
             n = min(len(v) for v in cols.values())
+            if budget < 1.0:
+                n = max(2, int(round(n * budget)))
             per_sel[sel] = pd.DataFrame({k: v[:n] for k, v in cols.items()})
 
         d = os.path.join(out_dir, ds, "full_pool_metrics")
@@ -94,6 +103,10 @@ def main():
     ap.add_argument("--out", required=True,
                     help="Where to write the aggregated layout and figures.")
     ap.add_argument("--metrics", nargs="+", default=["full_pool", "test"])
+    ap.add_argument("--budget", type=float, default=0.70,
+                    help="Leading fraction of each curve used for the AUC "
+                         "heatmap. Trace plots and label efficiency always use "
+                         "the full curve.")
     ap.add_argument("--no-plots", action="store_true",
                     help="Export only; do not call the Auxiliary plotting code.")
     args = ap.parse_args()
@@ -117,10 +130,16 @@ def main():
         generate_all_plots(aggregated_results_dir=agg, image_dir=img,
                            show_legend=True)
 
-        ### 2. Relative-AUC heatmaps ###
+        ### 2. Relative-AUC heatmaps, over --budget of the curve ###
         from utils.Auxiliary import GenerateAUCTable as AUC
-        auc_df = AUC.load_and_calculate_auc_from_dirs(agg)
-        auc_out = os.path.join(img, "AUC_Tables")
+        if args.budget < 1.0:
+            agg_b = os.path.join(args.out, metric, f"aggregated_{int(args.budget*100)}pct")
+            print(f"  truncating to {int(args.budget*100)}% for the AUC heatmap")
+            export(src, agg_b, budget=args.budget)
+        else:
+            agg_b = agg
+        auc_df = AUC.load_and_calculate_auc_from_dirs(agg_b)
+        auc_out = os.path.join(img, f"AUC_Tables_{int(args.budget*100)}pct")
         os.makedirs(auc_out, exist_ok=True)
         for baseline in AUC.TARGET_BASELINES:
             try:
