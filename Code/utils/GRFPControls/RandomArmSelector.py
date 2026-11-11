@@ -26,6 +26,8 @@ class RandomArmSelector:
         arm_counts (np.ndarray): Number of times each arm has been pulled.
         arm_values (np.ndarray): Running average reward for each arm.
         reward_log (list): Per-round (arm_index, reward) pairs.
+        state_history (list): One dict per `select` call, in the same format as
+            `WiGS_MAB_Selector.state_history` (bonus and sigma_hat are NaN).
     """
 
     ### Initialize ###
@@ -58,6 +60,7 @@ class RandomArmSelector:
         self.last_arm_pulled = None
         self.last_rmse = None
         self.reward_log = []
+        self.state_history = []
 
     ### Select Observation ###
     def select(self,
@@ -83,13 +86,15 @@ class RandomArmSelector:
         if self.last_arm_pulled is not None and self.last_rmse is not None:
             if current_rmse is None:
                 raise ValueError("RandomArm control requires 'current_rmse' to be passed.")
-            reward = self.last_rmse - current_rmse
+            # Same NaN rule as WiGS_MAB_Selector: no reward, no value update.
+            if not (np.isnan(current_rmse) or np.isnan(self.last_rmse)):
+                reward = self.last_rmse - current_rmse
 
-            last_arm_idx = self.last_arm_pulled
-            old_value = self.arm_values[last_arm_idx]
-            new_count = self.arm_counts[last_arm_idx]
-            self.arm_values[last_arm_idx] = old_value + (reward - old_value) / new_count
-            self.reward_log.append((int(last_arm_idx), float(reward)))
+                last_arm_idx = self.last_arm_pulled
+                old_value = self.arm_values[last_arm_idx]
+                new_count = self.arm_counts[last_arm_idx]
+                self.arm_values[last_arm_idx] = old_value + (reward - old_value) / new_count
+                self.reward_log.append((int(last_arm_idx), float(reward)))
         self.last_rmse = current_rmse
 
         ### Calculate distances and normalize ###
@@ -116,9 +121,27 @@ class RandomArmSelector:
         self.arm_counts[arm_to_pull] += 1
 
         ## Final Score and Selection ##
-        score_matrix = (w_x * d_prime_nmX) + (w_y * d_prime_nmY)
-        final_scores = score_matrix.min(axis=1)
-        best_candidate_iloc = np.argmax(final_scores)
+        candidate_ilocs = []
+        for arm_w_x in self.arms:
+            score_matrix = (arm_w_x * d_prime_nmX) + ((1.0 - arm_w_x) * d_prime_nmY)
+            final_scores = score_matrix.min(axis=1)
+            candidate_ilocs.append(np.argmax(final_scores))
+        best_candidate_iloc = candidate_ilocs[arm_to_pull]
+
+        ## Log state ##
+        self.state_history.append({
+            "iteration": self.iteration,
+            "arm_pulled": int(arm_to_pull),
+            "w_x": w_x,
+            "reward": reward,
+            "current_rmse": current_rmse,
+            "cv_was_nan": bool(current_rmse is not None and np.isnan(current_rmse)),
+            "arm_counts": self.arm_counts.copy(),
+            "arm_values": self.arm_values.copy(),
+            "bonus": np.full(len(self.arms), np.nan),
+            "sigma_hat": np.nan,
+            "candidates_by_arm": [df_Candidate.index[i] for i in candidate_ilocs],
+        })
         self.iteration += 1
 
         IndexRecommendation = df_Candidate.iloc[[best_candidate_iloc]].index[0]

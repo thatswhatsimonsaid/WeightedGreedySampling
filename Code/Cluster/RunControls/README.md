@@ -87,3 +87,20 @@ python -m utils.GRFPControls.CreateControlsSbatch --all --exclude  # include win
 
 It times a short probe per dataset to set wall times, so generation takes a
 couple of minutes and the limits reflect the machine it runs on.
+
+## Controls v2: rescaled bandit, no CV fallback
+
+Reruns only the two reward-driven selectors (`WiGS_MAB_Selector` with
+`reward_scaling="std"`, and the random arm), both with
+`cv_fallback_to_test=False`, under the September protocol (repo split,
+raw features, test RMSE, 13 datasets, 100 seeds). Passive and the fixed
+weights are reused from the September curves. From `Code/`:
+
+```bash
+sbatch Cluster/6_RunControlsV2.sbatch          # 260 tasks, writes Results/controls_v2/raw/
+python -m utils.GRFPControls.AnalyzeControlsV2 # writes Results/controls_v2/SUMMARY_v2.md
+```
+
+The analyzer needs the September outputs (`results_grfp_controls/exp_a_curves.pkl.gz`
+and `results_grfp_controls/benchmarks/exp_a_curves.pkl.gz`), which are tracked.
+The same sweep runs locally with `python -m utils.GRFPControls.RunControlsV2 --local --workers 7`.

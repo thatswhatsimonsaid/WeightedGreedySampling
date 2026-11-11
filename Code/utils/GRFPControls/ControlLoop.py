@@ -118,7 +118,8 @@ def RunControlIteration(DataFileInput,
                         Metric="test",
                         Protocol="repo",
                         TrainProportion=0.05,
-                        Standardize=False):
+                        Standardize=False,
+                        cv_fallback_to_test=True):
     """
     Runs one (dataset, seed, selector) control run and returns its logs.
 
@@ -138,6 +139,9 @@ def RunControlIteration(DataFileInput,
         MaxIterations (int, optional): Cap on rounds. None = run the pool to
             exhaustion, which is the paper's budget.
         df (pd.DataFrame, optional): Pre-loaded data, used by Experiment B.
+        cv_fallback_to_test (bool): True (the original behaviour) substitutes
+            the train RMSE when CV is undefined; False passes NaN to the
+            selector. Same key and meaning as in LearningProcedure.
 
     Returns:
         dict with the test-metric curves and the per-round arm/reward logs.
@@ -236,7 +240,7 @@ def RunControlIteration(DataFileInput,
                 current_cv_rmse = get_cv_rmse(sklearn_model, X_train_df, y_train_series, k=5)
             else:
                 current_cv_rmse = np.nan
-            if np.isnan(current_cv_rmse):
+            if np.isnan(current_cv_rmse) and cv_fallback_to_test:
                 # troy-branch fallback: train RMSE, never test #
                 train_predictions = predictor_model.predict(X_train_df)
                 current_cv_rmse = np.sqrt(mean_squared_error(y_train_series, train_predictions))
@@ -308,4 +312,5 @@ def RunControlIteration(DataFileInput,
         "n_test": len(df_Test),
         "n_initial_train": len(InitialTrainIndices),
         "n_rounds": len(Curves['test']["RMSE"]),
+        "SelectorStateHistory": getattr(selector_model, "state_history", None),
     }

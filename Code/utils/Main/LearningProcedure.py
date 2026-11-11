@@ -70,7 +70,12 @@ def LearningProcedure(SimulationConfigInputUpdated):
             current_cv_rmse = get_cv_rmse(sklearn_model, X_train_df, y_train_series, k=5)
         else:
             current_cv_rmse = np.nan 
-        if np.isnan(current_cv_rmse):
+        # `cv_fallback_to_test` (default True) keeps the original substitution.
+        # Despite the key's name the substitute is the *training* RMSE of the
+        # fitted model, not test error. False passes the NaN through, and the
+        # MAB selector then skips the reward for that round. Selectors that read
+        # current_rmse without a NaN check (WiGS_SAC_Selector) need True.
+        if np.isnan(current_cv_rmse) and SimulationConfigInputUpdated.get("cv_fallback_to_test", True):
             train_predictions = predictor_model.predict(X_train_df)
             current_cv_rmse = np.sqrt(mean_squared_error(y_train_series, train_predictions))
 
@@ -104,5 +109,6 @@ def LearningProcedure(SimulationConfigInputUpdated):
     LearningProcedureOutput = {"ErrorVecs": ErrorVecs,
                                "SelectedObservationHistory": SelectedObservationHistory,
                                "WeightHistory": WeightHistory,
-                               "InitialTrainIndices": InitialTrainIndices}
+                               "InitialTrainIndices": InitialTrainIndices,
+                               "SelectorStateHistory": getattr(selector_model, "state_history", None)}
     return LearningProcedureOutput
