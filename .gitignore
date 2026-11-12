@@ -55,3 +55,7 @@ results_grfp_controls/manuscript_figures/*/aggregated_*/
 # Cluster/6_RunControlsV2.sbatch or RunControlsV2 --local. SUMMARY_v2.md and
 # the area CSVs beside them stay tracked.
 Results/controls_v2/raw/
+
+# Baseline-only trace export: the aggregated layout is a regenerable
+# intermediate (Cluster/7_BaselineTraces.sbatch); the images stay tracked.
+results_grfp_controls/baseline_traces/*/aggregated/
