@@ -44,6 +44,9 @@ def LearningProcedure(SimulationConfigInputUpdated):
     selector_init_args = {k: v for k, v in SimulationConfigInputUpdated.items()
                           if k in inspect.signature(SelectorClass.__init__).parameters}
     selector_model = SelectorClass(**selector_init_args)
+    if getattr(selector_model, "reward_source", "cv") != "cv":
+        raise ValueError("reward_source='test_oracle' needs a held-out test set; "
+                         "use utils.GRFPControls.ControlLoop.RunControlIteration.")
 
     ### Algorithm ###
     while True:

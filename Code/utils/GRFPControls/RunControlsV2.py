@@ -20,6 +20,11 @@ Usage (from the Code/ directory):
     python -m utils.GRFPControls.RunControlsV2 --TaskID $SLURM_ARRAY_TASK_ID
     # everything, locally
     python -m utils.GRFPControls.RunControlsV2 --local --workers 7
+
+`--suite oracle` runs Diagnostic 3 instead: the same bandit with
+reward_source="test_oracle" (reward = drop in held-out test RMSE). It is a
+diagnostic, never a method: outputs go to Results/diagnostics_v3/ORACLE_raw/,
+carry ORACLE in the file name and `oracle: True` in the pickle.
 """
 
 from utils.GRFPControls import _bootstrap  # noqa: F401
@@ -41,19 +46,29 @@ SELECTORS = {
     "MAB (std)":      ("WiGS_MAB_Selector", {"mab_c": 2.0, "reward_scaling": "std"}),
     "RandomArm (v2)": ("RandomArmSelector", {}),
 }
+ORACLE_SELECTORS = {
+    "MAB (ORACLE test reward)": ("WiGS_MAB_Selector", {"mab_c": 2.0, "reward_scaling": "std",
+                                                       "reward_source": "test_oracle"}),
+}
 N_SEEDS = 100
 SEEDS_PER_TASK = 10
 RUN_KWARGS = dict(Protocol="repo", Standardize=False, Metric="test",
                   cv_fallback_to_test=False)
 
 
-def default_out():
+def default_out(suite="v2"):
+    if suite == "oracle":
+        return os.path.join(os.path.dirname(os.getcwd()), "Results", "diagnostics_v3", "ORACLE_raw")
     return os.path.join(os.path.dirname(os.getcwd()), "Results", "controls_v2", "raw")
 
 
 def out_path(out_root, dataset, label, seed):
     safe = label.replace(" ", "_").replace("(", "").replace(")", "")
     return os.path.join(out_root, dataset, f"{safe}__seed{seed:03d}.pkl")
+
+
+def selectors_for(suite):
+    return ORACLE_SELECTORS if suite == "oracle" else SELECTORS
 
 
 def columnar(state_history):
@@ -64,11 +79,11 @@ def columnar(state_history):
     return {k: np.asarray([s[k] for s in state_history]) for k in keys}
 
 
-def run_one(dataset, label, seed, out_root):
+def run_one(dataset, label, seed, out_root, suite="v2"):
     path = out_path(out_root, dataset, label, seed)
     if os.path.exists(path):
         return path, None
-    sel_type, params = SELECTORS[label]
+    sel_type, params = selectors_for(suite)[label]
     t0 = time.time()
     out = RunControlIteration(DataFileInput=dataset, Seed=seed,
                               SelectorType=sel_type, selector_params=params,
@@ -81,6 +96,7 @@ def run_one(dataset, label, seed, out_root):
         "n_rounds": out["n_rounds"],
         "elapsed": time.time() - t0,
         "run_kwargs": dict(RUN_KWARGS, selector_params=params),
+        "oracle": suite == "oracle",
     }
     os.makedirs(os.path.dirname(path), exist_ok=True)
     tmp = path + ".tmp"
@@ -90,11 +106,11 @@ def run_one(dataset, label, seed, out_root):
     return path, rec["elapsed"]
 
 
-def tasks():
+def tasks(suite="v2"):
     """(dataset, label, seeds) per array task, in a fixed order."""
     n_chunks = (N_SEEDS + SEEDS_PER_TASK - 1) // SEEDS_PER_TASK
     return [(d, lab, list(range(c * SEEDS_PER_TASK, min((c + 1) * SEEDS_PER_TASK, N_SEEDS))))
-            for d in DATASETS for lab in SELECTORS for c in range(n_chunks)]
+            for d in DATASETS for lab in selectors_for(suite) for c in range(n_chunks)]
 
 
 def main():
@@ -105,10 +121,11 @@ def main():
     ap.add_argument("--datasets", nargs="+", default=None,
                     help="With --local, restrict to these datasets.")
     ap.add_argument("--n-tasks", action="store_true", help="Print the array size and exit.")
+    ap.add_argument("--suite", choices=["v2", "oracle"], default="v2")
     ap.add_argument("--out", default=None)
     args = ap.parse_args()
-    out_root = args.out or default_out()
-    T = tasks()
+    out_root = args.out or default_out(args.suite)
+    T = tasks(args.suite)
 
     if args.n_tasks:
         print(len(T))
@@ -120,7 +137,7 @@ def main():
         dataset, label, seeds = T[args.TaskID - 1]
         print(f"--- {dataset} | {label} | seeds {seeds[0]}-{seeds[-1]} ---", flush=True)
         for s in seeds:
-            p, el = run_one(dataset, label, s, out_root)
+            p, el = run_one(dataset, label, s, out_root, args.suite)
             print(f"    seed {s}: " + ("exists" if el is None else f"{el/60:.1f} min"), flush=True)
         return
 
@@ -136,7 +153,7 @@ def main():
     print(f"{len(jobs)} runs, {args.workers} workers -> {out_root}", flush=True)
     t0, done = time.time(), 0
     with ProcessPoolExecutor(max_workers=args.workers) as ex:
-        futs = [ex.submit(run_one, d, lab, s, out_root) for d, lab, s in jobs]
+        futs = [ex.submit(run_one, d, lab, s, out_root, args.suite) for d, lab, s in jobs]
         for f in as_completed(futs):
             f.result()
             done += 1

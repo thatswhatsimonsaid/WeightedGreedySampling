@@ -198,6 +198,8 @@ def RunControlIteration(DataFileInput,
         selector_init_args = {k: v for k, v in sel_cfg.items() if k in sig.parameters}
     selector_model = SelectorClass(**selector_init_args)
     needs_reward = SelectorType in _REWARD_CONSUMERS if ComputeCV is None else ComputeCV
+    # Diagnostic only: reward from the held-out test RMSE instead of CV.
+    oracle_reward = getattr(selector_model, "reward_source", "cv") == "test_oracle"
 
     ### Logs ###
     # Both metrics are recorded every round. They cost one extra predict each
@@ -244,7 +246,9 @@ def RunControlIteration(DataFileInput,
         TestOutputs = both['full_pool' if Metric == 'full_pool' else 'test']
 
         ## 4. CV error (the bandit's reward signal -- unchanged) ##
-        if needs_reward:
+        if oracle_reward:
+            current_cv_rmse = both['test']['RMSE']
+        elif needs_reward:
             sklearn_model = predictor_model.model
             if sklearn_model is not None:
                 current_cv_rmse = get_cv_rmse(sklearn_model, X_train_df, y_train_series, k=5)

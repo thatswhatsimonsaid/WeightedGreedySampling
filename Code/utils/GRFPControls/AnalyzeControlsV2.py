@@ -59,6 +59,8 @@ def areas(curves):
     rows = []
     for d in DATASETS:
         lens = [len(c) for (dd, _, _), c in curves.items() if dd == d]
+        if not lens:
+            continue
         n_early = max(2, int(round(min(lens) * EARLY_FRAC)))
         for (dd, sel, s), c in curves.items():
             if dd == d:

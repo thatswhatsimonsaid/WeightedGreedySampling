@@ -20,6 +20,7 @@ class WiGS_MAB_Selector:
             (bonus scaled by the running standard deviation of the rewards).
         reward_history (list): Every reward computed so far, across all arms.
         state_history (list): One dict per `select` call with the bandit's state.
+        reward_source (str): "cv" or "test_oracle"; read by the learning loop.
     """
 
     ### Initialize ###
@@ -27,6 +28,7 @@ class WiGS_MAB_Selector:
                  mab_arms: list = None,
                  mab_c: float = 2.0,
                  reward_scaling: str = "none",
+                 reward_source: str = "cv",
                  **kwargs):
         
         """
@@ -44,6 +46,13 @@ class WiGS_MAB_Selector:
                 `sigma_hat` is the standard deviation of all rewards so far, so
                 the bonus is on the same scale as the rewards (RMSE drops in the
                 units of y). Until three rewards exist the original bonus is used.
+            reward_source (str, optional): Which RMSE the learning loop passes
+                as `current_rmse`. "cv" (default) is the 5-fold CV RMSE on the
+                labelled set. "test_oracle" is the held-out test RMSE, so the
+                reward is the true per-round test-error drop. That is a
+                diagnostic using information no real method has; it is only
+                supported by the GRFP control loop, and its outputs are marked
+                ORACLE.
             **kwargs: Accepts and ignores additional keyword arguments for consistency.
         """
 
@@ -53,6 +62,9 @@ class WiGS_MAB_Selector:
         if reward_scaling not in ("none", "std"):
             raise ValueError(f"reward_scaling must be 'none' or 'std', got {reward_scaling!r}")
         self.reward_scaling = reward_scaling
+        if reward_source not in ("cv", "test_oracle"):
+            raise ValueError(f"reward_source must be 'cv' or 'test_oracle', got {reward_source!r}")
+        self.reward_source = reward_source
         
         # MAB state variables
         self.arm_counts = np.zeros(len(self.arms))
