@@ -119,7 +119,8 @@ def RunControlIteration(DataFileInput,
                         Protocol="repo",
                         TrainProportion=0.05,
                         Standardize=False,
-                        cv_fallback_to_test=True):
+                        cv_fallback_to_test=True,
+                        LogFullPoolExclLabeled=False):
     """
     Runs one (dataset, seed, selector) control run and returns its logs.
 
@@ -142,6 +143,9 @@ def RunControlIteration(DataFileInput,
         cv_fallback_to_test (bool): True (the original behaviour) substitutes
             the train RMSE when CV is undefined; False passes NaN to the
             selector. Same key and meaning as in LearningProcedure.
+        LogFullPoolExclLabeled (bool): Also record the full-pool error on the
+            not-yet-labelled points only (FullPoolErrorFunction with
+            exclude_labeled=True) as Curves['full_pool_excl']. Off by default.
 
     Returns:
         dict with the test-metric curves and the per-round arm/reward logs.
@@ -201,7 +205,8 @@ def RunControlIteration(DataFileInput,
     # when the question changes from "does it generalise" to "what does the
     # manuscript's number say".
     Curves = {m: {'RMSE': [], 'MAE': [], 'R2': [], 'CC': []}
-              for m in ('test', 'full_pool')}
+              for m in ('test', 'full_pool')
+                       + (('full_pool_excl',) if LogFullPoolExclLabeled else ())}
     ArmLog = []
     SelectedObservationHistory = []
     cv_history = []
@@ -228,6 +233,11 @@ def RunControlIteration(DataFileInput,
                                                df_Train=df_Train,
                                                df_Candidate=df_Candidate),
         }
+        if LogFullPoolExclLabeled:
+            both['full_pool_excl'] = FullPoolErrorFunction(InputModel=predictor_model,
+                                                           df_Train=df_Train,
+                                                           df_Candidate=df_Candidate,
+                                                           exclude_labeled=True)
         for mname, out in both.items():
             for metric_name, value in out.items():
                 Curves[mname][metric_name].append(value)

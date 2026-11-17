@@ -59,3 +59,8 @@ Results/controls_v2/raw/
 # Baseline-only trace export: the aggregated layout is a regenerable
 # intermediate (Cluster/7_BaselineTraces.sbatch); the images stay tracked.
 results_grfp_controls/baseline_traces/*/aggregated/
+
+# Diagnostics v3 per-run pickles; the summaries and CSVs beside them stay
+# tracked. D1_raw is written on the cluster (Cluster/8_RunD1.sbatch).
+Results/diagnostics_v3/D1_raw/
+Results/diagnostics_v3/ORACLE_raw/

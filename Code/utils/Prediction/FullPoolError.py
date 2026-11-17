@@ -5,7 +5,8 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from utils.Auxiliary.DataFrameUtils import get_features_and_target
 
 ### Function ###
-def FullPoolErrorFunction(InputModel, df_Train: pd.DataFrame, df_Candidate: pd.DataFrame) -> dict:
+def FullPoolErrorFunction(InputModel, df_Train: pd.DataFrame, df_Candidate: pd.DataFrame,
+                          exclude_labeled: bool = False) -> dict:
     """
     Calculates performance metrics using the hybrid evaluation method from Wu et al. (2018).
 
@@ -18,10 +19,29 @@ def FullPoolErrorFunction(InputModel, df_Train: pd.DataFrame, df_Candidate: pd.D
         InputModel (object): A trained model object with a .predict() method.
         df_Train (pd.DataFrame): The current training dataset.
         df_Candidate (pd.DataFrame): The current candidate dataset.
+        exclude_labeled (bool): False (default) is the hybrid metric above.
+            True scores the model's predictions on the candidate points only,
+            i.e. the pool points not yet labelled at this round. All metrics
+            are NaN once the candidate set is empty.
 
     Returns:
         dict: A dictionary containing the calculated metrics: 'RMSE', 'MAE', 'R2', and 'CC'.
     """
+    # 0. Candidate points only #
+    if exclude_labeled:
+        if df_Candidate.empty:
+            return {'RMSE': np.nan, 'MAE': np.nan, 'R2': np.nan, 'CC': np.nan}
+        X_candidate, y_candidate = get_features_and_target(df_Candidate, "Y")
+        y_pred = InputModel.predict(X_candidate)
+        rmse = np.sqrt(mean_squared_error(y_candidate, y_pred))
+        mae = mean_absolute_error(y_candidate, y_pred)
+        r2 = r2_score(y_candidate, y_pred) if len(y_candidate) > 1 else np.nan
+        if len(y_candidate) > 1 and np.std(y_pred) > 0 and np.std(y_candidate) > 0:
+            cc = np.corrcoef(y_candidate, y_pred)[0, 1]
+        else:
+            cc = np.nan
+        return {'RMSE': rmse, 'MAE': mae, 'R2': r2, 'CC': cc}
+
     # 1. Recreate the full data pool. 
     df_pool = pd.concat([df_Train, df_Candidate])
     _, y_true_pool = get_features_and_target(df_pool, "Y")
