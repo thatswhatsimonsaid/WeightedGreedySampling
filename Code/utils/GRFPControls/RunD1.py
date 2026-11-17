@@ -36,7 +36,7 @@ DATASETS = ["beer", "bodyfat", "concrete_cs", "concrete_flow", "concrete_slump",
             "dgp_three_regime", "dgp_two_regime", "dgp_two_regime_gmm", "housing",
             "mpg", "no2", "pm10", "qsar", "yacht"]
 N_SEEDS = 100
-SEEDS_PER_TASK = 10
+SEEDS_PER_TASK = 20   # 630 tasks; Slurm rejects array indices above MaxArraySize (1001)
 METRICS = ("full_pool", "full_pool_excl", "test")
 RUN_KWARGS = dict(Protocol="paper", Standardize=True, LogFullPoolExclLabeled=True)
 

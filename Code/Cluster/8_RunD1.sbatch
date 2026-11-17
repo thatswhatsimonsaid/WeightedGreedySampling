@@ -2,22 +2,23 @@
 # Diagnostic 1: rerun the September paper-protocol comparison (9 selectors,
 # 14 datasets, 100 seeds) logging full-pool, full-pool excluding labelled
 # points, and test RMSE from the same runs.
-# 14 datasets x 9 selectors x 10 seed-chunks = 1260 tasks.
+# 14 datasets x 9 selectors x 5 seed-chunks of 20 = 630 tasks (array indices
+# must stay under the cluster's MaxArraySize, typically 1001).
 #
 # Submit from the Code/ directory:
 #     sbatch Cluster/8_RunD1.sbatch
 # Then summarise (checks bit-for-bit reproduction of the September curves first):
 #     python -m utils.GRFPControls.AnalyzeD1
 #
-# The slowest task (dgp_three_regime, a CV-reading selector, 10 seeds) is
-# ~35 min on a laptop core; the limit leaves ~4x headroom.
+# The slowest task (dgp_three_regime, a CV-reading selector, 20 seeds) is
+# ~70 min for 20 seeds on a laptop core; the limit leaves ~4x headroom.
 
 #SBATCH --job-name=CTRL_D1
 #SBATCH --partition=cpu-g2
-#SBATCH --array=1-1260
+#SBATCH --array=1-630
 #SBATCH --output=Cluster/RunControls/ClusterMessages/out/d1_%A_%a.out
 #SBATCH --error=Cluster/RunControls/ClusterMessages/error/d1_%A_%a.err
-#SBATCH --time=02:30:00
+#SBATCH --time=05:00:00
 #SBATCH --mem-per-cpu=4000MB
 #SBATCH --cpus-per-task=1
 
